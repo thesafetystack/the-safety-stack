@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use these taxonomies, please cite them as below."
+title: "The Safety Stack taxonomies"
+authors:
+  - family-names: "Gavenčiak"
+    given-names: "Tomáš"
+repository-code: "https://github.com/thesafetystack/the-safety-stack"
+license: CC-BY-4.0
+preferred-citation:
+  type: generic
+  title: "The Safety Stack taxonomies"
+  authors:
+    - family-names: "Gavenčiak"
+      given-names: "Tomáš"
+  year: 2026
+  repository-code: "https://github.com/thesafetystack/the-safety-stack"
