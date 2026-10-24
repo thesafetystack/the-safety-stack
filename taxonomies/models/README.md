@@ -4,6 +4,10 @@ File `models-1.0.0.yaml`, tag `models-1.0.0`: 1,877 nodes (310 families, 249 gro
 `version` `'1.0.0'`, schema `schemas/models-1.schema.json`. Its content is identical to `models-0.9.0.yaml` (tag
 `models-0.9.0`, `version` `'0.9'`), which stays for reference. The counts below hold for both.
 
+Versioning follows [../README.md](../README.md#versioning): node ids are frozen within major version 1; gloss wording
+may be clarified in a minor or patch version without changing its meaning. The annotation model is shown, for each
+node the matcher found in a document, its id, name, maker and `gloss` as in the file, with the matched surface forms.
+
 Top level:
 - `version`: header.
 - `meta.schema_version`: `'0.3'`.

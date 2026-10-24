@@ -5,6 +5,11 @@ and 9 group nodes; `version` `'1.0.0'`, `status` `released`, schema `schemas/tec
 is identical to `techniques-0.9.1.yaml` (tag `techniques-0.9.1`, `version` `'0.9'`, `status` `draft`), which stays
 for reference. The counts below hold for both.
 
+Versioning follows [../README.md](../README.md#versioning): slugs are frozen within major version 1; definition
+wording may be clarified in a minor or patch version without changing its meaning. The annotation model is shown each
+technique's slug, kind, name, `provisional` status, `synonym` and `instance` aliases, parent and `definition`, and each
+group node's slug, name, synonyms, children and `definition`, exactly as in the file.
+
 Top level:
 - `version`, `status`, `notes`: header; `notes` explains alias types, group nodes, `ml_methods` and `risk_note`.
 - `techniques`: list of 234 entries.
