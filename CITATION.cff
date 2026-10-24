@@ -4,8 +4,8 @@ title: "The Safety Stack taxonomies"
 authors:
   - family-names: "Gavenčiak"
     given-names: "Tomáš"
-repository-code: "https://github.com/thesafetystack/the-safety-stack"
-license: CC-BY-4.0
+repository-code: "https://github.com/thesafetystack/data"
+license: CC0-1.0
 preferred-citation:
   type: generic
   title: "The Safety Stack taxonomies"
@@ -13,4 +13,4 @@ preferred-citation:
     - family-names: "Gavenčiak"
       given-names: "Tomáš"
   year: 2026
-  repository-code: "https://github.com/thesafetystack/the-safety-stack"
+  repository-code: "https://github.com/thesafetystack/data"
