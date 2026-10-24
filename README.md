@@ -1,13 +1,33 @@
 # The Safety Stack: data
 
-The Safety Stack catalogues public documents about technical AI safety: research papers and preprints, lab safety
-frameworks and system cards, evaluation reports, blog and forum posts. Each document is annotated by language models
-with the AI-safety techniques it discusses and the AI models it mentions, and how it relates to each (for example,
-whether it proposes a technique, evaluates it, or reports that a lab uses it).
+The Safety Stack is a planned catalogue of AI safety techniques. Frontier labs describe their safety approach as
+defence in depth: a stack of techniques at every layer from data collection to deployment. No single resource collects
+them. For each technique the catalogue is to gather the papers, evidence of effectiveness and cost, implementations,
+and what is known about its deployment across labs and models, including informal sources (expert opinions,
+forecasts, compliance filings) labelled as such, and to record what was looked for and not found. The project builds
+on the Shallow Review of Technical AI Safety and is meant to supply data for its 2026 edition. Project page:
+[The AI Safety Stack on Manifund](https://manifund.org/projects/the-ai-safety-stack).
 
-<!-- TODO(Tomáš): two or three sentences on what this is not (a catalogue and discovery aid, not a census, map or
-verdict on labs or techniques; inclusion is not endorsement), and who runs it, how it is funded, and who decides
-inclusion. -->
+- **For:** safety researchers getting oriented in the field; funders looking for neglected work and expert opinion;
+  evaluators and policy analysts who need an overview of the stack and an index of sources.
+- **Not for:** tracking individuals beyond paper authorship; judging or ranking labs' safety efforts; calls to action
+  other than research recommendations.
+- **Team:** Tomáš Gavenčiak (lead; Alignment of Complex Systems group, Charles University, Prague; Arb Research),
+  Jacob Livingston Slosser (Pioneer Centre for AI, University of Copenhagen; CheatSheet; Juriscription), Dan Elton
+  (Metascience Observatory), Gavin Leech (advisor; Arb Research).
+
+### This release
+
+The dataset is one deliverable of the project: public documents on technical AI safety (research papers and
+preprints, lab safety frameworks and system cards, evaluation reports, blog and forum posts), each annotated by
+language models with the techniques it discusses and the AI models it mentions, and how it relates to each (for
+example, whether it proposes a technique, evaluates it, or reports that a lab uses it), together with the two
+taxonomies used for the annotations.
+
+It is not the catalogue: there are no per-technique summaries of evidence, no deployment status and no epistemic
+flags yet. It is not a census: the screen misses relevant documents and lets some irrelevant ones in. The annotations
+are model-made and not reviewed by people; they record what a document says, not whether it is true. Inclusion is not
+endorsement, and nothing here is a verdict on a lab or a technique.
 
 ## What is where
 
@@ -106,6 +126,9 @@ per release; a Zenodo record for the dataset series is planned.
 
 CC0 means no conditions; a citation is still appreciated.
 
+Before release 1 this repository stated CC BY 4.0; the commits tagged `techniques-0.9.1`, `techniques-1.0.0`,
+`models-0.9.0` and `models-1.0.0` still carry that LICENSE file. The same taxonomy files are now CC0 1.0.
+
 ## Corrections, takedowns and missing works
 
 Use the issue forms on this repository ([new issue](https://github.com/thesafetystack/data/issues/new/choose)):
@@ -115,8 +138,8 @@ Use the issue forms on this repository ([new issue](https://github.com/thesafety
 - **Missing work**: a document that fits the criterion above is not in the dataset.
 - **Taxonomy suggestion**: a missing technique or model, a wrong definition, a merge or split.
 
-<!-- TODO(Tomáš): a private contact (email) for takedowns that should not be posted publicly. -->
-For a takedown you would rather not post publicly, write to *[private contact, to be added]*.
+<!-- TODO(Tomáš): private takedown contact (an address at thesafetystack.ai or a Google form); also in .github/ISSUE_TEMPLATE/config.yml. -->
+For a takedown you would rather not post publicly, use *[PLACEHOLDER: private contact, an address at thesafetystack.ai or a form; to be added]*.
 
 We acknowledge every report; we do not promise a date for resolving it. Accepted corrections and takedowns are
 applied in the next release as override files ([dataset/overrides/](dataset/overrides/)). See

@@ -1,5 +1,5 @@
 blank_issues_enabled: false
-# TODO(Tomáš): a private contact for takedowns, as a contact link, e.g.
+# PLACEHOLDER (Tomáš): private takedown contact (an address at thesafetystack.ai or a Google form), as a contact link, e.g.
 # contact_links:
 #   - name: Private takedown request
 #     url: <to be added>
