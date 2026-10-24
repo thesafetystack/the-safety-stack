@@ -1,7 +1,8 @@
 # Models
 
-File `models-0.9.0.yaml`, tag `models-0.9.0`: 1,877 nodes (310 families, 249 groups, 1,318 models) and 138 makers.
-The file's own `version` field reads `'0.9'` (see CHANGELOG).
+File `models-1.0.0.yaml`, tag `models-1.0.0`: 1,877 nodes (310 families, 249 groups, 1,318 models) and 138 makers;
+`version` `'1.0.0'`, schema `schemas/models-1.schema.json`. Its content is identical to `models-0.9.0.yaml` (tag
+`models-0.9.0`, `version` `'0.9'`), which stays for reference. The counts below hold for both.
 
 Top level:
 - `version`: header.

@@ -1,7 +1,9 @@
 # Techniques
 
-File `techniques-0.9.1.yaml`, tag `techniques-0.9.1`: 234 techniques (137 intervention, 32 monitoring, 65 assessment)
-and 9 group nodes. The file's own `version` field reads `'0.9'` and `status` reads `draft` (see CHANGELOG).
+File `techniques-1.0.0.yaml`, tag `techniques-1.0.0`: 234 techniques (137 intervention, 32 monitoring, 65 assessment)
+and 9 group nodes; `version` `'1.0.0'`, `status` `released`, schema `schemas/techniques-1.schema.json`. Its content
+is identical to `techniques-0.9.1.yaml` (tag `techniques-0.9.1`, `version` `'0.9'`, `status` `draft`), which stays
+for reference. The counts below hold for both.
 
 Top level:
 - `version`, `status`, `notes`: header; `notes` explains alias types, group nodes, `ml_methods` and `risk_note`.

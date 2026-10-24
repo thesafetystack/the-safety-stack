@@ -1,5 +1,12 @@
 # Changelog: techniques
 
+## 1.0.0 (2026-10-24)
+
+- First release; content identical to 0.9.1: same 234 techniques and 9 group nodes, field for field.
+- Header only: `version` `'1.0.0'` (was `'0.9'`), `status` `released` (was `draft`), and the first comment line.
+- Schema `techniques-1.schema.json`: `techniques-0.schema.json` with the version pattern for major 1.
+- sha256 `9957124474b6ab2e3328ee0231132449110e67b52f4eb0f17e1a0c5860a64d8b`.
+
 ## 0.9.1 (date unknown)
 
 - 234 techniques (137 intervention, 32 monitoring, 65 assessment) and 9 group nodes; no families or facets.
