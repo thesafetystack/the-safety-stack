@@ -101,8 +101,7 @@ document has no row.
   hits, a record of the model_roles call). `annotations.other[]` is reserved for kinds without a typed column (empty).
 
 All annotations are made by language models (and a deterministic matcher) and are not systematically reviewed by
-people; a few hundred rows were corrected or added by the maintainers through overrides (`metadata.provenance`, the
-`overrides/` files, whose `method` says how each was prepared). For 17 documents whose main-model request was
+people. Of the 269 override rows applied to this release, 130 add a source by hand, 87 set a screen or relevance verdict, 21 are Claude stand-in annotations, 19 merge two records of one work and 12 fix a bibliographic field. Most of the maintainers' rows come from lists an AI assistant prepared and the maintainers approved as a whole, not row by row; each row's `method` says how it was prepared. (`metadata.provenance` says which annotations an override touched.) For 17 documents whose main-model request was
 refused, the technique and/or model annotation is a stand-in by a Claude model (`annotator`, `provenance =
 override`). Annotations record what a document says, not whether it is true. `QUALITY.md` reports how well they
 agree with a model-made reference set.

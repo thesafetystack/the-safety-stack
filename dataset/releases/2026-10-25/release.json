@@ -3,7 +3,7 @@
   "format": "2026-10-25",
   "variant": "public",
   "hf_repo": "thesafetystack/the-safety-stack",
-  "created_at": "2026-10-25T03:58:23Z",
+  "created_at": "2026-10-25T04:26:20Z",
   "parent_release": null,
   "build": {
     "build_id": "ws1qpn8myzxah",
@@ -11,7 +11,7 @@
     "plan": "batch-2026-10a",
     "corpus_file_id": "rc0b6mt7cr94n.corpus",
     "corpus_code_digest": "45d21e480353f9bce8a48a2a7951c3211c0e0d28b1d22c563727eec0765af3e9",
-    "release_code_commit": "be4c80bb141f"
+    "release_code_commit": "ac519206e3cc"
   },
   "rows": {
     "in": 73655,
@@ -131,6 +131,13 @@
         "rows": 21
       }
     ],
+    "kinds": {
+      "manual_source": 130,
+      "scope_decision": 87,
+      "stand_in_annotation": 21,
+      "identity_merge": 19,
+      "metadata_fix": 12
+    },
     "applied": {
       "model_roles": 10,
       "screen": 27,
@@ -190,7 +197,8 @@
   },
   "contact": {
     "email": "info@thesafetystack.ai",
-    "takedown": "https://thesafetystack.ai/takedown"
+    "takedown": "mailto:info@thesafetystack.ai",
+    "public_reports": "https://github.com/thesafetystack/data/issues/new/choose"
   },
   "stand_ins": {
     "documents": 17,
@@ -204,8 +212,8 @@
     },
     {
       "path": "FORMAT.md",
-      "bytes": 52989,
-      "sha256": "f7c64f1aa2176f378c73dce6cbff07bf08ccfbacad1b5cf9b810d7f2d82c3b20"
+      "bytes": 53276,
+      "sha256": "e72b34cb8f7933c66445d1055cbed38f52c075ec458a80d72c98ca46bcfbec57"
     },
     {
       "path": "LICENSE",
@@ -219,8 +227,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 11656,
-      "sha256": "bbf08fcbc3c6963fa1759ed12df2631cb2bf4a19420a5f0fe744caa84dc2f864"
+      "bytes": 12368,
+      "sha256": "417eb277b2d368e0bdf3a3027a0bab1963ba93666ec89bc842858b367390365b"
     },
     {
       "path": "VOCAB.md",
