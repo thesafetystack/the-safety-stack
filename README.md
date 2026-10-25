@@ -27,9 +27,12 @@ affiliations. The taxonomies, the prompts and per-field provenance ship with the
 
 It is not the catalogue: there are no per-technique summaries of evidence and no deployment status yet. It is not a
 census: the relevance screen misses relevant documents and lets some irrelevant ones in. The annotations are
-model-made and not systematically reviewed by people (a few hundred rows were corrected by the maintainers; the
-override files say which and how); they record what a document says, not whether it is true. Inclusion is not
-endorsement, and nothing here is a verdict on a lab or a technique.
+model-made and not systematically reviewed by people; they record what a document says, not whether it is true. Of
+the 269 override rows applied to this release, 130 add a source by hand, 87 set a screen or relevance verdict, 21 are
+Claude stand-in annotations, 19 merge two records of one work and 12 fix a bibliographic field. Most of the
+maintainers' rows come from lists an AI assistant prepared and the maintainers approved as a whole, not row by row;
+each row's `method` says how it was prepared. Inclusion is not endorsement, and nothing here is a verdict on a lab or
+a technique.
 
 ## What is where
 
@@ -89,9 +92,11 @@ safety component, and general machine learning.
 
 Candidates come from keyword and author searches of scholarly indexes (OpenAlex, arXiv, Semantic Scholar), the
 LessWrong and AI Alignment Forum forums, the blogs of frontier labs and AI-safety organisations, labs' model and system
-card pages, a few newsletters, and sources added by hand. Searches reach back to 2015 (forums to 2006). The screen is
-a model judgement with known errors in both directions; see [dataset/QUALITY.md](dataset/QUALITY.md). If a work is
-missing or should not be here, see [Corrections](#corrections-takedowns-and-missing-works).
+card pages, a few newsletters, and sources added by hand. The paper searches start in 2015; the 593 earlier
+documents are 430 forum posts (LessWrong, Alignment Forum), 115 posts from organisations' blog archives, 44 works
+added by hand and 4 others. The screen is a model judgement with known errors in both directions; see
+[dataset/QUALITY.md](dataset/QUALITY.md). If a work is missing or should not be here, see
+[Corrections](#corrections-takedowns-and-missing-works).
 
 ## Taxonomies
 
