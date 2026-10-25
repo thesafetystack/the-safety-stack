@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        This issue is public. Do not post personal details here. If you would rather not ask publicly, use the
-        private contact in the README.
+        This issue is public. Do not post personal details here. If you would rather not ask publicly, email
+        info@thesafetystack.ai instead.
   - type: input
     id: document
     attributes:

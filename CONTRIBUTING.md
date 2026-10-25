@@ -1,12 +1,13 @@
 # Contributing
 
 Reports are the main way to help: they go in as issues, through the forms on
-[the new-issue page](https://github.com/thesafetystack/data/issues/new/choose).
+[the new-issue page](https://github.com/thesafetystack/data/issues/new/choose). Takedowns and other private requests
+go to [info@thesafetystack.ai](mailto:info@thesafetystack.ai).
 
 | You want to | Form | What we need |
 |---|---|---|
 | fix a wrong annotation or metadata field | Correction | the document's `doc_id` or URL, which field or label is wrong, what it should be, and the passage or source that shows it |
-| have a document or your name removed | Takedown | the `doc_id` or URL, what should be removed, and why; for a request you would rather not post publicly, use the private contact in the [README](README.md#corrections-takedowns-and-missing-works) |
+| have a document or your name removed | Takedown | the `doc_id` or URL, what should be removed, and why; or email [info@thesafetystack.ai](mailto:info@thesafetystack.ai) instead of posting publicly |
 | add a document the dataset misses | Missing work | a URL, DOI or arXiv id, and which part of the [inclusion criterion](README.md#what-is-included) it meets |
 | change a taxonomy | Taxonomy suggestion | the slug or node id (or the proposed name), the change, and one or two documents that show the need |
 

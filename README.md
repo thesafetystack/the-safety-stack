@@ -131,15 +131,14 @@ Before release 1 this repository stated CC BY 4.0; the commits tagged `technique
 
 ## Corrections, takedowns and missing works
 
-Use the issue forms on this repository ([new issue](https://github.com/thesafetystack/data/issues/new/choose)):
-
-- **Correction**: an annotation or a metadata field is wrong.
-- **Takedown**: you want a document, or your name, removed.
-- **Missing work**: a document that fits the criterion above is not in the dataset.
-- **Taxonomy suggestion**: a missing technique or model, a wrong definition, a merge or split.
-
-<!-- TODO(Tomáš): private takedown contact (an address at thesafetystack.ai or a Google form); also in .github/ISSUE_TEMPLATE/config.yml. -->
-For a takedown you would rather not post publicly, use *[PLACEHOLDER: private contact, an address at thesafetystack.ai or a form; to be added]*.
+- **Takedowns and other private requests:** email [info@thesafetystack.ai](mailto:info@thesafetystack.ai), for
+  example to have a document, or your name, removed.
+- **Public reports:** use the issue forms on this repository
+  ([new issue](https://github.com/thesafetystack/data/issues/new/choose)):
+  - **Correction**: an annotation or a metadata field is wrong.
+  - **Missing work**: a document that fits the criterion above is not in the dataset.
+  - **Taxonomy suggestion**: a missing technique or model, a wrong definition, a merge or split.
+  - **Takedown**, if you are fine asking in public.
 
 We acknowledge every report; we do not promise a date for resolving it. Accepted corrections and takedowns are
 applied in the next release as override files ([dataset/overrides/](dataset/overrides/)). See
