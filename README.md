@@ -18,40 +18,51 @@ on the Shallow Review of Technical AI Safety and is meant to supply data for its
 
 ### This release
 
-The dataset is one deliverable of the project: public documents on technical AI safety (research papers and
-preprints, lab safety frameworks and system cards, evaluation reports, blog and forum posts), each annotated by
-language models with the techniques it discusses and the AI models it mentions, and how it relates to each (for
-example, whether it proposes a technique, evaluates it, or reports that a lab uses it), together with the two
-taxonomies used for the annotations.
+The dataset is one deliverable of the project. Release 2026-10-25, the first, has 39,269 public documents on
+technical AI safety (preprints and papers, LessWrong and Alignment Forum posts, lab blog posts, system and model
+cards), each annotated by a language model with which of the 234 techniques of the techniques taxonomy it engages with
+and in what role (uses, evaluates, proposes, critiques, reports a lab using it), which of the 1,877 AI models of the
+models catalogue it names and in what role, its document class, and, where a full text was available, its authors'
+affiliations. The taxonomies, the prompts and per-field provenance ship with the data.
 
-It is not the catalogue: there are no per-technique summaries of evidence, no deployment status and no epistemic
-flags yet. It is not a census: the screen misses relevant documents and lets some irrelevant ones in. The annotations
-are model-made and not reviewed by people; they record what a document says, not whether it is true. Inclusion is not
+It is not the catalogue: there are no per-technique summaries of evidence and no deployment status yet. It is not a
+census: the relevance screen misses relevant documents and lets some irrelevant ones in. The annotations are
+model-made and not systematically reviewed by people (a few hundred rows were corrected by the maintainers; the
+override files say which and how); they record what a document says, not whether it is true. Inclusion is not
 endorsement, and nothing here is a verdict on a lab or a technique.
 
 ## What is where
 
 | Where | What |
 |---|---|
-| This repository (`thesafetystack/data`) | the taxonomies (exact files of every version, schemas, changelogs); the dataset documentation ([dataset/](dataset/)); the corrections and overrides applied to releases ([dataset/overrides/](dataset/overrides/)); the taxonomy validator ([tools/](tools/)); issues for corrections, takedowns and suggestions |
-| Hugging Face, `thesafetystack/the-safety-stack` (not yet public) | the dataset itself, one revision per release, with its dataset card |
+| This repository (`thesafetystack/data`) | the taxonomies (exact files of every version, schemas, changelogs); copies of each release's documentation ([dataset/](dataset/)) and manifest ([dataset/releases/](dataset/releases/)); the taxonomy validator ([tools/](tools/)); issue forms for corrections, takedowns and suggestions |
+| [Hugging Face, `thesafetystack/the-safety-stack`](https://huggingface.co/datasets/thesafetystack/the-safety-stack) | the dataset: data files, dataset card, the taxonomy files and prompts used, the override files applied, the manifest; one revision per release |
 | [thesafetystack.ai](https://thesafetystack.ai) | the project site |
 
-<!-- TODO(Tomáš): confirm whether the HF dataset also carries copies of the pinned taxonomy files. The internal
-variant, thesafetystack/the-safety-stack-private, is not mentioned here on purpose; add it if wanted. -->
+Neither this repository nor the Hugging Face dataset is public yet.
 
-The published dataset contains no document texts.
+The published dataset contains no document texts and, in this release, no abstracts. An internal variant with
+abstracts and full texts exists for the maintainers and is not distributed.
 
 ## The dataset
 
-<!-- PLACEHOLDER: filled from dataset/FORMAT.md and dataset/QUALITY.md once they exist. Planned content: number of
-documents and annotations in the latest release and its date; the file(s) and a two-line loading example; one real
-reviewed row; how well the annotations agree with the reference set (with its limits) and what is known to be
-missing. -->
+The [dataset card](https://huggingface.co/datasets/thesafetystack/the-safety-stack) is the place to start; it
+describes the files and how to load them.
 
-- Format: see [dataset/FORMAT.md](dataset/FORMAT.md). *(placeholder)*
-- Quality: see [dataset/QUALITY.md](dataset/QUALITY.md). *(placeholder)*
-- Changes between releases: [dataset/CHANGELOG.md](dataset/CHANGELOG.md).
+```python
+from datasets import load_dataset
+docs = load_dataset("thesafetystack/the-safety-stack", "documents", split="train")   # flat view, one row per document
+rlhf = docs.filter(lambda r: "rlhf" in (r["techniques_used"] or []))
+corpus = load_dataset("thesafetystack/the-safety-stack", "corpus", split="train")    # the full row with every annotation
+```
+
+- **Format:** [dataset/FORMAT.md](dataset/FORMAT.md) (files, columns, ids, recipes) and
+  [dataset/VOCAB.md](dataset/VOCAB.md) (every value word with a sentence).
+- **Quality:** against a model-made reference set of 100 documents, with no human adjudication yet, the technique
+  annotation finds about 7 in 10 reference techniques (presence F1 0.78) and the model annotation reaches presence
+  F1 0.92. The 21 stand-in annotations (17 documents) and the relevance screen were not evaluated. Details and limits:
+  [dataset/QUALITY.md](dataset/QUALITY.md).
+- **Changes between releases:** [dataset/CHANGELOG.md](dataset/CHANGELOG.md).
 
 ### What is included
 
@@ -105,24 +116,21 @@ The 0.x files (techniques 0.9.1, models 0.9.0) stay for reference and carry no s
 
 ## Releases
 
-Dataset releases are dated (`YYYY-MM-DD`) and planned weekly. Each release records:
-
-- the taxonomy versions its annotations use, each with the sha256 of its file in this repository;
-- the override files from [dataset/overrides/](dataset/overrides/) it applies, each with its sha256.
-
-So for any release one can recover exactly which taxonomy files and which corrections went into it. There is no DOI
-per release; a Zenodo record for the dataset series is planned.
-
-<!-- TODO: where the release manifest lives (HF only, or also a copy here) and how a reader finds it; FORMAT.md. -->
+Dataset releases are dated (`YYYY-MM-DD`) and planned weekly. Each release's manifest, `release.json`, records the
+build, row counts, the taxonomy versions its annotations use (each with the sha256 of its file, the same file as in
+this repository), the override files it applies, and every file with its size and sha256. A copy of each manifest and
+its `SHA256SUMS` is kept in [dataset/releases/](dataset/releases/), so it stays clear what each release contained.
+There is no DOI per release; a Zenodo record for the dataset series is planned.
 
 ## Licences
 
 | What | Licence |
 |---|---|
-| Taxonomies, schemas, documentation and override files in this repository (everything outside `tools/`) | [CC0 1.0](LICENSE) |
-| Dataset metadata and annotations (Hugging Face) | CC0 1.0 |
+| Taxonomies, schemas and documentation in this repository (everything outside `tools/`) | [CC0 1.0](LICENSE) |
+| What we made in the dataset: the annotations, the identity and provenance structure, the release metadata, the prompts and documentation | CC0 1.0 |
+| Bibliographic records in the dataset (titles, authors, dates, identifiers) | as their providers supply them, under those providers' terms |
+| Quoted document text in the dataset (evidence quotes) | its owners'; not covered by CC0 |
 | Code in `tools/` | [MIT](tools/LICENSE) |
-| Evidence quotes in the dataset | not covered by CC0: short excerpts from the documents, whose rights stay with their authors and publishers |
 
 CC0 means no conditions; a citation is still appreciated.
 
@@ -141,12 +149,13 @@ Before release 1 this repository stated CC BY 4.0; the commits tagged `technique
   - **Takedown**, if you are fine asking in public.
 
 We acknowledge every report; we do not promise a date for resolving it. Accepted corrections and takedowns are
-applied in the next release as override files ([dataset/overrides/](dataset/overrides/)). See
+applied in the next release as override files, which ship with the release on Hugging Face
+([dataset/overrides/](dataset/overrides/)). See
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Citation
 
-For the taxonomies: [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+For the dataset, as on the card: The Safety Stack dataset, release 2026-10-25,
+https://huggingface.co/datasets/thesafetystack/the-safety-stack.
 
-<!-- PLACEHOLDER: how to cite the dataset (Hugging Face dataset and release date; later the Zenodo concept DOI). -->
-For the dataset: *[to be added]*.
+For the taxonomies: [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
