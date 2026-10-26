@@ -18,7 +18,7 @@ on the Shallow Review of Technical AI Safety and is meant to supply data for its
 
 ### This release
 
-The dataset is one deliverable of the project. Release 2026-10-25, the first, has 39,269 public documents on
+The dataset is one deliverable of the project. Release 2026-10-26 has 39,269 public documents on
 technical AI safety (preprints and papers, LessWrong and Alignment Forum posts, lab blog posts, system and model
 cards), each annotated by a language model with which of the 234 techniques of the techniques taxonomy it engages with
 and in what role (uses, evaluates, proposes, critiques, reports a lab using it), which of the 1,877 AI models of the
@@ -54,16 +54,26 @@ describes the files and how to load them.
 
 ```python
 from datasets import load_dataset
-docs = load_dataset("thesafetystack/the-safety-stack", "documents", split="train")   # flat view, one row per document
-rlhf = docs.filter(lambda r: "rlhf" in (r["techniques_used"] or []))
-corpus = load_dataset("thesafetystack/the-safety-stack", "corpus", split="train")    # the full row with every annotation
+docs = load_dataset("thesafetystack/the-safety-stack", split="train")   # one row per document, every annotation
+
+def used(row, slug):   # the document's own work uses the technique, at least a paragraph's worth
+    st = row["annotations"]["safety_techniques"]
+    return any(t["slug"] == slug and t["roles"]["used"] >= 2 for t in (st and st["payload"]["techniques"]) or [])
+
+rlhf = docs.filter(lambda r: used(r, "rlhf"))
 ```
 
 - **Format:** [dataset/FORMAT.md](dataset/FORMAT.md) (files, columns, ids, recipes) and
   [dataset/VOCAB.md](dataset/VOCAB.md) (every value word with a sentence).
 - **Quality:** against a model-made reference set of 100 documents, with no human adjudication yet, the technique
   annotation finds about 7 in 10 reference techniques (presence F1 0.78) and the model annotation reaches presence
-  F1 0.92. The 21 stand-in annotations (17 documents) and the relevance screen were not evaluated. Details and limits:
+  F1 0.92. The 21 stand-in annotations (17 documents) were not evaluated. Details and limits:
+  [dataset/QUALITY.md](dataset/QUALITY.md).
+- **Judge evaluation:** Three language-model judges (Claude Opus 5.5, GPT Sol 6.1, Claude Sonnet 5.5) labelled samples
+  of every model judgement blind. Against their majority: techniques presence F1 0.76, models (model, role) F1 0.88,
+  affiliations F1 0.83, screen keep F1 0.92; among the 135,315 eligible records triage marked not relevant, no sampled
+  record is relevant by the majority and an estimated 1,022 [252, 2,074] are relevant or borderline. The judges are
+  models, not people, and disagree among themselves (techniques presence F1 0.73 between Opus and Sol). Details:
   [dataset/QUALITY.md](dataset/QUALITY.md).
 - **Changes between releases:** [dataset/CHANGELOG.md](dataset/CHANGELOG.md).
 
@@ -160,7 +170,7 @@ applied in the next release as override files, which ship with the release on Hu
 
 ## Citation
 
-For the dataset, as on the card: The Safety Stack dataset, release 2026-10-25,
+For the dataset, as on the card: The Safety Stack dataset, release 2026-10-26,
 https://huggingface.co/datasets/thesafetystack/the-safety-stack.
 
 For the taxonomies: [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
