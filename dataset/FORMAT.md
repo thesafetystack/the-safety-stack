@@ -1,11 +1,11 @@
-> Copied from release 2026-10-25 of the dataset, where it is generated; paths refer to that release's files. For loading, the [dataset card](https://huggingface.co/datasets/thesafetystack/the-safety-stack) is canonical.
+> Copied from release 2026-10-26 of the dataset, where it is generated; paths refer to that release's files. For loading, the [dataset card](https://huggingface.co/datasets/thesafetystack/the-safety-stack) is canonical.
 
 # The Safety Stack: file format
 
-One parquet file, `data/corpus.parquet`, one row per document, is the dataset; the other files resolve the ids its
-rows carry or offer flatter views of it. The sections up to "Rules a reader should know" are written for people;
-everything after "Generated reference" is generated from the release itself (`schema/mapping.yaml` describes every
-field and how it is derived) and is meant to be searched, not read.
+One parquet file, `data/corpus.parquet`, one row per document, is the dataset (the hub's default configuration); the
+other files resolve the ids its rows carry or describe them. The sections up to "Rules a reader should know" are
+written for people; everything after "Generated reference" is generated from the release itself
+(`schema/mapping.yaml` describes every field and how it is derived) and is meant to be searched, not read.
 
 An internal variant with abstracts and full texts exists for the maintainers and is not distributed.
 
@@ -13,9 +13,7 @@ An internal variant with abstracts and full texts exists for the maintainers and
 
 | Path | Rows | What |
 |---|---|---|
-| `data/corpus.parquet` | 39,269 | The full row per document: bibliographic fields, identity, content identifiers, release facts and every annotation (nested). The contract; everything else is derived from it or resolves its ids. |
-| `views/documents.parquet` | 39,269 | A flat view, one row per document: bibliographic fields, the screen verdicts, technique and model lists, affiliations (columns below). The HF viewer's default; for browsing and simple filters. |
-| `views/annotation_records.parquet` | 338,907 | Long view: release_id, doc_id and the metadata struct of every annotation, one row per document and kind. For coverage and provenance (override) queries across kinds. |
+| `data/corpus.parquet` | 39,269 | The full row per document: bibliographic fields, identity, content identifiers, release facts and every annotation (nested). The contract and the hub's default configuration; everything else is derived from it or resolves its ids. |
 | `data/configs.parquet` | 26 | One row per config_id: the call that produced annotations (stage, prompt, model, parameters, taxonomy pin) or the overrides that supplied them. configs.json is the same as JSON. |
 | `configs.json` |  | data/configs.parquet as JSON. |
 | `overrides/` | 269 | The maintainers' and stand-in overrides of the pipeline's output, one JSON Lines file per overrides run (overrides/README.md lists them): kind, target, key, value, author, method, note, time. |
@@ -29,54 +27,14 @@ An internal variant with abstracts and full texts exists for the maintainers and
 | `examples/rows.json` |  | Four complete rows, pretty-printed: a preprint with every kind, a forum post, a corrected screen verdict, and a document whose model annotation is a stand-in. |
 | `FORMAT.md` |  | This format description. |
 | `README.md` |  | The dataset card. |
-| `QUALITY.md` |  | How well the annotations agree with a model-made reference set. |
+| `QUALITY.md` |  | How well the annotations agree with model-made references: a reference set for techniques and models, and a judge evaluation of every model judgement. |
 | `CHANGELOG.md` |  | Changes between releases. |
 | `LICENSE` |  | CC0 1.0 for our annotations and documentation, with the third-party carve-outs. |
 | `release.json` |  | The manifest: every file with its size and sha256, row counts, the build, the policy. |
 | `SHA256SUMS` |  | sha256 of every file (sha256sum -c). |
 
-**Which file to open.** `views/documents.parquet` for browsing and filters on labels (the HF viewer's default);
-`data/corpus.parquet` for roles, quotes, provenance and everything else; `views/annotation_records.parquet` for
-coverage and override audits across kinds.
-
-### `views/documents.parquet`, column by column
-
-| Column | Type | Description |
-|---|---|---|
-| `doc_id` | string | Document id (as in data/corpus.parquet). |
-| `release_id` | string | Release this row comes from. |
-| `title` | string | Title. |
-| `abstract` | string | Abstract (NULL where this variant withholds abstracts; see release.abstract in the corpus). |
-| `authors` | list<string> | Author names in byline order. |
-| `published_date` | date | Publication date. |
-| `published_precision` | string | day, year_inferred (a 1 January placeholder for a year-only date) or unknown. |
-| `doc_type` | string | Document type from the providers. |
-| `canonical_url` | string | The anchor source's canonical URL. |
-| `stack_relevance` | string | Verdict of the Safety Stack question (relevant, borderline, irrelevant). |
-| `shallow_review_relevance` | string | Verdict of the Shallow Review question (relevant, borderline, irrelevant). |
-| `shallow_review_category` | string | Shallow Review top-level category the screen assigned. |
-| `doc_class` | string | Document type read from the text by the screen call. |
-| `text_usability` | string | Whether the converted text is usable as the document body (usable, degraded, unusable). |
-| `techniques_status` | string | Status of the technique annotation (ok, empty, ...; NULL if not run). |
-| `techniques` | list<string> | Every taxonomy slug the technique annotation lists for the document (any role, any strength >= 1). |
-| `techniques_used` | list<string> | Slugs with role `used` >= 2 (the document's own work uses the technique, at least a paragraph's worth). |
-| `techniques_evaluated` | list<string> | Slugs with role `evaluated` >= 2. |
-| `techniques_introduced` | list<string> | Slugs with role `introduced` >= 2 (the document proposes the technique). |
-| `models_status` | string | Status of the model annotation (ok, empty, ...). |
-| `models` | list<string> | Catalogue models with any role >= 1 (the document engages with the model at least in a sentence). |
-| `model_candidates` | list<string> | Every catalogue model the name matcher found, judged, including rows with every role 0: the list to use for "is model X named in this document" (QUALITY.md). |
-| `affiliation_orgs` | list<string> | Organisation slugs of the authors' affiliations (paper-type documents with full text only; NULL otherwise). |
-| `overridden` | list<string> | Kinds whose annotation was changed or supplied by an override (provenance mixed or override); [] for none. |
-| `text_role` | string | Kind of content the annotations read (full_text, html, post, page, xml). |
-| `text_bytes` | int64 | Size of the converted text in bytes. |
-| `quote_chars` | int32 | Characters of quoted document text in the row's annotations. |
-
-### `views/annotation_records.parquet`
-
-One row per document and annotation kind: `release_id`, `doc_id`, then the metadata struct of that kind's record
-flattened (`kind`, `version`, `status`, `error_class`, `config_id`, `decided_at`, `origin`, `annotator`,
-`provenance`, `override_ids`, `override_fields`; defined under "the metadata struct" below). A kind not run for a
-document has no row.
+**Which file to open.** `data/corpus.parquet` for everything: labels, roles, quotes, provenance. Flat tables (one row
+per document with label lists, or one row per document and kind) are one query away; see "Recipes".
 
 ## The row in one screen
 
@@ -129,15 +87,37 @@ WHERE t.slug = 'rlhf' AND t.roles.used >= 3;
 -- models with any role in one document
 SELECT m.node_id, m.roles FROM d, unnest(annotations.model_roles.payload.models) AS u(m)
 WHERE doc_id = 'ssepg4p9vmv5w' AND m.roles.mentioned > 0;
--- coverage: every kind and status (the long view does this in one pass)
-SELECT kind, status, count(*) FROM 'views/annotation_records.parquet' GROUP BY ALL ORDER BY ALL;
--- the same from the main file, for one kind
+-- coverage of one kind
 SELECT annotations.model_roles.metadata.status, count(*) FROM d GROUP BY ALL;
--- records changed or supplied by overrides
-SELECT kind, provenance, config_id, count(*) FROM 'views/annotation_records.parquet'
-WHERE provenance <> 'pipeline' GROUP BY ALL;
 -- look a paper up by arXiv id
 SELECT DISTINCT doc_id, title FROM d, unnest(identity.keys) AS u(k) WHERE k.kind = 'arxiv' AND k.value = '2310.10659';
+-- a flat table: one row per document with its technique and model lists
+SELECT doc_id, title, published_date,
+       list_transform(list_filter(annotations.safety_techniques.payload.techniques, t -> t.roles.used >= 2),
+                      t -> t.slug) AS techniques_used,
+       list_transform(list_filter(annotations.model_roles.payload.models, m -> m.roles.mentioned >= 1),
+                      m -> m.node_id) AS models
+FROM d;
+```
+
+Every kind's metadata as one long table (one row per document and kind; a kind not run for a document has no row),
+for coverage and override audits across kinds:
+
+```sql
+CREATE VIEW records AS
+SELECT doc_id, unnest(annotations.screen.metadata) FROM d WHERE annotations.screen IS NOT NULL
+UNION ALL SELECT doc_id, unnest(annotations.doc_class.metadata) FROM d WHERE annotations.doc_class IS NOT NULL
+UNION ALL SELECT doc_id, unnest(annotations.stack_relevance.metadata) FROM d WHERE annotations.stack_relevance IS NOT NULL
+UNION ALL SELECT doc_id, unnest(annotations.shallow_review_relevance.metadata) FROM d WHERE annotations.shallow_review_relevance IS NOT NULL
+UNION ALL SELECT doc_id, unnest(annotations.text_usability.metadata) FROM d WHERE annotations.text_usability IS NOT NULL
+UNION ALL SELECT doc_id, unnest(annotations.affiliation.metadata) FROM d WHERE annotations.affiliation IS NOT NULL
+UNION ALL SELECT doc_id, unnest(annotations.safety_techniques.metadata) FROM d WHERE annotations.safety_techniques IS NOT NULL
+UNION ALL SELECT doc_id, unnest(annotations.model_roles.metadata) FROM d WHERE annotations.model_roles IS NOT NULL
+UNION ALL SELECT doc_id, unnest(annotations.model_name_matches.metadata) FROM d WHERE annotations.model_name_matches IS NOT NULL;
+-- coverage: every kind and status
+SELECT kind, status, count(*) FROM records GROUP BY ALL ORDER BY ALL;
+-- records changed or supplied by overrides
+SELECT kind, provenance, config_id, count(*) FROM records WHERE provenance <> 'pipeline' GROUP BY ALL;
 ```
 
 polars:
@@ -162,12 +142,11 @@ rows = [(doc, t["slug"], t["roles"]["used"]) for doc, a in zip(d["doc_id"], st) 
 techniques = pd.DataFrame(rows, columns=["doc_id", "slug", "used"])
 ```
 
-Hugging Face `datasets`, from a local copy (the `documents` config is the flat view; `corpus` is the full row; the
-card shows the same from the hub):
+Hugging Face `datasets`, from a local copy (the card shows the same from the hub, where the corpus is the default
+configuration):
 
 ```python
 from datasets import load_dataset
-docs = load_dataset("parquet", data_files="views/documents.parquet", split="train")
 corpus = load_dataset("parquet", data_files="data/corpus.parquet", split="train")
 ```
 
@@ -197,12 +176,12 @@ corpus = load_dataset("parquet", data_files="data/corpus.parquet", split="train"
   digests are in `data/configs.parquet`.
 - **The release is a projection.** A few statuses differ from the pipeline's on purpose (the status remap, listed
   line by line in `remap.jsonl`).
-- **Stacking releases.** Every row of the corpus and of both views carries `release_id`; files of different releases
-  can be concatenated.
+- **Stacking releases.** Every row of the corpus carries `release_id`; corpus files of different releases can be
+  concatenated.
 
 ## Generated reference (search, don't read)
 
-Generated from `schema/mapping.yaml` and the data of release `2026-10-25`. Enumerated fields list the values that occur in this release; values defined but not used here are listed as reserved. Every value word has a sentence in [VOCAB.md](VOCAB.md).
+Generated from `schema/mapping.yaml` and the data of release `2026-10-26`. Enumerated fields list the values that occur in this release; values defined but not used here are listed as reserved. Every value word has a sentence in [VOCAB.md](VOCAB.md).
 
 ### Top-level columns
 

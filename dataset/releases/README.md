@@ -7,3 +7,5 @@ describe the files on Hugging Face; the copies of FORMAT.md, QUALITY.md, CHANGEL
 carry an added header line and so differ from them.
 
 - [2026-10-25](2026-10-25/): the first release.
+- [2026-10-26](2026-10-26/): the same documents and annotations; the two flat views dropped and a judge
+  evaluation added to QUALITY.md (see [the changelog](../CHANGELOG.md)).

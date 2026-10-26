@@ -1,4 +1,4 @@
-> Copied from release 2026-10-25 of the dataset, where it is generated; paths refer to that release's files. For loading, the [dataset card](https://huggingface.co/datasets/thesafetystack/the-safety-stack) is canonical.
+> Copied from release 2026-10-26 of the dataset, where it is generated; paths refer to that release's files. For loading, the [dataset card](https://huggingface.co/datasets/thesafetystack/the-safety-stack) is canonical.
 
 # The Safety Stack: vocabulary
 

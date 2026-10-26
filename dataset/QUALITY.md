@@ -1,14 +1,18 @@
-> Copied from release 2026-10-25 of the dataset, where it is generated; paths refer to that release's files. For loading, the [dataset card](https://huggingface.co/datasets/thesafetystack/the-safety-stack) is canonical.
+> Copied from release 2026-10-26 of the dataset, where it is generated; paths refer to that release's files. For loading, the [dataset card](https://huggingface.co/datasets/thesafetystack/the-safety-stack) is canonical.
 
-# Annotation quality, first version (agreement with a model-made reference set)
+# Annotation quality (agreement with model-made references)
 
-This page reports how well the two model-made annotations in this release (safety techniques and AI models) agree
-with a reference set. **The reference set is itself model-made.** No human has adjudicated it. Treat the numbers
-as agreement with careful model labellers, not as accuracy against ground truth. An independent, adjudicated
-reference set is planned and these figures will be redone on it.
+This page has two evaluations, and both compare the annotations with labels that language models made; no human has
+adjudicated either. Treat the numbers as agreement with careful model labellers, not as accuracy against ground
+truth. An independent, adjudicated reference set is planned and these figures will be redone on it.
 
-The numbers measure the main annotator, gpt-6-luna. They do not cover the 21 stand-in annotations (see Limits), the
-relevance screen or the affiliations.
+- **A reference set for techniques and models** (the sections up to "Next"): how well the two main annotations
+  (safety techniques and AI models) agree with a model-made reference set of 100 documents.
+- **A judge evaluation of every model judgement** (the last section): three language-model judges label samples
+  of the triage, the relevance screen, the affiliations, the models and the techniques.
+
+Both measure the main annotator, gpt-6-luna. Neither covers the 21 stand-in annotations (see Limits). The relevance
+screen and the affiliations are covered by the judge evaluation only.
 
 ## What was measured
 - **Data:** the shipped annotations of this release's build, on 100 documents. The documents were sampled from the
@@ -98,9 +102,85 @@ An AI assistant spot-checked 10 classifications against the texts (by searching 
   `annotator` and point to the override row in `config_id`. They were not evaluated. For the 10 model stand-ins the
   name matcher's record has no hits (`status = failed_permanent`, `error_class = producer_call_failed`): the matcher
   output is stored only with a successful production call.
-- **Not measured:** the relevance screen (which documents are in; its error rate in both directions is unknown) and
-  the affiliation extraction. A check is planned.
+- **Not measured by the reference set:** the relevance screen (which documents are in) and the affiliation
+  extraction; the judge evaluation below covers both.
 
 ## Next
 An independent reference set (different sample, different labelling, with adjudication) is planned. This page will be
 updated with it.
+
+## Judge evaluation of every model judgement (judge-2026-10-25j)
+
+A second evaluation covers every judgement the pipeline asks a language model to make: the triage that decides which
+records get their full text fetched, the relevance screen that decides which documents are in this dataset, the
+authors' affiliations, the models and the techniques. For each, a sample of build `ws1qpn8myzxah` (this release's
+build) was labelled blind by three language-model judges, Claude Opus 5.5, GPT Sol 6.1 and Claude Sonnet 5.5, with the
+production prompt's definitions as their guide and the whole document to read (production reads a window of long
+documents in some judgements). The stand-in annotations are not in the samples. The samples, the judges' labels, the
+method and the full scores are in the pipeline repository under `evals/judge-2026-10-25j/`; every number below is
+generated from its `scores.json` files.
+
+Production (gpt-6-luna) is scored against two references built from the judges: the **majority** (a label at least 2
+of the 3 judges give; the headline) and the **consensus** of Opus and Sol (a label both give).
+
+**Read the numbers with these caveats.**
+
+- The judges are language models, not human annotators. Agreement with them is agreement with careful model labellers,
+  not accuracy.
+- The judges disagree with each other (second table). Production's agreement with them cannot be measured more finely
+  than they agree among themselves: where a judge pair agrees no better than production agrees with each judge, these
+  numbers do not separate production's errors from the judges'.
+- Opus and Sonnet agree with each other far more than either agrees with Sol (technique presence F1 0.83 between Opus
+  and Sonnet, 0.73 Opus-Sol, 0.65 Sol-Sonnet; screen S verdict κ 0.88 vs 0.53 and 0.55), so the majority leans towards
+  them: where the two agree, Sol is outvoted.
+- The consensus column keeps only what Opus and Sol agree on and drops the items (or labels) they disagree on. The
+  hard cases leave with them, so the consensus numbers are optimistic.
+
+| Judgement | Sample | What is judged | Metric | vs majority (2 of 3 judges) | vs consensus (Opus and Sol) |
+|---|---|---|---|---|---|
+| Triage | 200 records, weighted (a, b) | the triage verdict (relevant, borderline, not relevant) from a record's title and metadata; relevant or borderline = fetch the full text | records scored | 197 of 200 | 157 of 200 |
+|  |  |  | fetch precision | 0.65 [0.53, 0.76] | 0.75 [0.62, 0.87] |
+|  |  |  | fetch recall | 0.90 [0.80, 0.97] | 1.00 [1.00, 1.00] |
+|  |  |  | fetch F1 | 0.76 [0.66, 0.84] | 0.86 [0.76, 0.93] |
+|  |  |  | missed relevant: estimated documents among the 135,315 eligible records triage marked not relevant | 0 [0, 0] | 0 [0, 0] |
+|  |  |  | missed relevant or borderline | 1,022 [252, 2,074] | 0 [0, 0] |
+| Screen | 100 documents | the relevance screen that decides which documents are in the dataset: S (in the Safety Stack's scope), R (in the Shallow Review's), the overall verdict (relevant, borderline, irrelevant; this dataset ships `relevant`), and whether the converted text is usable | keep F1 (relevant or borderline vs irrelevant) | 0.92 (n 100) | 0.97 (n 89) |
+|  |  |  | S verdict | agreement 0.78, κ 0.63 (n 100) | agreement 0.97, κ 0.94 (n 71) |
+|  |  |  | R verdict | agreement 0.80, κ 0.66 (n 95) | agreement 0.92, κ 0.84 (n 71) |
+|  |  |  | overall verdict | agreement 0.76, κ 0.60 (n 98) | agreement 0.89, κ 0.80 (n 76) |
+|  |  |  | usability verdict | agreement 0.66, κ 0.22 (n 100) | agreement 0.70, κ 0.20 (n 71) |
+| Affiliation | 100 documents | (author, affiliation as written) pairs; paper-type documents with full text | F1 [95 % CI]; precision, recall | F1 0.83 [0.70, 0.95]; P 0.82, R 0.84 (188 reference labels) | F1 0.84 [0.71, 0.95]; P 0.79, R 0.90 (169 reference labels) |
+| Models | 100 documents | (model, role) pairs at strength >= 2 of 4 over the matcher's candidates | F1 [95 % CI]; precision, recall | F1 0.88 [0.84, 0.91]; P 0.90, R 0.87 (816 reference labels) | F1 0.88 [0.83, 0.91]; P 0.86, R 0.90 (753 reference labels) |
+| Techniques | 100 documents | technique presence (taxonomy slug, any role) | F1 [95 % CI]; precision, recall | F1 0.76 [0.72, 0.79]; P 0.79, R 0.72 (354 reference labels) | F1 0.77 [0.73, 0.80]; P 0.76, R 0.77 (317 reference labels) |
+
+Agreement between the judges, and of production with each judge (same metrics):
+
+| Judgement, metric | Opus-Sol | Opus-Sonnet | Sol-Sonnet | production-Opus | production-Sol | production-Sonnet |
+|---|---|---|---|---|---|---|
+| Triage verdict, agreement (weighted, triage set (a)) | 0.92 | 0.97 | 0.91 | 0.94 | 0.93 | 0.93 |
+| Screen keep F1 | 0.91 | 0.93 | 0.90 | 0.94 | 0.91 | 0.89 |
+| Screen S verdict, κ | 0.53 | 0.88 | 0.55 | 0.63 | 0.72 | 0.62 |
+| Screen R verdict, κ | 0.54 | 0.75 | 0.50 | 0.62 | 0.62 | 0.55 |
+| Screen overall verdict, κ | 0.62 | 0.78 | 0.56 | 0.59 | 0.71 | 0.52 |
+| Screen usability verdict, κ | 0.42 | 0.52 | 0.66 | 0.09 | 0.21 | 0.21 |
+| Affiliation F1 | 0.91 | 0.99 | 0.91 | 0.83 | 0.88 | 0.83 |
+| Models (model, role >= 2) F1 | 0.89 | 0.89 | 0.86 | 0.88 | 0.85 | 0.88 |
+| Techniques presence F1 | 0.73 | 0.83 | 0.65 | 0.73 | 0.68 | 0.74 |
+
+(a) Triage: 200 records of the 149,390 eligible, stratified by production's verdict and, for `not_relevant`, its
+confidence; production's positives and its low-confidence `not_relevant` records are oversampled. The numbers are
+population estimates with design weights and 95 % stratified bootstrap intervals; a record a reference has no label
+for is re-weighted within its stratum. Where no miss was observed the bootstrap interval has zero width; the Wilson
+interval per `not_relevant` stratum (missed relevant or borderline, majority) is the honest range there: confidence up
+to 0.94: 4 of 69 items missed, estimate 1,022, Wilson 95 % interval [401, 2,465]; confidence 0.95-0.98: 0 of 40 items
+missed, estimate 0, Wilson 95 % interval [0, 4,364]; confidence 0.99: 0 of 30 items missed, estimate 0, Wilson 95 %
+interval [0, 7,705]. Triage decides whether a record's text is fetched; a missed record is, unless its text came
+another way, a document this dataset does not contain.
+
+(b) The proportional triage sample (100 records, self-weighting) has only 9 records production would fetch, too few to
+estimate recall; against the majority its fetch decision agrees on 0.99 of records (κ 0.94).
+
+Limits of this evaluation, besides the caveats above: 100 documents per judgement (200 records for triage);
+proportional allocation leaves rare document types (system cards, evaluation reports, framework documents) without
+items; the judges read the whole text where production read a window, which matters most for the usability verdict
+(production judged an excerpt); intervals reflect document sampling only, not judge error.
