@@ -5,7 +5,7 @@ version: "1.0.0"
 authors:
   - family-names: "Gavenčiak"
     given-names: "Tomáš"
-repository-code: "https://github.com/thesafetystack/data"
+repository-code: "https://github.com/thesafetystack/the-safety-stack"
 license: CC0-1.0
 preferred-citation:
   type: generic
@@ -15,4 +15,4 @@ preferred-citation:
     - family-names: "Gavenčiak"
       given-names: "Tomáš"
   year: 2026
-  repository-code: "https://github.com/thesafetystack/data"
+  repository-code: "https://github.com/thesafetystack/the-safety-stack"

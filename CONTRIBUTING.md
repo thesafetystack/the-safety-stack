@@ -1,7 +1,7 @@
 # Contributing
 
 Reports are the main way to help: they go in as issues, through the forms on
-[the new-issue page](https://github.com/thesafetystack/data/issues/new/choose). Takedowns and other private requests
+[the new-issue page](https://github.com/thesafetystack/the-safety-stack/issues/new/choose). Takedowns and other private requests
 go to [info@thesafetystack.ai](mailto:info@thesafetystack.ai).
 
 | You want to | Form | What we need |

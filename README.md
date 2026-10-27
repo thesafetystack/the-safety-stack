@@ -22,11 +22,12 @@ The dataset is one deliverable of the project: public documents on technical AI 
 LessWrong and Alignment Forum posts, lab blog posts, system and model cards), each annotated by a language model with
 which techniques of the techniques taxonomy it engages with and in what role (uses, evaluates, proposes, critiques,
 reports a lab using it), which AI models of the models catalogue it names and in what role, its document class, and,
-where a full text was available, its authors' affiliations. The taxonomies and per-field provenance ship with the
+for papers with a full text (PDF, arXiv HTML or publisher XML), its authors' affiliations. The taxonomies and per-field provenance ship with the
 data.
 
 It is not the catalogue: there are no per-technique summaries of evidence and no deployment status yet. It is not a
-census: the relevance screen misses relevant documents and lets some irrelevant ones in. The annotations are
+census: the searches, the triage and the relevance screen each miss relevant documents, and the screen lets some
+irrelevant ones in. The annotations are
 model-made and not systematically reviewed by people; they record what a document says, not whether it is true. The
 overrides applied to a release (sources added by hand, screen verdicts set by the maintainers, merged duplicate
 records, fixed bibliographic fields, Claude stand-in annotations where the main model refused) ship with it. Most of
@@ -38,7 +39,7 @@ lab or a technique.
 
 | Where | What |
 |---|---|
-| This repository (`thesafetystack/data`) | the taxonomies (exact files of every version, schemas, changelogs); the taxonomy validator ([tools/](tools/)); issue forms for corrections, takedowns and suggestions |
+| This repository (`thesafetystack/the-safety-stack` on GitHub) | the taxonomies (exact files of every version, schemas, changelogs); the taxonomy validator ([tools/](tools/)); issue forms for corrections, takedowns and suggestions |
 | [Hugging Face, `thesafetystack/the-safety-stack`](https://huggingface.co/datasets/thesafetystack/the-safety-stack) | the dataset: the data file, the dataset card with the annotation quality figures, the format and vocabulary documentation, the taxonomy files used, the overrides applied, the manifest; one tagged revision per release |
 | [thesafetystack.ai](https://thesafetystack.ai) | the project site |
 
@@ -50,18 +51,25 @@ full texts exists for the maintainers and is not distributed.
 ## The dataset
 
 The [dataset card](https://huggingface.co/datasets/thesafetystack/the-safety-stack) is the place to start; it
-describes the files and how to load them.
+describes the files and how to load them. The data is one parquet file, one row per document with every annotation
+nested in it, which DuckDB reads straight from the hub (while the dataset is private, with a Hugging Face token that
+has read access to it in `HF_TOKEN`):
 
 ```python
-from datasets import load_dataset
-docs = load_dataset("thesafetystack/the-safety-stack", split="train")   # one row per document, every annotation
-
-def used(row, slug):   # the document's own work uses the technique, at least a paragraph's worth
-    st = row["annotations"]["safety_techniques"]
-    return any(t["slug"] == slug and t["roles"]["used"] >= 2 for t in (st and st["payload"]["techniques"]) or [])
-
-rlhf = docs.filter(lambda r: used(r, "rlhf"))
+import duckdb
+con = duckdb.connect()
+con.execute("CREATE SECRET hf (TYPE huggingface, PROVIDER credential_chain)")  # reads HF_TOKEN; while private
+con.execute("CREATE VIEW d AS SELECT * FROM 'hf://datasets/thesafetystack/the-safety-stack/data/corpus.parquet'")
+# documents whose own work uses RLHF (role strength 2 or more of 4: at least "minor but real")
+con.sql("""
+    SELECT doc_id, title, published_date, t.roles.used AS strength
+    FROM d, unnest(annotations.safety_techniques.payload.techniques) AS u(t)
+    WHERE t.slug = 'rlhf' AND t.roles.used >= 2
+    ORDER BY published_date DESC
+""").show()
 ```
+
+The card has the same in polars and Hugging Face `datasets`.
 
 The current release, its documentation and its figures are on Hugging Face, not here:
 
@@ -74,8 +82,7 @@ The current release, its documentation and its figures are on Hugging Face, not 
 
 ### What is included
 
-*Draft, to be edited.* A document is included when it is publicly available and a language model screening its text
-(for some documents only the title and abstract) judged it relevant to at least one of two questions:
+*Draft, to be edited.* A document is included when it is publicly available and a language model screening its text judged it relevant to at least one of two questions:
 
 - **The Stack question:** does the document carry something about a concrete technique for making a general-purpose
   AI system or agent safer, more honest, more controllable, more transparent or harder to misuse, or for measuring
@@ -137,7 +144,7 @@ version, not with each release. There is no DOI per release; a Zenodo record for
 |---|---|
 | Taxonomies, schemas and documentation in this repository (everything outside `tools/`) | [CC0 1.0](LICENSE) |
 | What we made in the dataset: the annotations, the identity and provenance structure, the release metadata, the prompts and documentation | CC0 1.0 |
-| Bibliographic records in the dataset (titles, authors, dates, identifiers) | as their providers supply them, under those providers' terms |
+| Bibliographic records in the dataset (titles, authors, dates, identifiers, abstracts) | as their providers supply them, under those providers' terms |
 | Quoted document text in the dataset (evidence quotes) | its owners'; not covered by CC0 |
 | Code in `tools/` | [MIT](tools/LICENSE) |
 
@@ -151,7 +158,7 @@ Before release 1 this repository stated CC BY 4.0; the commits tagged `technique
 - **Takedowns and other private requests:** email [info@thesafetystack.ai](mailto:info@thesafetystack.ai), for
   example to have a document, or your name, removed.
 - **Public reports:** use the issue forms on this repository
-  ([new issue](https://github.com/thesafetystack/data/issues/new/choose)):
+  ([new issue](https://github.com/thesafetystack/the-safety-stack/issues/new/choose)):
   - **Correction**: an annotation or a metadata field is wrong.
   - **Missing work**: a document that fits the criterion above is not in the dataset.
   - **Taxonomy suggestion**: a missing technique or model, a wrong definition, a merge or split.
