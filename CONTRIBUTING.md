@@ -14,9 +14,8 @@ go to [info@thesafetystack.ai](mailto:info@thesafetystack.ai).
 What happens next:
 
 - We acknowledge every report. We do not promise a date for resolving it.
-- An accepted correction, takedown or addition is applied in the next dataset release, as a row in an override file
-  that ships with that release on Hugging Face (see [dataset/overrides/](dataset/overrides/)); the issue is closed
-  with a link to it.
+- An accepted correction, takedown or addition is applied in the next dataset release, as an override row that
+  ships with that release on Hugging Face (in `config/overrides.jsonl`); the issue is closed with a link to it.
 - A taxonomy change goes into a new taxonomy version (see [taxonomies/README.md](taxonomies/README.md#versioning));
   released taxonomy files are never edited, so pull requests that edit them cannot be merged as they are. Pull
   requests to the documentation are welcome.

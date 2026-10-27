@@ -16,36 +16,36 @@ on the Shallow Review of Technical AI Safety and is meant to supply data for its
   Jacob Livingston Slosser (Pioneer Centre for AI, University of Copenhagen; CheatSheet; Juriscription), Dan Elton
   (Metascience Observatory), Gavin Leech (advisor; Arb Research).
 
-### This release
+### The dataset in brief
 
-The dataset is one deliverable of the project. Release 2026-10-26 has 39,269 public documents on
-technical AI safety (preprints and papers, LessWrong and Alignment Forum posts, lab blog posts, system and model
-cards), each annotated by a language model with which of the 234 techniques of the techniques taxonomy it engages with
-and in what role (uses, evaluates, proposes, critiques, reports a lab using it), which of the 1,877 AI models of the
-models catalogue it names and in what role, its document class, and, where a full text was available, its authors'
-affiliations. The taxonomies, the prompts and per-field provenance ship with the data.
+The dataset is one deliverable of the project: public documents on technical AI safety (preprints and papers,
+LessWrong and Alignment Forum posts, lab blog posts, system and model cards), each annotated by a language model with
+which techniques of the techniques taxonomy it engages with and in what role (uses, evaluates, proposes, critiques,
+reports a lab using it), which AI models of the models catalogue it names and in what role, its document class, and,
+where a full text was available, its authors' affiliations. The taxonomies and per-field provenance ship with the
+data.
 
 It is not the catalogue: there are no per-technique summaries of evidence and no deployment status yet. It is not a
 census: the relevance screen misses relevant documents and lets some irrelevant ones in. The annotations are
-model-made and not systematically reviewed by people; they record what a document says, not whether it is true. Of
-the 269 override rows applied to this release, 130 add a source by hand, 87 set a screen or relevance verdict, 21 are
-Claude stand-in annotations, 19 merge two records of one work and 12 fix a bibliographic field. Most of the
-maintainers' rows come from lists an AI assistant prepared and the maintainers approved as a whole, not row by row;
-each row's `method` says how it was prepared. Inclusion is not endorsement, and nothing here is a verdict on a lab or
-a technique.
+model-made and not systematically reviewed by people; they record what a document says, not whether it is true. The
+overrides applied to a release (sources added by hand, screen verdicts set by the maintainers, merged duplicate
+records, fixed bibliographic fields, Claude stand-in annotations where the main model refused) ship with it. Most of
+the maintainers' overrides come from lists an AI assistant prepared and the maintainers approved as a whole, not row
+by row; each row's `method` says how it was prepared. Inclusion is not endorsement, and nothing here is a verdict on a
+lab or a technique.
 
 ## What is where
 
 | Where | What |
 |---|---|
-| This repository (`thesafetystack/data`) | the taxonomies (exact files of every version, schemas, changelogs); copies of each release's documentation ([dataset/](dataset/)) and manifest ([dataset/releases/](dataset/releases/)); the taxonomy validator ([tools/](tools/)); issue forms for corrections, takedowns and suggestions |
-| [Hugging Face, `thesafetystack/the-safety-stack`](https://huggingface.co/datasets/thesafetystack/the-safety-stack) | the dataset: data files, dataset card, the taxonomy files and prompts used, the override files applied, the manifest; one revision per release |
+| This repository (`thesafetystack/data`) | the taxonomies (exact files of every version, schemas, changelogs); the taxonomy validator ([tools/](tools/)); issue forms for corrections, takedowns and suggestions |
+| [Hugging Face, `thesafetystack/the-safety-stack`](https://huggingface.co/datasets/thesafetystack/the-safety-stack) | the dataset: the data file, the dataset card with the annotation quality figures, the format and vocabulary documentation, the taxonomy files used, the overrides applied, the manifest; one tagged revision per release |
 | [thesafetystack.ai](https://thesafetystack.ai) | the project site |
 
 Neither this repository nor the Hugging Face dataset is public yet.
 
-The published dataset contains no document texts and, in this release, no abstracts. An internal variant with
-abstracts and full texts exists for the maintainers and is not distributed.
+The published dataset contains no document texts and, for now, no abstracts. An internal variant with abstracts and
+full texts exists for the maintainers and is not distributed.
 
 ## The dataset
 
@@ -63,19 +63,14 @@ def used(row, slug):   # the document's own work uses the technique, at least a 
 rlhf = docs.filter(lambda r: used(r, "rlhf"))
 ```
 
-- **Format:** [dataset/FORMAT.md](dataset/FORMAT.md) (files, columns, ids, recipes) and
-  [dataset/VOCAB.md](dataset/VOCAB.md) (every value word with a sentence).
-- **Quality:** against a model-made reference set of 100 documents, with no human adjudication yet, the technique
-  annotation finds about 7 in 10 reference techniques (presence F1 0.78) and the model annotation reaches presence
-  F1 0.92. The 21 stand-in annotations (17 documents) were not evaluated. Details and limits:
-  [dataset/QUALITY.md](dataset/QUALITY.md).
-- **Judge evaluation:** Three language-model judges (Claude Opus 5.5, GPT Sol 6.1, Claude Sonnet 5.5) labelled samples
-  of every model judgement blind. Against their majority: techniques presence F1 0.76, models (model, role) F1 0.88,
-  affiliations F1 0.83, screen keep F1 0.92; among the 135,315 eligible records triage marked not relevant, no sampled
-  record is relevant by the majority and an estimated 1,022 [252, 2,074] are relevant or borderline. The judges are
-  models, not people, and disagree among themselves (techniques presence F1 0.73 between Opus and Sol). Details:
-  [dataset/QUALITY.md](dataset/QUALITY.md).
-- **Changes between releases:** [dataset/CHANGELOG.md](dataset/CHANGELOG.md).
+The current release, its documentation and its figures are on Hugging Face, not here:
+
+- **Format and vocabulary:** `FORMAT.md` (files, columns, ids, recipes) and `VOCABULARY.md` (every value word with a
+  sentence) in the [dataset's files](https://huggingface.co/datasets/thesafetystack/the-safety-stack).
+- **Quality:** the card's "Annotation quality" section: how far the annotations agree with three language-model
+  judges, with intervals and caveats.
+- **Releases:** each release is a revision of the Hugging Face dataset tagged `release-<date>`; its `release.json`
+  names the format and the taxonomy versions it uses.
 
 ### What is included
 
@@ -102,10 +97,9 @@ safety component, and general machine learning.
 
 Candidates come from keyword and author searches of scholarly indexes (OpenAlex, arXiv, Semantic Scholar), the
 LessWrong and AI Alignment Forum forums, the blogs of frontier labs and AI-safety organisations, labs' model and system
-card pages, a few newsletters, and sources added by hand. The paper searches start in 2015; the 593 earlier
-documents are 430 forum posts (LessWrong, Alignment Forum), 115 posts from organisations' blog archives, 44 works
-added by hand and 4 others. The screen is a model judgement with known errors in both directions; see
-[dataset/QUALITY.md](dataset/QUALITY.md). If a work is missing or should not be here, see
+card pages, a few newsletters, and sources added by hand. The paper searches start in 2015; earlier documents come
+mostly from the forums, organisations' blog archives and works added by hand. The screen is a model judgement with
+known errors in both directions; see the card's "Annotation quality" section. If a work is missing or should not be here, see
 [Corrections](#corrections-takedowns-and-missing-works).
 
 ## Taxonomies
@@ -131,11 +125,11 @@ The 0.x files (techniques 0.9.1, models 0.9.0) stay for reference and carry no s
 
 ## Releases
 
-Dataset releases are dated (`YYYY-MM-DD`) and planned weekly. Each release's manifest, `release.json`, records the
-build, row counts, the taxonomy versions its annotations use (each with the sha256 of its file, the same file as in
-this repository), the override files it applies, and every file with its size and sha256. A copy of each manifest and
-its `SHA256SUMS` is kept in [dataset/releases/](dataset/releases/), so it stays clear what each release contained.
-There is no DOI per release; a Zenodo record for the dataset series is planned.
+Dataset releases are dated (`YYYY-MM-DD`) and planned weekly. Each is a revision of the Hugging Face dataset tagged
+`release-<date>`, with its documentation and its manifest, `release.json`, which records the build, row counts, the
+taxonomy versions its annotations use (each with the sha256 of its file, the same file as in this repository), and
+every file with its size and sha256. This repository changes only when the release format or a taxonomy gets a new
+version, not with each release. There is no DOI per release; a Zenodo record for the dataset series is planned.
 
 ## Licences
 
@@ -164,13 +158,13 @@ Before release 1 this repository stated CC BY 4.0; the commits tagged `technique
   - **Takedown**, if you are fine asking in public.
 
 We acknowledge every report; we do not promise a date for resolving it. Accepted corrections and takedowns are
-applied in the next release as override files, which ship with the release on Hugging Face
-([dataset/overrides/](dataset/overrides/)). See
+applied in the next release as overrides, which ship with the release on Hugging Face (`config/overrides.jsonl`). See
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Citation
 
-For the dataset, as on the card: The Safety Stack dataset, release 2026-10-26,
-https://huggingface.co/datasets/thesafetystack/the-safety-stack.
+For the dataset: The Safety Stack dataset, release `<date>`, https://huggingface.co/datasets/thesafetystack/the-safety-stack (the release you used: its
+`release_id`, also the tag `release-<date>`; the card gives the exact line).
 
-For the taxonomies: [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+For the taxonomies: [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository"; version 1.0.0 of both
+taxonomies).
