@@ -3,18 +3,24 @@
 - `techniques/`: AI-safety techniques (intervention, monitoring, assessment) and group nodes.
 - `models/`: AI model families, groups and models, with their makers.
 - `orgs/`: organisations (affiliations, model makers); a 0.x draft.
+- `risks/`: risks, the types of harmful event or state documents engage, in families; a 0.x draft, not yet used in
+  the dataset.
+- `risk-generators/`: the conditions, processes and pressures that produce those risks or weaken the defences
+  against them, linked to the risks; a 0.x draft, not yet used in the dataset.
 - Layout: `<name>/<name>-<major>.<minor>.<patch>.yaml` per version, `<name>/CHANGELOG.md`, `<name>/README.md`.
 - Schemas: `<name>/schemas/<name>-<n>.schema.json`. A file in the catalogue envelope (below) names its schema in
   `meta.schema`; for an older file the validator takes `<n>` from the file name's major version.
 
 ## The catalogue envelope
 
-From techniques 1.1.0, models 1.1.0 and orgs 0.2.0 on, every file has the same structure:
+From techniques 1.1.0, models 1.1.0 and orgs 0.2.0 on (and in risks 0.2.0 and risk-generators 0.3.0), every file
+has the same structure:
 
 - `version`: the content version (also in the file name).
-- `meta`: `schema` (the JSON Schema it follows: `techniques-2`, `models-2`, `orgs-0`), `status` (`draft` |
-  `released`), `updated`, `description`, `sources`, `references` (for each other vocabulary this one refers to, the
-  version its ids resolve in: models 1.1.0 has `orgs: 0.2.0`), plus the vocabulary's own keys.
+- `meta`: `schema` (the JSON Schema it follows: `techniques-2`, `models-2`, `orgs-0`, `risks-0`,
+  `risk-generators-0`), `status` (`draft` | `released`), `updated`, `description`, `sources`, `references` (for each
+  other vocabulary this one refers to, the version its ids resolve in: models 1.1.0 has `orgs: 0.2.0`,
+  risk-generators 0.3.0 has `risks: 0.2.0`), plus the vocabulary's own keys.
 - `entries`: one list. Every entry has `id` and `name`, and where they apply `parent` (another entry's id),
   `aliases` (strings, or `{text, kind}`), `note` and `external_ids` (`{<scheme>: [ids]}`, e.g. `ror`); then the
   vocabulary's own fields.
@@ -40,5 +46,5 @@ ids, parents and children that resolve, and every reference to another vocabular
   that version. A dataset release records which version of each taxonomy it used, with the file's sha256.
 - A change of structure alone (a new schema) is a minor version: techniques 1.1.0 is 1.0.0's content in the
   envelope, and the annotation prompts built from either are the same text.
-- 0.x versions (techniques 0.9.1, models 0.9.0, orgs 0.2.0) carry none of these guarantees; the 0.9 files stay for
-  reference.
+- 0.x versions (techniques 0.9.1, models 0.9.0, orgs 0.2.0, risks 0.2.0, risk-generators 0.3.0) carry none of these
+  guarantees; the 0.9 files stay for reference.
