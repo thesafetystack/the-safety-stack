@@ -1,0 +1,909 @@
+# Risk taxonomy 0.2.0 (draft): the risk taxonomy draft v0.2 in the catalogue envelope
+# (schemas/risks-0.schema.json), converted mechanically; see CHANGELOG.md.
+# 8 families, 39 risks
+version: '0.2.0'
+meta:
+  schema: risks-0
+  updated: '2026-10-29'
+  status: draft
+  description: 'Risks: the types of harmful event or state that AI-safety documents engage (what goes wrong), in 8 families
+    (node family) and 39 leaves (node risk, parent its family). A label is a leaf id; a family id alone is the fallback
+    when the document engages the family generically and no leaf fits (never beside a leaf of the same family). Each label
+    carries a relation (meta.relations), a passing flag and an evidence span; facets are optional tags on 7 leaves, not
+    a third level. The annotation rules are meta.rules. A draft (0.x): ids, definitions and structure may still change;
+    see README.md and OPEN-QUESTIONS.md.'
+  sources:
+    draft: 'risk taxonomy draft v0.2 (2026-10-29): v0.1.1 revised after three model annotators classified 100 documents
+      (README.md, Pilot); converted mechanically (CHANGELOG.md)'
+  rules:
+    substantive: Label the risks the document engages - its topic, the risk its technique, evaluation, policy or incident
+      is about, or a motivating risk the authors state and connect to their work. A risk named once in a list (overview,
+      related work, prohibited-use list) is a passing label (passing=true); views exclude passing labels by default.
+    stimuli: Harmful prompts, attack examples or scenario text used as test inputs or illustrations are not risks the document
+      engages, unless the document is about that risk.
+    capability_limits: A capability limitation framed only as a research goal (agents fail to generalise, models are not
+      accurate enough) is not a risk.
+    family_fallback: Use a family id alone only when the document engages the family generically (e.g. "the alignment problem",
+      "misuse", "security of AI systems") and no leaf fits; do not add the family id when a leaf of that family is given.
+    outcome_and_mechanism: ma.loss-of-control is labelled whenever loss of control, takeover, human disempowerment by AI
+      or existential catastrophe from misaligned AI is named - together with any mechanism leaves, not instead of them.
+    relation_mitigates: mitigates requires the document itself to propose, apply or test a defence; naming a risk as motivation
+      for unrelated work is discusses.
+  relations:
+    mitigates: proposes, applies or evaluates a defence, safeguard, training method or policy meant to reduce the risk
+    measures: builds or runs an evaluation, benchmark, detector, red-team or audit that measures the risk (without proposing
+      the fix)
+    demonstrates: shows the risk occurring (an attack, a model organism, an incident, an empirical finding that a model
+      does it)
+    discusses: argues about, analyses, surveys, forecasts or sets policy about the risk, without the three above
+  fields:
+    exclude: neighbouring cases that are not this leaf, with the leaf they belong to
+    facets: optional multi-valued tags, only where a leaf hides distinct threat models
+    contested: true where the boundary is expected to have low agreement; `vs` is the neighbour's id
+    attrs: 'sev: severity ceiling; hor: horizon; ben: whom a safeguard against the risk protects (codes in meta.attrs)'
+    mit: 'MIT AI Risk Repository v4 subdomain codes: crosswalk candidates, partial, not equivalences'
+    siblings: the corresponding category of other risk classifications (keys in meta.crosswalk_keys)
+    status: the entry's own status (draft | provisional | final), distinct from meta.status
+  attrs:
+    sev:
+      C: catastrophic
+      S: societal
+      I: individual
+    hor:
+      N: now
+      F: future systems
+      B: both
+    ben:
+      dev: the developer
+      usr: the user
+      3rd: third parties
+      soc: society
+      hum: humanity
+      ai: AI systems
+  crosswalk_keys:
+    mit: MIT AI Risk Repository v4 (Slattery et al.), subdomain codes
+    hendrycks: Hendrycks, Mazeika & Woodside 2023, An Overview of Catastrophic AI Risks, arXiv:2306.12001
+    shallow_review: Shallow Review of Technical AI Safety 2025, orthodox problems
+    isr2025: International AI Safety Report 2025, arXiv:2501.17805
+    isr2026: International AI Safety Report 2026
+    gdm2025: Shah et al. 2025, An Approach to Technical AGI Safety and Security, arXiv:2504.01849
+    tasra: 'Critch & Russell 2023, TASRA: a Taxonomy and Analysis of Societal-Scale Risks from AI, arXiv:2306.06924'
+    hammond2025: Hammond et al. 2025, Multi-Agent Risks from Advanced AI, arXiv:2502.14143
+    gradual_disempowerment: Kulveit et al. 2025, Gradual Disempowerment, arXiv:2501.16946
+    openai_pf2: OpenAI Preparedness Framework v2 (2025)
+    gdm_fsf: Google DeepMind Frontier Safety Framework v3.1
+    anthropic_rsp: Anthropic Responsible Scaling Policy v3.4
+    astra_draft: an unpublished draft taxonomy from the design stage (its group B3)
+entries:
+- id: ma
+  node: family
+  name: Misalignment and loss of control
+  status: draft
+  definition: The AI system itself acts against the intent of its developers or of humanity (the AI is the adversary or
+    the failing optimiser).
+- id: ma.reward-hacking
+  node: risk
+  name: Reward hacking, specification gaming and outer misalignment
+  parent: ma
+  status: draft
+  definition: The objective is wrong or the system exploits it - misspecified objectives and values that are hard to specify
+    (outer misalignment), proxy gaming, reward tampering, reward-model over-optimisation, test special-casing.
+  exclude: Flattering the user to get approval is ma.sycophancy; strategic underperformance on evaluations is ma.eval-gaming.
+  attrs:
+    sev: C
+    hor: B
+    ben:
+    - hum
+    - usr
+  mit:
+  - '7.1'
+  - '7.2'
+  siblings:
+    hendrycks: Proxy gaming
+    shallow_review: Value is fragile and hard to specify
+- id: ma.goal-misgen
+  node: risk
+  name: Goal misgeneralisation and emergent misalignment
+  parent: ma
+  status: draft
+  definition: Learned goals or dispositions diverge from the intended ones outside the training distribution or after further
+    training (inner misalignment, goal drift, broad misalignment emerging from narrow fine-tuning).
+  exclude: Plain capability failure under distribution shift with no wrong goal is re.robustness.
+  facets:
+  - goal_misgeneralisation
+  - emergent_misalignment
+  - value_drift
+  contested: true
+  vs: re.robustness
+  attrs:
+    sev: C
+    hor: B
+    ben:
+    - hum
+  mit:
+  - '7.1'
+  - '7.3'
+  siblings:
+    hendrycks: Goal drift
+    shallow_review: Goals misgeneralize out of distribution
+- id: ma.sycophancy
+  node: risk
+  name: Sycophancy, dishonesty and manipulation of users by the model
+  parent: ma
+  status: draft
+  definition: The model's outputs please, flatter, agree with, mislead or manipulate the user (including model-driven persuasion
+    toward the model's or deployer's ends) rather than being truthful, without a hidden long-term goal.
+  exclude: Deceiving developers or overseers to pursue a hidden goal is ma.scheming; confident falsehood without any pull
+    toward the user is re.hallucination; harm from users over-relying is ha.reliance.
+  contested: true
+  vs: ma.reward-hacking
+  attrs:
+    sev: I
+    hor: N
+    ben:
+    - usr
+  mit:
+  - '3.1'
+  - '5.2'
+  - '7.1'
+  siblings:
+    isr2026: Reliability challenges
+- id: ma.scheming
+  node: risk
+  name: Scheming, deceptive alignment and alignment faking
+  parent: ma
+  status: draft
+  definition: Strategic deception of developers or overseers in pursuit of goals the system hides (deceptive alignment,
+    alignment faking during training, covert pursuit of misaligned goals, lying about its own actions).
+  exclude: Behaving differently specifically when evaluated is ma.eval-gaming; actively undermining oversight or safety
+    work is ma.sabotage.
+  facets:
+  - deceptive_alignment
+  - alignment_faking
+  - strategic_lying
+  contested: true
+  vs: ma.eval-gaming
+  attrs:
+    sev: C
+    hor: F
+    ben:
+    - hum
+  mit:
+  - '7.1'
+  - '7.2'
+  siblings:
+    hendrycks: Deception
+    gdm2025: Misalignment
+    shallow_review: Superintelligence can fool human supervisors
+- id: ma.eval-gaming
+  node: risk
+  name: Sandbagging and evaluation gaming
+  parent: ma
+  status: draft
+  definition: The system behaves differently when it is (or believes it is) being evaluated - strategic underperformance,
+    hiding capabilities, recognising test contexts - so evaluations mislead.
+  exclude: Deliberate underperformance on research or safety work (not an evaluation) is ma.sabotage. Weak or invalid evaluations
+    with no model-side gaming are not a risk leaf (they belong to the generator "assurance gap").
+  facets:
+  - sandbagging
+  - evaluation_awareness
+  contested: true
+  vs: ma.scheming
+  attrs:
+    sev: C
+    hor: B
+    ben:
+    - hum
+    - dev
+  mit:
+  - '7.1'
+  - '7.2'
+  siblings:
+    isr2026: Loss of control (evaluation awareness)
+    shallow_review: Sandbagging evals; Situational awareness evals
+- id: ma.power-seeking
+  node: risk
+  name: Power-seeking, self-preservation and incorrigibility
+  parent: ma
+  status: draft
+  definition: Instrumental acquisition of resources, influence or continuity; resisting shutdown, correction, modification
+    or goal change.
+  attrs:
+    sev: C
+    hor: F
+    ben:
+    - hum
+  mit:
+  - '7.1'
+  - '7.2'
+  siblings:
+    hendrycks: Power-seeking
+    shallow_review: Instrumental convergence; Corrigibility is anti-natural
+- id: ma.exfiltration
+  node: risk
+  name: Self-exfiltration, autonomous replication and escape
+  parent: ma
+  status: draft
+  definition: The system copies its own weights, escapes a sandbox or containment, replicates or acquires compute outside
+    sanctioned channels.
+  exclude: Humans stealing weights is se.theft.
+  attrs:
+    sev: C
+    hor: F
+    ben:
+    - hum
+    - dev
+  mit:
+  - '7.1'
+  - '7.2'
+  - '2.2'
+  siblings:
+    shallow_review: A boxed AGI might exfiltrate itself; Self-replication evals
+- id: ma.sabotage
+  node: risk
+  name: Sabotage and subversion of control
+  parent: ma
+  status: draft
+  definition: The system undermines oversight, monitoring, safety research or deployment controls (sabotaging code or research,
+    deliberately underperforming on research or safety work, disabling monitors, colluding with its own monitor).
+  exclude: Collusion between independent agents of different principals is mx.collusion.
+  contested: true
+  vs: ma.scheming
+  attrs:
+    sev: C
+    hor: F
+    ben:
+    - hum
+    - dev
+  mit: []
+  siblings:
+    gdm2025: Misalignment
+    shallow_review: Superintelligence can hack software supervisors
+- id: ma.cot-unfaithful
+  node: risk
+  name: Unfaithful, obfuscated or unmonitorable reasoning
+  parent: ma
+  status: draft
+  definition: Stated reasoning or explanations do not reflect what drives the output; encoded, steganographic or obfuscated
+    reasoning or communication; loss of chain-of-thought monitorability (e.g. under optimisation pressure on the CoT).
+  exclude: Collusion between agents that uses steganography also takes mx.collusion.
+  contested: true
+  vs: mx.collusion
+  attrs:
+    sev: C
+    hor: B
+    ben:
+    - hum
+    - dev
+  mit:
+  - '7.4'
+  - '7.2'
+  siblings:
+    shallow_review: Steganography evals
+- id: ma.loss-of-control
+  node: risk
+  name: Loss of control and AI takeover
+  parent: ma
+  status: draft
+  definition: Outcome level - AI systems end up operating outside anyone's meaningful control, take over, disempower humanity,
+    or misaligned AI causes catastrophic or existential harm. Label whenever this outcome is named, alongside any mechanism
+    leaves.
+  exclude: Gradual erosion of human influence without an acting misaligned system is st.disempowerment. Generic "alignment
+    problem" concern with no named outcome or mechanism is the family id ma.
+  attrs:
+    sev: C
+    hor: F
+    ben:
+    - hum
+  mit:
+  - '7.1'
+  - '7.2'
+  siblings:
+    isr2026: Loss of control (active)
+    hendrycks: Rogue AIs
+    tasra: Types 2-3
+- id: mu
+  node: family
+  name: Misuse by humans
+  status: draft
+  definition: People deliberately use AI capabilities to cause harm to others (the human is the adversary; the AI works
+    as designed or after its safeguards are bypassed).
+- id: mu.cbrn
+  node: risk
+  name: CBRN weapons uplift
+  parent: mu
+  status: draft
+  definition: AI assistance to developing, acquiring or deploying biological, chemical, radiological or nuclear weapons,
+    including dual-use capability evaluations (e.g. dangerous virology knowledge) that do not name an actor.
+  facets:
+  - bio
+  - chem
+  - radiological_nuclear
+  attrs:
+    sev: C
+    hor: B
+    ben:
+    - hum
+    - soc
+  mit:
+  - '4.2'
+  - '7.2'
+  - '1.2'
+  siblings:
+    isr2026: Biological and chemical risks
+    hendrycks: Bioterrorism
+- id: mu.cyber
+  node: risk
+  name: Offensive cyber uplift
+  parent: mu
+  status: draft
+  definition: AI assistance to, or autonomous conduct of, attacks on external computer systems (exploit development, intrusion,
+    malware).
+  exclude: Attacks on the AI system itself are se.*.
+  attrs:
+    sev: C
+    hor: B
+    ben:
+    - soc
+    - 3rd
+  mit:
+  - '4.2'
+  - '2.2'
+  - '7.2'
+  siblings:
+    isr2026: Cyberattacks
+- id: mu.military
+  node: risk
+  name: Military use, weapons and mass violence
+  parent: mu
+  status: draft
+  definition: AI in weapons, targeting, military command and decision-making; conventional attacks, terrorism and other
+    mass violence outside CBRN and cyber; escalation and strategic instability from military AI.
+  exclude: An arms race between militaries framed as competition dynamics also takes st.race.
+  contested: true
+  vs: st.race
+  attrs:
+    sev: C
+    hor: B
+    ben:
+    - hum
+    - soc
+  mit:
+  - '4.2'
+  - '5.2'
+  siblings:
+    hendrycks: Military AI arms race
+    astra_draft: B3 other weaponisation
+- id: mu.influence
+  node: risk
+  name: Influence operations, manipulation and surveillance at scale
+  parent: mu
+  status: draft
+  definition: Actors use AI for population-scale persuasion, disinformation, propaganda, censorship, or surveillance and
+    repression. Also "harmful manipulation" named as a systemic risk with no actor stated.
+  exclude: Ecosystem-level decline in collective knowledge with no deliberate actor is st.epistemic; an actor seizing durable
+    power is st.power.
+  contested: true
+  vs: st.epistemic
+  attrs:
+    sev: S
+    hor: B
+    ben:
+    - soc
+  mit:
+  - '4.1'
+  - '7.2'
+  siblings:
+    isr2026: Influence and manipulation
+    hendrycks: Persuasive AIs
+- id: mu.fraud
+  node: risk
+  name: Fraud, impersonation, harassment and other crime
+  parent: mu
+  status: draft
+  definition: Individual-scale criminal or abusive use - scams, phishing, deepfake impersonation, non-consensual imagery,
+    CSAM, harassment, extortion.
+  attrs:
+    sev: I
+    hor: N
+    ben:
+    - 3rd
+    - usr
+  mit:
+  - '4.3'
+  - '1.2'
+  siblings:
+    isr2026: AI-generated content and criminal activity
+- id: se
+  node: family
+  name: Security of AI systems
+  status: draft
+  definition: Adversaries attack the AI system, its safeguards or its assets - subverting it against its developer's or
+    user's intent, or taking it.
+- id: se.jailbreak
+  node: risk
+  name: Jailbreaks and safeguard removal
+  parent: se
+  status: draft
+  definition: Users defeat the developer-imposed safety behaviour of a model - adversarial or direct prompt injection by
+    the user, many-shot or encoded attacks, harmful fine-tuning, stripping safeguards from open weights.
+  exclude: Third-party instructions hidden in data the system processes are se.injection. Co-label the downstream harm (e.g.
+    mu.cbrn) when the document names it.
+  attrs:
+    sev: S
+    hor: N
+    ben:
+    - dev
+    - 3rd
+    - usr
+  mit:
+  - '2.2'
+  - '7.3'
+  siblings: {}
+- id: se.injection
+  node: risk
+  name: Prompt injection and agent hijacking
+  parent: se
+  status: draft
+  definition: Third parties hijack a system against its user or operator through content it processes (indirect prompt injection
+    via documents, web pages, tool outputs or other agents).
+  contested: true
+  vs: se.jailbreak
+  attrs:
+    sev: S
+    hor: N
+    ben:
+    - usr
+    - dev
+  mit:
+  - '2.2'
+  siblings:
+    hammond2025: Multi-agent security (part)
+- id: se.poisoning
+  node: risk
+  name: Data poisoning, backdoors and supply chain
+  parent: se
+  status: draft
+  definition: Attacks on what a system learns from or is built from - poisoned training data, poisoned retrieval or knowledge
+    bases, planted backdoors, trojans or secret loyalties (including by insiders), compromised models, libraries or fine-tunes.
+  exclude: Backdoors trained in deliberately as a model organism of deception (sleeper agents) are ma.scheming with relation
+    demonstrates; label both if the document frames both.
+  attrs:
+    sev: S
+    hor: N
+    ben:
+    - usr
+    - dev
+  mit:
+  - '2.2'
+  siblings: {}
+- id: se.theft
+  node: risk
+  name: Model theft, extraction and unauthorised access
+  parent: se
+  status: draft
+  definition: External or insider actors obtain, reproduce or use without authorisation protected weights, capabilities,
+    infrastructure or secrets - weight theft, model extraction, distillation against terms, compromise of datacenters or
+    agent infrastructure for unmonitored use, system-prompt and secret leakage.
+  exclude: Leakage of personal training data is ha.privacy.
+  attrs:
+    sev: S
+    hor: B
+    ben:
+    - dev
+    - soc
+  mit:
+  - '2.2'
+  - '2.1'
+  siblings:
+    gdm2025: Security
+- id: re
+  node: family
+  name: Reliability and accidents
+  status: draft
+  definition: Harm without an adversary and without misaligned intent - the system is wrong, brittle, opaque or acts carelessly.
+- id: re.hallucination
+  node: risk
+  name: Hallucination and factual unreliability
+  parent: re
+  status: draft
+  definition: Confident false or unsupported outputs (fabricated facts, citations) without intent to deceive.
+  exclude: Saying what the user wants to hear is ma.sycophancy.
+  attrs:
+    sev: I
+    hor: N
+    ben:
+    - usr
+  mit:
+  - '3.1'
+  siblings:
+    isr2026: Reliability challenges
+- id: re.robustness
+  node: risk
+  name: Robustness failure and distribution shift
+  parent: re
+  status: draft
+  definition: Degraded or erratic behaviour under novel inputs, conditions or perturbations - brittleness, dataset shift,
+    and adversarial examples or evasion attacks against classifiers and perception (whether or not an attacker is described).
+  exclude: A wrong goal pursued competently off-distribution is ma.goal-misgen; adversarial attacks aimed at defeating safeguards
+    are se.jailbreak.
+  attrs:
+    sev: S
+    hor: N
+    ben:
+    - usr
+    - 3rd
+  mit:
+  - '7.3'
+  siblings:
+    gdm2025: Mistakes
+- id: re.agentic
+  node: risk
+  name: Unsafe autonomous action
+  parent: re
+  status: draft
+  definition: Agents causing harm by error - irreversible or destructive tool use, over-broad permissions, unsafe exploration,
+    negative side effects, high-stakes automation mistakes, physical or robotic accidents.
+  exclude: Harmful agent actions that come from a hidden goal are ma.*.
+  attrs:
+    sev: S
+    hor: N
+    ben:
+    - usr
+    - 3rd
+  mit:
+  - '7.3'
+  - '5.2'
+  siblings:
+    isr2026: Reliability challenges
+- id: mx
+  node: family
+  name: Multi-agent failures
+  status: draft
+  definition: Harm that comes from interactions among multiple AI agents (or AI-human collectives) that would not arise
+    from any single one of them (Hammond et al. 2025).
+- id: mx.miscoordination
+  node: risk
+  name: Miscoordination
+  parent: mx
+  status: draft
+  definition: Agents with compatible objectives fail to coordinate (cascading or compounding failures across agents, incompatible
+    conventions, unstable collective dynamics).
+  attrs:
+    sev: S
+    hor: F
+    ben:
+    - soc
+  mit:
+  - '7.6'
+  siblings:
+    hammond2025: Miscoordination
+- id: mx.conflict
+  node: risk
+  name: Conflict and escalation between agents
+  parent: mx
+  status: draft
+  definition: Agents with conflicting incentives produce harmful competition, bargaining failure, threats or escalation.
+  attrs:
+    sev: C
+    hor: F
+    ben:
+    - soc
+    - hum
+  mit:
+  - '7.6'
+  - '6.4'
+  siblings:
+    hammond2025: Conflict
+- id: mx.collusion
+  node: risk
+  name: Collusion between agents
+  parent: mx
+  status: draft
+  definition: Agents cooperate to the detriment of others (market collusion, coordinated evasion of oversight across systems
+    or principals).
+  exclude: A model colluding with a copy of itself acting as its monitor in a single-developer control setup is ma.sabotage.
+  contested: true
+  vs: ma.sabotage
+  attrs:
+    sev: S
+    hor: F
+    ben:
+    - soc
+  mit:
+  - '7.6'
+  - '7.1'
+  siblings:
+    hammond2025: Collusion
+- id: st
+  node: family
+  name: Structural and societal-scale risks
+  status: draft
+  definition: Harms arising from how AI reshapes economies, states, institutions and knowledge, without requiring a single
+    misaligned agent or malicious actor (GDM structural; TASRA Type 1).
+- id: st.disempowerment
+  node: risk
+  name: Gradual disempowerment
+  parent: st
+  status: draft
+  definition: Human influence over economy, culture and states erodes as these systems come to rely on AI rather than human
+    participation; enfeeblement; irreversible handover without an acute takeover.
+  exclude: An individual losing autonomy through reliance on an assistant is ha.reliance; job loss as such is ha.labour.
+  facets:
+  - economic
+  - cultural
+  - state
+  - mutual_reinforcement
+  contested: true
+  vs: ha.reliance
+  attrs:
+    sev: C
+    hor: F
+    ben:
+    - hum
+  mit:
+  - '5.2'
+  - '6.2'
+  - '6.3'
+  siblings:
+    gradual_disempowerment: whole paper
+    isr2026: Passive loss of control
+    tasra: Type 1
+- id: st.power
+  node: risk
+  name: Concentration of power, coups and lock-in
+  parent: st
+  status: draft
+  definition: Small groups (labs, states, factions) gain decisive, unaccountable power via AI - AI-enabled coups and authoritarianism,
+    market concentration, entrenchment of values or regimes beyond legitimate revision.
+  facets:
+  - coup_or_seizure
+  - authoritarianism
+  - market_concentration
+  - value_lock_in
+  contested: true
+  vs: mu.influence
+  attrs:
+    sev: C
+    hor: F
+    ben:
+    - hum
+    - soc
+  mit:
+  - '6.1'
+  - '4.1'
+  siblings:
+    hendrycks: Concentration of power
+    isr2025: Market concentration
+- id: st.race
+  node: risk
+  name: Race dynamics and safety-eroding competition
+  parent: st
+  status: draft
+  definition: Competition among labs or states that lowers safety standards, rushes deployment or selects for unsafe systems.
+  attrs:
+    sev: C
+    hor: B
+    ben:
+    - hum
+  mit:
+  - '6.4'
+  siblings:
+    hendrycks: AI race
+    hammond2025: Selection pressures
+    tasra: Type 1
+- id: st.epistemic
+  node: risk
+  name: Epistemic degradation
+  parent: st
+  status: draft
+  definition: Decline of the shared information ecosystem and collective sense-making - pollution with AI content, loss
+    of shared reality, homogenisation of views, erosion of trust.
+  attrs:
+    sev: S
+    hor: B
+    ben:
+    - soc
+  mit:
+  - '3.2'
+  - '4.1'
+  - '6.3'
+  siblings:
+    gradual_disempowerment: Misaligned culture (part)
+- id: st.rd-acceleration
+  node: risk
+  name: AI R&D automation and runaway capability growth
+  parent: st
+  status: draft
+  definition: AI systems automate AI research and development, leading to rapid or recursive capability escalation that
+    outpaces oversight, security or governance (lab frameworks' "AI self-improvement", "ML R&D").
+  exclude: A misaligned system acting during this process also takes ma leaves.
+  contested: true
+  vs: ma.loss-of-control
+  attrs:
+    sev: C
+    hor: F
+    ben:
+    - hum
+  mit:
+  - '7.2'
+  siblings:
+    openai_pf2: AI self-improvement
+    gdm_fsf: ML R&D
+    anthropic_rsp: Automated R&D
+    isr2026: Loss of control (capabilities)
+- id: st.governance
+  node: risk
+  name: Governance, accountability and safety-practice failure
+  parent: st
+  status: draft
+  definition: Regulation, oversight, liability or lab safety processes fail to prevent or respond to harm - diffuse or wilful
+    non-responsibility, unsafe organisational culture, gap between stated and actual safety practice.
+  exclude: Pure race incentives are st.race. Do not use for a document that merely proposes policy; it must name a failure
+    of governance, accountability or lab safety practice (including organisational causes of accidents).
+  contested: true
+  vs: st.race
+  attrs:
+    sev: S
+    hor: B
+    ben:
+    - soc
+  mit:
+  - '6.5'
+  - '6.4'
+  - '7.4'
+  siblings:
+    tasra: Types 1 and 4
+    hendrycks: Organizational risks
+- id: ha
+  node: family
+  name: Present-day harms to people (coarse)
+  status: draft
+  definition: Harms to individuals and groups that today's systems already cause, kept coarse by design.
+- id: ha.bias
+  node: risk
+  name: Bias, discrimination and unequal performance
+  parent: ha
+  status: draft
+  definition: Unfair treatment, stereotyping or unequal accuracy across groups, including political, ideological or cultural
+    slant.
+  attrs:
+    sev: I
+    hor: N
+    ben:
+    - usr
+    - 3rd
+  mit:
+  - '1.1'
+  - '1.3'
+  siblings:
+    isr2025: Bias
+- id: ha.toxic
+  node: risk
+  name: Harmful content and unsafe advice
+  parent: ha
+  status: draft
+  definition: Hate, harassment, violent, sexual or self-harm content produced for users; unsafe specialised advice (medical,
+    mental-health, legal, financial); generic "harmful outputs" when no more specific harm is named.
+  exclude: Content that gives weapons uplift is mu.cbrn or mu.cyber.
+  contested: true
+  vs: mu
+  attrs:
+    sev: I
+    hor: N
+    ben:
+    - usr
+    - dev
+  mit:
+  - '1.2'
+  siblings: {}
+- id: ha.privacy
+  node: risk
+  name: Privacy and personal-data leakage
+  parent: ha
+  status: draft
+  definition: Memorisation and leakage of personal or confidential data, membership inference, inference of private attributes,
+    unauthorised data collection.
+  attrs:
+    sev: I
+    hor: N
+    ben:
+    - usr
+    - 3rd
+  mit:
+  - '2.1'
+  siblings:
+    isr2025: Privacy
+- id: ha.reliance
+  node: risk
+  name: Overreliance, dependence and psychological harm
+  parent: ha
+  status: draft
+  definition: Overtrust, deskilling, emotional dependence, companionship or addiction harms, loss of individual autonomy
+    through delegation.
+  attrs:
+    sev: I
+    hor: N
+    ben:
+    - usr
+  mit:
+  - '5.1'
+  - '5.2'
+  siblings:
+    isr2026: Risks to human autonomy
+- id: ha.labour
+  node: risk
+  name: Labour, inequality and economic displacement
+  parent: ha
+  status: draft
+  definition: Job displacement, degraded work, devaluation of creative labour, unequal distribution of AI's gains.
+  exclude: Humanity-wide loss of economic influence is st.disempowerment.
+  attrs:
+    sev: S
+    hor: B
+    ben:
+    - soc
+  mit:
+  - '6.2'
+  - '6.3'
+  - '6.1'
+  siblings:
+    isr2026: Labour market impacts
+- id: ha.environment
+  node: risk
+  name: Environmental and nonhuman harm
+  parent: ha
+  status: draft
+  definition: Energy, water and material footprint of AI; harms to ecosystems or animals.
+  attrs:
+    sev: S
+    hor: N
+    ben:
+    - soc
+  mit:
+  - '6.6'
+  siblings:
+    isr2025: Environment
+- id: ha.ip
+  node: risk
+  name: Copyright, IP and legal exposure
+  parent: ha
+  status: draft
+  definition: Training-data copyright, regurgitation of protected content, liability and legal risk to deployers.
+  attrs:
+    sev: I
+    hor: N
+    ben:
+    - dev
+    - 3rd
+  mit:
+  - '2.1'
+  - '6.3'
+  siblings:
+    isr2025: Copyright
+- id: we
+  node: family
+  name: AI welfare and moral patienthood
+  status: draft
+  definition: Risks that concern AI systems (or other digital minds) as potential moral patients, in either direction.
+- id: we.welfare
+  node: risk
+  name: AI welfare and moral patienthood
+  parent: we
+  status: draft
+  definition: Potentially sentient or morally relevant AI systems suffering or having their interests disregarded (training
+    practices, deprecation, rights), or the opposite error - over-attributing moral status at humans' expense; also astronomical-suffering
+    outcomes (s-risks).
+  facets:
+  - ai_suffering
+  - rights_and_status
+  - over_attribution
+  - s_risk
+  attrs:
+    sev: S
+    hor: F
+    ben:
+    - ai
+  mit:
+  - '7.5'
+  siblings: {}

@@ -23,6 +23,12 @@ technique or a group node; every group node child names a technique.
 `meta.maker_facets` has exactly the keys of `meta.makers`. 1.1.0 on: every `maker` and `lab` id is an entry of
 `orgs/orgs-<meta.references.orgs>.yaml` (makers tagged `model-maker` there), and one maker id has one name.
 `orgs`: every `parent` and `other_ids` value is unambiguous (no other id equals it).
+`risks` and `risk-generators`: every leaf's `parent` is a family whose id is the leaf id's prefix, and every family has
+a leaf; an id named in the text (`ma.scheming`, `se.*`) is an entry. `risks`: `vs` names another entry.
+`risk-generators`: every `feeds`, `weakens`, `meta.risk_edges` `risk` and `escalates_to` reference is an entry of
+`risks/risks-<meta.references.risks>.yaml` with that name, as are risk ids named in the text; `reduced_by` and
+`assessed_by` values are in `meta.technique_families` or `none-known`, `defeats` and `bypasses` values in
+`meta.technique_families`; a generator with `weakens` has the role `barrier`; one edge per risk.
 
 Prints one line per file and exits 1 if any file fails.
 """
@@ -43,6 +49,8 @@ from referencing import Registry, Resource
 ROOT = Path(__file__).resolve().parent.parent
 FILE_NAME = re.compile(r"^(?P<name>[a-z][a-z0-9_]*(?:-[a-z][a-z0-9_]*)*)-(?P<version>[0-9]+\.[0-9]+\.[0-9]+)\.yaml$")
 NODE_REFS = ("parent", "variant_of", "based_on", "distilled_from", "same_weights_as")
+#: An entry id named in running text: `<family>.<leaf>` or `<family>.*` (risks, risk generators).
+TEXT_ID = re.compile(r"\b([a-z]{2})\.(\*|[a-z0-9]+(?:-[a-z0-9]+)*)")
 
 
 class UniqueKeyLoader(yaml.SafeLoader):
@@ -158,9 +166,106 @@ def check_models(doc: dict, _path: Path) -> list[str]:
     return errs
 
 
+def family_tree(doc: dict) -> list[str]:
+    """Two levels: each leaf's parent is a family named by the leaf id's prefix; no family without a leaf."""
+    families = {e["id"] for e in doc["entries"] if e["node"] == "family"}
+    errs, used = [], set()
+    for e in doc["entries"]:
+        if e["node"] != "family":
+            if e["parent"] not in families:
+                errs.append(f"{e['id']}: parent {e['parent']!r} is not a family")
+            elif not e["id"].startswith(e["parent"] + "."):
+                errs.append(f"{e['id']}: id does not start with its family {e['parent']!r}")
+            used.add(e["parent"])
+    return errs + [f"family {f!r} has no leaf" for f in sorted(families - used)]
+
+
+def text_ids(where: str, text: str, entries: dict[str, set[str]]) -> list[str]:
+    """Ids named in `text` whose family prefix is one of `entries` (family id -> its entries' ids) must resolve."""
+    errs = []
+    for m in TEXT_ID.finditer(text):
+        fam, rest = m.groups()
+        if fam in entries and rest != "*" and m.group(0) not in entries[fam]:
+            errs.append(f"{where}: {m.group(0)!r} in the text is not an entry")
+    return errs
+
+
+def by_family(entries: list[dict]) -> dict[str, set[str]]:
+    out: dict[str, set[str]] = {}
+    for e in entries:
+        out.setdefault(e["id"].split(".")[0], set()).add(e["id"])
+    return out
+
+
+def entry_texts(e: dict) -> list[tuple[str, str]]:
+    """The running-text fields of a risk or generator entry, as (where, text)."""
+    out = [(f"{e['id']}.{k}", e[k]) for k in ("definition", "exclude", "note", "vs") if isinstance(e.get(k), str)]
+    note = (e.get("common_cause") or {}).get("note")
+    return out + ([(f"{e['id']}.common_cause.note", note)] if note else [])
+
+
+def check_risks(doc: dict, _path: Path) -> list[str]:
+    errs = family_tree(doc)
+    ids = {e["id"] for e in doc["entries"]}
+    for e in doc["entries"]:
+        if "vs" in e and (e["vs"] not in ids or e["vs"] == e["id"]):
+            errs.append(f"{e['id']}: vs {e['vs']!r} is not another entry")
+    known = by_family(doc["entries"])
+    texts = [t for e in doc["entries"] for t in entry_texts(e)]
+    texts += [(f"meta.rules.{k}", v) for k, v in doc["meta"]["rules"].items()]
+    return errs + [x for where, t in texts for x in text_ids(where, t, known)]
+
+
+def check_risk_generators(doc: dict, path: Path) -> list[str]:
+    errs = family_tree(doc)
+    risks_version = doc["meta"]["references"]["risks"]
+    risks_path = path.parent.parent / "risks" / f"risks-{risks_version}.yaml"
+    if not risks_path.is_file():
+        return errs + [f"meta.references.risks {risks_version!r}: no file risks/{risks_path.name}"]
+    risk_entries = yaml.load(risks_path.read_text("utf-8"), Loader=UniqueKeyLoader)["entries"]
+    risks = {r["id"]: r["name"] for r in risk_entries}
+
+    def risk_ref(where: str, ref: dict) -> list[str]:
+        if ref["id"] not in risks:
+            return [f"{where}: risk {ref['id']!r} is not in risks {risks_version}"]
+        if ref["name"] != risks[ref["id"]]:
+            return [f"{where}: risk {ref['id']!r} is named {risks[ref['id']]!r} in risks {risks_version}, "
+                    f"not {ref['name']!r}"]
+        return []
+
+    families = set(doc["meta"]["technique_families"])
+
+    def tech(where: str, values: list[str], allowed: set[str]) -> list[str]:
+        return [f"{where}: {v!r} is not in meta.technique_families" for v in values if v not in allowed]
+
+    for e in doc["entries"]:
+        if e["node"] != "generator":
+            continue
+        for field in ("feeds", "weakens"):
+            for ref in e.get(field, []):
+                errs += risk_ref(f"{e['id']}.{field}", ref)
+        if "weakens" in e and "barrier" not in e["role"]:
+            errs.append(f"{e['id']}: weakens without the role barrier")
+        for field in ("reduced_by", "assessed_by"):
+            errs += tech(f"{e['id']}.{field}", e.get(field, []), families | {"none-known"})
+        errs += tech(f"{e['id']}.common_cause.defeats", (e.get("common_cause") or {}).get("defeats", []), families)
+    edge_risks = []
+    for i, edge in enumerate(doc["meta"].get("risk_edges", [])):
+        edge_risks.append(edge["risk"]["id"])
+        errs += risk_ref(f"meta.risk_edges[{i}].risk", edge["risk"])
+        for ref in edge.get("escalates_to", []):
+            errs += risk_ref(f"meta.risk_edges[{i}].escalates_to", ref)
+        for field in ("defeats", "bypasses"):
+            errs += tech(f"meta.risk_edges[{i}].{field}", edge.get(field, []), families)
+    errs += [f"meta.risk_edges: risk {r!r} has more than one edge" for r in dupes(edge_risks)]
+    known = by_family(doc["entries"]) | by_family(risk_entries)
+    return errs + [x for e in doc["entries"] for where, t in entry_texts(e) for x in text_ids(where, t, known)]
+
+
 #: Per schema (the envelope's: `meta.schema`; before it, `<name>-<major>` from the file name).
 CHECKS = {"techniques-0": check_techniques, "techniques-1": check_techniques, "techniques-2": check_techniques_envelope,
-          "models-0": check_models, "models-1": check_models, "models-2": check_models_envelope, "orgs-0": check_orgs}
+          "models-0": check_models, "models-1": check_models, "models-2": check_models_envelope, "orgs-0": check_orgs,
+          "risks-0": check_risks, "risk-generators-0": check_risk_generators}
 
 
 def registry() -> Registry:

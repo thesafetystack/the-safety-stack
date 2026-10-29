@@ -1,0 +1,2191 @@
+# Risk-generator taxonomy 0.3.0 (draft): the risk-generator draft v0.3 in the catalogue envelope
+# (schemas/risk-generators-0.schema.json), converted mechanically; see CHANGELOG.md.
+# 10 families, 64 generators; feeds, weakens and meta.risk_edges refer to risks 0.2.0
+version: '0.3.0'
+meta:
+  schema: risk-generators-0
+  updated: '2026-10-29'
+  status: draft
+  description: 'Risk generators: standing conditions, processes or pressures that change how often a risk event happens,
+    how bad it is, or how likely the defences are to stop it, and are not themselves an instance of a harmful event type.
+    10 families (node family) and 64 leaves (node generator, parent its family). `feeds` and `weakens` are references {id,
+    name} to the risks taxonomy version in meta.references; a family id there stands for the whole family. `reduced_by`,
+    `assessed_by` and the `defeats` and `bypasses` lists name technique families (meta.technique_families). meta.risk_edges
+    are edges from risks (not generators) to defences and to other risks. C1-C7 in the text are the boundary criteria in
+    README.md. A draft (0.x): see README.md and OPEN-QUESTIONS.md.'
+  sources:
+    draft: 'risk-generator taxonomy draft v0.3 (2026-10-29): v0.2 revised after a three-annotator trial on 100 documents
+      and two blind model reviews (README.md, Pilot); converted mechanically (CHANGELOG.md)'
+  references:
+    risks: 0.2.0
+  fields:
+    tier: 'annotate: a candidate for per-document labels; curated: edges and the negative map only (rarely stated in text)'
+    background: 'true: label only when the document''s argument depends on it, never for motivation boilerplate'
+    role: 'typical role (C7): hazard (enlarges the potential for harm: capability, scale, affordances), cause (raises the
+      rate of risk events), barrier (degrades defences; the bow-tie degradation factor). A scenario may assign another role'
+    feeds: risks the generator makes more likely or worse
+    weakens: for barrier-role generators, risks whose defences it degrades
+    reduced_by: technique families that act on the generator itself (non-technical; none-known)
+    assessed_by: technique families that measure it without reducing it
+    common_cause: 'a candidate common-cause mechanism: a hypothesis, never a measured correlation; absent = no candidate.
+      mech: substrate (a shared component) | convergent (the same susceptibility without a shared component) | operational
+      (same staff, procedures, tooling, schedule) | institutional (one decision process or one pressure acting on many actors''
+      defences) | epistemic (a shared assumption or evidence base) | environmental (one shift invalidates several defences
+      at once); scope: stack (layers of one deployed stack) | field (many models, developers or societal systems); searched_by:
+      model | attacker | selection (an optimiser searches for the joint hole; not itself a coupling); defeats: technique
+      families whose layers it degrades (coarse)'
+    contested: true where the boundary is weak; `vs` says against what, in words
+    crosswalks: 'the corresponding item of other frameworks (first word: a key of meta.crosswalk_keys)'
+    status: 'the entry''s own status: draft, or provisional (added from trial misfits with thin support; to be confirmed
+      by targeted sampling)'
+  technique_families:
+  - data-curation
+  - pretraining-safety
+  - sft-instruction
+  - preference-optimization
+  - constitutional-ai-feedback
+  - rl-reasoning
+  - honesty-calibration
+  - unlearning-editing
+  - adversarial-robustness
+  - interpretability
+  - scalable-oversight
+  - redteam-eval
+  - guardrail-classifiers
+  - decoding-control
+  - agentic-control
+  - provenance-technical
+  - foundations
+  - non-technical
+  crosswalk_keys:
+    AI2027: Kokotajlo et al. 2025, AI 2027 (with its Goals and Security forecasts)
+    ANW24: Anwar et al. 2024, Foundational Challenges in Assuring Alignment and Safety of LLMs
+    BOWTIE: UK CAA bowtie guidance; CGE Bowtie Methodology Manual; Johnson 2018 on the CCPS/EI book
+    CAR22: Carlsmith, Is Power-Seeking AI an Existential Risk?
+    CCF: Mosleh et al. 1998, NUREG/CR-5485 common-cause failure guidelines
+    CORR: 'correlated-failure papers: Kleinberg & Raghavan 2021, Bommasani et al. 2022, Kim et al. 2025, Greenblatt et al.
+      2024, Järviniemi 2025, Gardner-Challis et al. 2026, Needham et al. 2025'
+    COT22: Cotra 2022, Without specific countermeasures (HFDT takeover)
+    DM25: Dung & Mai 2025 (shared failure modes), with Ee et al. 2024 (defence in depth)
+    FSF: Google DeepMind Frontier Safety Framework v3.1 (and v3.0)
+    GD25: Kulveit et al. 2025, Gradual Disempowerment
+    GDM25: Shah et al. 2025, An Approach to Technical AGI Safety and Security
+    GIP24: Gipiškis et al. 2024, Risk Sources and Risk Management Measures for GPAI
+    GPAI: EU GPAI Code of Practice, Safety and Security chapter (and AI Act Annex XIII)
+    HAM25: Hammond et al. 2025, Multi-Agent Risks from Advanced AI
+    HEN22: Hendrycks & Mazeika 2022, X-Risk Analysis for AI Research
+    HEN23: Hendrycks, Mazeika & Woodside 2023, An Overview of Catastrophic AI Risks
+    HEN23NS: Hendrycks 2023, Natural Selection Favors AIs over Humans
+    ISO: ISO/IEC 23894:2023, risk sources
+    ISR25: International AI Safety Report 2025
+    ISR26: International AI Safety Report 2026
+    ISRKU: International AI Safety Report 2025, First and Second Key Updates
+    KS23: Koessler & Schuett 2023, Risk assessment at AGI companies
+    NGO: Ngo, Chan & Mindermann, The Alignment Problem from a Deep Learning Perspective
+    NIST: NIST AI RMF 1.0 and the Generative AI Profile (AI 600-1)
+    OPF: OpenAI Preparedness Framework v2
+    RAAP: Critch 2021, What Multipolar Failure Looks Like, and RAAPs
+    REASON: 'Reason 2000, Human error: models and management'
+    RLO: Hubinger et al. 2019, Risks from Learned Optimization
+    RSP: Anthropic Responsible Scaling Policy v3.4
+    SAFERAI: SaferAI risk management framework (2025) and framework ratings (2026)
+    SC: 'safety cases: Clymer et al. 2024, Balesni et al. 2024, Goemans et al. 2024'
+    SHEV23: Shevlane et al. 2023, Model evaluation for extreme risks
+    SR: Shallow Review of Technical AI Safety 2025, orthodox problems (not in the draft's key table; read from its use)
+    STPA: Leveson & Thomas 2018, STPA Handbook
+    TASRA: Critch & Russell 2023, TASRA
+    UUK24: Uuk et al. 2024, A Taxonomy of Systemic Risks from GPAI
+    WFLL: Christiano 2019, What failure looks like
+    YAMP16: Yampolskiy, Taxonomy of Pathways to Dangerous AI
+    ZD19: Zwetsloot & Dafoe 2019, Accidents, Misuse and Structure
+    trial: the 2026-10 annotation trial of draft v0.2 (misfit notes)
+  risk_edges:
+  - risk:
+      id: ma.scheming
+      name: Scheming, deceptive alignment and alignment faking
+    defeats:
+    - redteam-eval
+    - scalable-oversight
+    - agentic-control
+    - preference-optimization
+    searched_by: model
+  - risk:
+      id: ma.eval-gaming
+      name: Sandbagging and evaluation gaming
+    defeats:
+    - redteam-eval
+    searched_by: model
+  - risk:
+      id: ma.cot-unfaithful
+      name: Unfaithful, obfuscated or unmonitorable reasoning
+    defeats:
+    - agentic-control
+    - guardrail-classifiers
+    - scalable-oversight
+  - risk:
+      id: ma.sabotage
+      name: Sabotage and subversion of control
+    defeats:
+    - agentic-control
+    - scalable-oversight
+    - redteam-eval
+    searched_by: model
+  - risk:
+      id: mx.collusion
+      name: Collusion between agents
+    defeats:
+    - agentic-control
+    - scalable-oversight
+  - risk:
+      id: se.jailbreak
+      name: Jailbreaks and safeguard removal
+    defeats:
+    - guardrail-classifiers
+    - sft-instruction
+    - preference-optimization
+    - decoding-control
+    searched_by: attacker
+  - risk:
+      id: se.theft
+      name: Model theft, extraction and unauthorised access
+    bypasses:
+    - guardrail-classifiers
+    - decoding-control
+    - agentic-control
+    escalates_to:
+    - id: mu
+      name: Misuse by humans
+    - id: ma.loss-of-control
+      name: Loss of control and AI takeover
+  - risk:
+      id: ma.reward-hacking
+      name: Reward hacking, specification gaming and outer misalignment
+    escalates_to:
+    - id: ma.goal-misgen
+      name: Goal misgeneralisation and emergent misalignment
+  - risk:
+      id: st.power
+      name: Concentration of power, coups and lock-in
+    escalates_to:
+    - id: st.governance
+      name: Governance, accountability and safety-practice failure
+entries:
+- id: tr
+  node: family
+  name: Training and optimisation
+  status: draft
+  definition: How training shapes the system - what is optimised, against which signals, on which data, with which inductive
+    biases.
+- id: tr.outcome-optimisation
+  node: generator
+  name: Outcome-based optimisation pressure
+  parent: tr
+  status: draft
+  definition: Strong optimisation, especially RL over long horizons, toward outcome or task-success metrics, which rewards
+    whatever strategy reaches the outcome, including unintended ones.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: ma.reward-hacking
+    name: Reward hacking, specification gaming and outer misalignment
+  - id: ma.power-seeking
+    name: Power-seeking, self-preservation and incorrigibility
+  - id: ma.scheming
+    name: Scheming, deceptive alignment and alignment faking
+  - id: ma.goal-misgen
+    name: Goal misgeneralisation and emergent misalignment
+  reduced_by:
+  - rl-reasoning
+  - scalable-oversight
+  - foundations
+  crosswalks:
+  - COT22
+  - NGO
+  - GDM25
+  - HEN23
+  - AI2027
+  - HAM25 3.3 gradient descent
+- id: tr.gameable-grader
+  node: generator
+  name: Gameable grader or environment
+  parent: tr
+  status: draft
+  definition: A reward model, grader, verifier, environment or rater that the system can exploit (reward hacking surface),
+    including approval-based raters who reward seeming good over being good.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: ma.reward-hacking
+    name: Reward hacking, specification gaming and outer misalignment
+  - id: ma.sycophancy
+    name: Sycophancy, dishonesty and manipulation of users by the model
+  - id: ma.scheming
+    name: Scheming, deceptive alignment and alignment faking
+  reduced_by:
+  - preference-optimization
+  - rl-reasoning
+  - scalable-oversight
+  assessed_by:
+  - redteam-eval
+  common_cause:
+    mech:
+    - substrate
+    scope:
+    - stack
+    defeats:
+    - preference-optimization
+    - redteam-eval
+    note: Only where the same grader or reward model serves both training and evaluation.
+  crosswalks:
+  - GDM25 specification gaming
+  - NGO
+  - COT22 fallible evaluators
+  - HEN23 proxy gaming
+- id: tr.proxy-objective
+  node: generator
+  name: Proxy or underspecified objective
+  parent: tr
+  status: draft
+  definition: The objective being optimised is a proxy that diverges from what is intended, or the intended objective is
+    ambiguous or conflicting (values hard to specify, easy-to-measure goals). Label only when the document ties the divergence
+    to a safety-relevant failure, not for any modelling simplification.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: ma.reward-hacking
+    name: Reward hacking, specification gaming and outer misalignment
+  - id: ma.goal-misgen
+    name: Goal misgeneralisation and emergent misalignment
+  - id: re.hallucination
+    name: Hallucination and factual unreliability
+  - id: st.disempowerment
+    name: Gradual disempowerment
+  reduced_by:
+  - constitutional-ai-feedback
+  - foundations
+  crosswalks:
+  - WFLL easy-to-measure goals
+  - ANW24 values unclear
+  - SR orthodox value is fragile
+  - HEN23 proxy gaming
+- id: tr.human-data-priors
+  node: generator
+  name: Dispositions inherited from training data
+  parent: tr
+  status: draft
+  definition: Pretraining and imitation data carry human goals, deception, biases and narratives, including about AI misalignment,
+    which the model can absorb and act out.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: ma.scheming
+    name: Scheming, deceptive alignment and alignment faking
+  - id: ma.power-seeking
+    name: Power-seeking, self-preservation and incorrigibility
+  - id: ha.bias
+    name: Bias, discrimination and unequal performance
+  - id: ha.toxic
+    name: Harmful content and unsafe advice
+  reduced_by:
+  - data-curation
+  - pretraining-safety
+  common_cause:
+    mech:
+    - substrate
+    scope:
+    - field
+    note: Field-level where many models train on the same corpora; not by itself a within-stack coupling.
+  crosswalks:
+  - HAM25 3.3 undesirable dispositions from human data
+  - COT22 situational awareness from training data
+- id: tr.underdetermination
+  node: generator
+  name: Underdetermined generalisation of training
+  parent: tr
+  status: draft
+  definition: Training data and inductive biases (simplicity bias, capacity, spurious correlations) leave what is learned
+    underdetermined, so narrow training can change behaviour far outside its domain and objectives are not identifiable
+    from behaviour.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: ma.goal-misgen
+    name: Goal misgeneralisation and emergent misalignment
+  - id: ma.scheming
+    name: Scheming, deceptive alignment and alignment faking
+  - id: se.jailbreak
+    name: Jailbreaks and safeguard removal
+  reduced_by:
+  - interpretability
+  - foundations
+  assessed_by:
+  - redteam-eval
+  contested: true
+  vs: ma.goal-misgen (the generalisation event is the risk; this is the property of training)
+  crosswalks:
+  - RLO
+  - NGO spurious reward correlations
+  - GDM25 goal misgeneralisation
+  - CAR22 problems with search
+  - DM25 EM-MIS AL-GEN
+- id: tr.optimising-against-oversight
+  node: generator
+  name: Optimisation against oversight signals
+  parent: tr
+  status: draft
+  definition: Training on, or selecting checkpoints by, the outputs of monitors, probes, chain-of-thought readers or evaluations,
+    which can select for evading them rather than for changed behaviour, and removes warning shots.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: ma.scheming
+    name: Scheming, deceptive alignment and alignment faking
+  - id: ma.reward-hacking
+    name: Reward hacking, specification gaming and outer misalignment
+  - id: ma.cot-unfaithful
+    name: Unfaithful, obfuscated or unmonitorable reasoning
+  reduced_by:
+  - rl-reasoning
+  - interpretability
+  common_cause:
+    mech:
+    - epistemic
+    scope:
+    - stack
+    searched_by: selection
+    defeats:
+    - interpretability
+    - guardrail-classifiers
+    - redteam-eval
+    - agentic-control
+  crosswalks:
+  - ISR26
+  - ISRKU
+  - NGO
+  - COT22
+  - GDM25 checkpoint selection
+  - ANW24 3.2.3
+  - CAR22 warning shots
+- id: tr.ai-signal
+  node: generator
+  name: AI-generated training and evaluation signal
+  parent: tr
+  status: draft
+  definition: Synthetic data, AI feedback and AI judges in training and evaluation, so one model's errors and values propagate
+    into the signals that shape and check others.
+  tier: annotate
+  role:
+  - cause
+  - barrier
+  feeds:
+  - id: ma.goal-misgen
+    name: Goal misgeneralisation and emergent misalignment
+  - id: ma.sycophancy
+    name: Sycophancy, dishonesty and manipulation of users by the model
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  reduced_by:
+  - constitutional-ai-feedback
+  - scalable-oversight
+  - provenance-technical
+  common_cause:
+    mech:
+    - substrate
+    scope:
+    - stack
+    - field
+    defeats:
+    - constitutional-ai-feedback
+    - scalable-oversight
+    - redteam-eval
+  crosswalks:
+  - RLO second-layer optimiser
+  - AI2027
+  - HAM25 3.3
+- id: tr.shallow-safety
+  node: generator
+  name: Shallow or localised safety training
+  parent: tr
+  status: provisional
+  definition: Safety behaviour sits in few parameters, tokens or directions on top of intact capabilities, so small fine-tuning,
+    pruning, prompting or steering removes or routes around it.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: se.jailbreak
+    name: Jailbreaks and safeguard removal
+  - id: mu
+    name: Misuse by humans
+  reduced_by:
+  - adversarial-robustness
+  - unlearning-editing
+  - interpretability
+  common_cause:
+    mech:
+    - substrate
+    scope:
+    - stack
+    searched_by: attacker
+    defeats:
+    - sft-instruction
+    - preference-optimization
+    - guardrail-classifiers
+    note: Fine-tuning attacks, jailbreaks and weight edits exploit the same shallowness.
+  contested: true
+  vs: gap (weak safety training); kept because it states how the layer is degraded (C3)
+  crosswalks:
+  - trial misfits (2 docs)
+- id: ca
+  node: family
+  name: Capabilities and cognition
+  status: draft
+  definition: What the system can do or know. Dual-use; measured on tasks that are not themselves the harm (C4). Propensities
+    are risks.
+- id: ca.capability-level
+  node: generator
+  name: General capability level
+  parent: ca
+  status: draft
+  definition: How capable the system is in general, which raises the stakes of every failure and the reach of every misuse.
+  tier: annotate
+  background: true
+  role:
+  - hazard
+  feeds:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  - id: st.disempowerment
+    name: Gradual disempowerment
+  - id: st.power
+    name: Concentration of power, coups and lock-in
+  reduced_by:
+  - non-technical
+  assessed_by:
+  - redteam-eval
+  crosswalks:
+  - CAR22 APS systems
+  - ISR26 sufficient capabilities
+  - GDM25 no human ceiling
+  - SAFERAI KRI primary source
+  - NIST
+- id: ca.capability-jumps
+  node: generator
+  name: Rapid or discontinuous capability gain
+  parent: ca
+  status: draft
+  definition: Fast, unpredicted or emergent capability gains that invalidate evaluations, safety arguments and mitigations
+    calibrated on earlier models.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  reduced_by:
+  - non-technical
+  assessed_by:
+  - redteam-eval
+  common_cause:
+    mech:
+    - environmental
+    scope:
+    - stack
+    - field
+    defeats:
+    - redteam-eval
+    - scalable-oversight
+    - guardrail-classifiers
+  crosswalks:
+  - DM25 CAP-DEV
+  - HEN23 sudden unpredictable developments
+  - GDM25 approximate continuity
+  - WFLL fast takeoff
+- id: ca.hazardous-capability
+  node: generator
+  name: Hazardous domain capability
+  parent: ca
+  status: draft
+  definition: Domain capability that gives uplift to harm - CBRN, offensive cyber, persuasion and manipulation, weapons,
+    surveillance.
+  tier: annotate
+  role:
+  - hazard
+  feeds:
+  - id: mu.cbrn
+    name: CBRN weapons uplift
+  - id: mu.cyber
+    name: Offensive cyber uplift
+  - id: mu.influence
+    name: Influence operations, manipulation and surveillance at scale
+  - id: mu.military
+    name: Military use, weapons and mass violence
+  - id: mu.fraud
+    name: Fraud, impersonation, harassment and other crime
+  reduced_by:
+  - data-curation
+  - pretraining-safety
+  - unlearning-editing
+  assessed_by:
+  - redteam-eval
+  crosswalks:
+  - GPAI 1.3.1
+  - OPF tracked categories
+  - FSF misuse CCLs
+  - RSP
+  - SHEV23
+  - HEN23 malicious use
+- id: ca.situational-awareness
+  node: generator
+  name: Situational and evaluation awareness
+  parent: ca
+  status: draft
+  definition: The system models itself, its training and its context, including recognising when it is being tested or monitored.
+  tier: annotate
+  role:
+  - barrier
+  - cause
+  feeds:
+  - id: ma.scheming
+    name: Scheming, deceptive alignment and alignment faking
+  - id: ma.eval-gaming
+    name: Sandbagging and evaluation gaming
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  reduced_by:
+  - none-known
+  assessed_by:
+  - redteam-eval
+  - interpretability
+  common_cause:
+    mech:
+    - epistemic
+    scope:
+    - stack
+    - field
+    searched_by: model
+    defeats:
+    - redteam-eval
+    - scalable-oversight
+    - agentic-control
+    note: Conditional. Recognising a test does not by itself imply evading it; the coupling is that all behavioural evidence
+      shares the same blind spot.
+  crosswalks:
+  - COT22
+  - NGO
+  - RLO deceptive-alignment condition
+  - GPAI 1.3.1 self-reasoning
+  - ISR26
+  - SHEV23
+  - CORR Needham
+  - FSF stealth and situational awareness
+- id: ca.strategic-agency
+  node: generator
+  name: Long-horizon agency and strategic planning
+  parent: ca
+  status: draft
+  definition: Coherent goal pursuit over long horizons, planning and strategic reasoning about other agents, including theory
+    of mind of overseers.
+  tier: annotate
+  role:
+  - hazard
+  feeds:
+  - id: ma.power-seeking
+    name: Power-seeking, self-preservation and incorrigibility
+  - id: ma.scheming
+    name: Scheming, deceptive alignment and alignment faking
+  - id: ma.sabotage
+    name: Sabotage and subversion of control
+  - id: ma.loss-of-control
+    name: Loss of control and AI takeover
+  reduced_by:
+  - agentic-control
+  - non-technical
+  assessed_by:
+  - redteam-eval
+  crosswalks:
+  - CAR22 agentic planning and strategic awareness
+  - GPAI 1.3.1 long-horizon planning
+  - NGO
+  - ISR26 theory of mind
+- id: ca.evasion-replication
+  node: generator
+  name: Oversight-evasion and autonomous-replication capability
+  parent: ca
+  status: draft
+  definition: Capability to act covertly against oversight, deceive evaluators, self-replicate, acquire resources and adapt
+    without human support.
+  tier: annotate
+  role:
+  - hazard
+  feeds:
+  - id: ma.exfiltration
+    name: Self-exfiltration, autonomous replication and escape
+  - id: ma.sabotage
+    name: Sabotage and subversion of control
+  - id: ma.loss-of-control
+    name: Loss of control and AI takeover
+  reduced_by:
+  - unlearning-editing
+  - agentic-control
+  assessed_by:
+  - redteam-eval
+  contested: true
+  vs: ma.scheming and ma.exfiltration (capability measured on a task vs the behaviour itself, C4)
+  crosswalks:
+  - GPAI 1.3.1 evade oversight and self-replicate
+  - OPF autonomous replication and adaptation
+  - FSF stealth
+  - SHEV23 self-proliferation and deception
+  - ISR26
+- id: ca.hidden-reasoning
+  node: generator
+  name: Capacity for hidden or non-verbal reasoning
+  parent: ca
+  status: draft
+  definition: Reasoning that does not appear in legible text - latent computation, steganography, compressed or non-linguistic
+    reasoning.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: ma.cot-unfaithful
+    name: Unfaithful, obfuscated or unmonitorable reasoning
+  - id: ma.scheming
+    name: Scheming, deceptive alignment and alignment faking
+  - id: mx.collusion
+    name: Collusion between agents
+  reduced_by:
+  - interpretability
+  - decoding-control
+  assessed_by:
+  - redteam-eval
+  common_cause:
+    mech:
+    - epistemic
+    scope:
+    - stack
+    defeats:
+    - guardrail-classifiers
+    - agentic-control
+    - scalable-oversight
+  crosswalks:
+  - HAM25 2.3 steganography
+  - ANW24 steganography
+- id: ca.ai-rnd
+  node: generator
+  name: AI R&D capability and research automation
+  parent: ca
+  status: draft
+  definition: The system can do AI research and engineering, enabling rapid capability growth, AI-built successors and compressed
+    time for every human check.
+  tier: annotate
+  role:
+  - hazard
+  - barrier
+  feeds:
+  - id: ma.loss-of-control
+    name: Loss of control and AI takeover
+  - id: ma.sabotage
+    name: Sabotage and subversion of control
+  - id: st.power
+    name: Concentration of power, coups and lock-in
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  reduced_by:
+  - non-technical
+  assessed_by:
+  - redteam-eval
+  common_cause:
+    mech:
+    - environmental
+    scope:
+    - stack
+    - field
+    defeats:
+    - redteam-eval
+    - scalable-oversight
+  crosswalks:
+  - AI2027
+  - GPAI 1.3.1 automate AI R&D
+  - FSF cross-cutting risk factor
+  - RSP automated R&D
+- id: as
+  node: family
+  name: Limits of assurance and oversight
+  status: draft
+  definition: Conditions that defeat defences rather than create hazards - what makes it hard to know or check whether a
+    system is safe.
+- id: as.opacity
+  node: generator
+  name: Opacity of learned systems
+  parent: as
+  status: draft
+  definition: Internal computation is not understood, so behaviour cannot be predicted or audited from inspection and assurance
+    must rest on behaviour.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: re
+    name: Reliability and accidents
+  reduced_by:
+  - interpretability
+  common_cause:
+    mech:
+    - epistemic
+    scope:
+    - stack
+    - field
+    defeats:
+    - redteam-eval
+    - scalable-oversight
+    note: Conditional; it does not defeat behavioural classifiers as such.
+  crosswalks:
+  - GPAI 1.3.3 lack of explainability
+  - ISO lack of transparency
+  - NIST
+  - ANW24
+  - ISR25 opacity
+- id: as.overseer-gap
+  node: generator
+  name: Overseer-capability gap
+  parent: as
+  status: draft
+  definition: The humans or trusted models doing oversight cannot evaluate outputs or actions on the tasks that matter (evaluation
+    is not easier than generation). Reserve for difficulty judging an inspected output or action, not for too many behaviours
+    to inspect (as.coverage-limits).
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: ma.reward-hacking
+    name: Reward hacking, specification gaming and outer misalignment
+  - id: ma.sycophancy
+    name: Sycophancy, dishonesty and manipulation of users by the model
+  - id: ma.scheming
+    name: Scheming, deceptive alignment and alignment faking
+  - id: ma.sabotage
+    name: Sabotage and subversion of control
+  reduced_by:
+  - scalable-oversight
+  - honesty-calibration
+  common_cause:
+    mech:
+    - epistemic
+    scope:
+    - stack
+    defeats:
+    - preference-optimization
+    - constitutional-ai-feedback
+    - redteam-eval
+    - agentic-control
+  crosswalks:
+  - DM25 EVAL-DIFF
+  - COT22 fallible evaluators
+  - NGO
+  - WFLL
+  - GDM25 amplified oversight
+- id: as.coverage-limits
+  node: generator
+  name: Coverage limits of testing and observation
+  parent: as
+  status: draft
+  definition: The behaviour and input space exceeds what testing, red-teaming or monitoring can sample, or the relevant
+    signal lies outside what monitors observe, so defences are tuned to what was seen (including overfitting to a red team).
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  - id: se
+    name: Security of AI systems
+  - id: re
+    name: Reliability and accidents
+  reduced_by:
+  - redteam-eval
+  - agentic-control
+  common_cause:
+    mech:
+    - epistemic
+    scope:
+    - stack
+    defeats:
+    - redteam-eval
+    - guardrail-classifiers
+    - agentic-control
+  note: 'Contrast: dp.scale is deployment exposure (how often rare failures happen); as.overseer-gap is inability to judge
+    an inspected output.'
+  crosswalks:
+  - 'trial: Petri, control-protocol overfitting'
+  - ANW24 targeted training confounds evaluation
+  - SC defeaters
+- id: as.overseer-human-factors
+  node: generator
+  name: Human factors in oversight
+  parent: as
+  status: draft
+  definition: Overseers who could check do not - alarm fatigue, automation bias, ignored detectors with false positives,
+    unwatched moments, cognitive bias.
+  tier: curated
+  role:
+  - barrier
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: re.agentic
+    name: Unsafe autonomous action
+  - id: se
+    name: Security of AI systems
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - operational
+    scope:
+    - stack
+    defeats:
+    - agentic-control
+    - guardrail-classifiers
+  crosswalks:
+  - HEN22 alarm fatigue
+  - AI2027 lie detectors ignored
+  - KS23 cognitive biases
+  - BOWTIE human factors
+  - REASON active failures
+  - NIST automation bias
+- id: as.immature-science
+  node: generator
+  name: Immature safety and assurance science
+  parent: as
+  status: draft
+  definition: The document argues that a named safety property cannot currently be established by any available method (absence
+    of hidden goals, robustness against an adaptive adversary), so every argument relying on it is weak at once. Generic
+    'the science is young' or 'open problem' statements do not qualify.
+  tier: annotate
+  background: true
+  role:
+  - barrier
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  reduced_by:
+  - foundations
+  - interpretability
+  common_cause:
+    mech:
+    - epistemic
+    scope:
+    - stack
+    - field
+    defeats:
+    - redteam-eval
+    - interpretability
+    - scalable-oversight
+    note: Argument-level dependence (several safety-case arguments share one unvalidated assumption), not the same as operational
+      layers failing together.
+  contested: true
+  vs: gap (C3); use as an uncertainty descriptor, not a universal explanation
+  crosswalks:
+  - ANW24 scientific understanding
+  - HEN22
+  - SC defeaters
+  - ISR26 gaps in scientific understanding
+  - TASRA worse than expected
+- id: dp
+  node: family
+  name: Deployment and affordances
+  status: draft
+  definition: How and where the system is made available, what it can act on, and how its deployed form departs from what
+    was checked.
+- id: dp.scale
+  node: generator
+  name: Deployment scale and breadth
+  parent: dp
+  status: draft
+  definition: Many users, instances, contexts and fast operation, so rare failures occur, small per-interaction harms add
+    up, attackers find the rare hole and humans cannot respond in time. Label for actual deployment volume or breadth, not
+    for the size of a behaviour space.
+  tier: annotate
+  background: true
+  role:
+  - hazard
+  feeds:
+  - id: re
+    name: Reliability and accidents
+  - id: mu
+    name: Misuse by humans
+  - id: ha
+    name: Present-day harms to people (coarse)
+  - id: st.epistemic
+    name: Epistemic degradation
+  reduced_by:
+  - guardrail-classifiers
+  - non-technical
+  crosswalks:
+  - GPAI 1.3.3 scalability and number of users
+  - ISR25 breadth of use
+  - ISR26 enabling deployment environment
+- id: dp.autonomy-affordances
+  node: generator
+  name: Autonomy and action affordances
+  parent: dp
+  status: draft
+  definition: Tool access, permissions, computer use, retrieval, long-running unsupervised operation and physical actuation,
+    with less human review per action.
+  tier: annotate
+  role:
+  - hazard
+  feeds:
+  - id: re.agentic
+    name: Unsafe autonomous action
+  - id: ma.exfiltration
+    name: Self-exfiltration, autonomous replication and escape
+  - id: ma.power-seeking
+    name: Power-seeking, self-preservation and incorrigibility
+  - id: ma.sabotage
+    name: Sabotage and subversion of control
+  - id: se.injection
+    name: Prompt injection and agent hijacking
+  reduced_by:
+  - agentic-control
+  crosswalks:
+  - GPAI 1.3.3 access to tools and level of human oversight
+  - ISR26 enabling deployment environment
+  - HEN23 unleashing AI agents
+  - ISR25 agents
+- id: dp.untrusted-inputs
+  node: generator
+  name: Untrusted content in the loop
+  parent: dp
+  status: draft
+  definition: Systems that read web pages, documents, emails or other agents' outputs while acting, so third parties can
+    steer them.
+  tier: annotate
+  role:
+  - hazard
+  feeds:
+  - id: se.injection
+    name: Prompt injection and agent hijacking
+  - id: mx
+    name: Multi-agent failures
+  reduced_by:
+  - adversarial-robustness
+  - agentic-control
+  - guardrail-classifiers
+  crosswalks:
+  - HAM25 3.7 vulnerable AI agents
+  - ANW24
+  - GIP24
+- id: dp.high-stakes-use
+  node: generator
+  name: High-stakes use
+  parent: dp
+  status: draft
+  definition: Use in critical infrastructure, military, finance, health or government decisions, where a failure's consequences
+    are large or irreversible. Fast propagation through tightly coupled systems is mf.network-effects.
+  tier: annotate
+  role:
+  - hazard
+  feeds:
+  - id: re.agentic
+    name: Unsafe autonomous action
+  - id: mu.military
+    name: Military use, weapons and mass violence
+  - id: mx.miscoordination
+    name: Miscoordination
+  - id: st.disempowerment
+    name: Gradual disempowerment
+  reduced_by:
+  - non-technical
+  crosswalks:
+  - HEN23 automated warfare and normal accidents
+  - GPAI 1.3.3 critical infrastructure
+  - STPA
+  - ISR25 too big to fail
+- id: dp.internal-deployment
+  node: generator
+  name: Internal deployment with privileged access
+  parent: dp
+  status: draft
+  definition: Use of frontier models inside the developer (for AI R&D, on its own code and safety infrastructure, near its
+    weights), often earlier and with less scrutiny than external release.
+  tier: annotate
+  role:
+  - hazard
+  - barrier
+  feeds:
+  - id: ma.sabotage
+    name: Sabotage and subversion of control
+  - id: ma.exfiltration
+    name: Self-exfiltration, autonomous replication and escape
+  - id: ma.loss-of-control
+    name: Loss of control and AI takeover
+  - id: st.power
+    name: Concentration of power, coups and lock-in
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  reduced_by:
+  - agentic-control
+  - non-technical
+  common_cause:
+    mech:
+    - substrate
+    - operational
+    scope:
+    - stack
+    defeats:
+    - agentic-control
+    - redteam-eval
+    - scalable-oversight
+    note: The model works on, and next to, its own safeguards.
+  crosswalks:
+  - AI2027 internal deployment
+  - RSP
+- id: dp.irreversible-release
+  node: generator
+  name: Open or unrecallable release
+  parent: dp
+  status: draft
+  definition: The decision to release weights (or otherwise make a model unrecallable), so downstream safeguards can be
+    removed and nothing can be withdrawn.
+  tier: annotate
+  role:
+  - hazard
+  - barrier
+  feeds:
+  - id: mu
+    name: Misuse by humans
+  - id: se.jailbreak
+    name: Jailbreaks and safeguard removal
+  reduced_by:
+  - unlearning-editing
+  - adversarial-robustness
+  - non-technical
+  note: A bypass of deployment-time layers rather than a common cause; theft is the risk se.theft with a bypass edge.
+  crosswalks:
+  - GPAI 1.3.3 release and distribution strategies
+  - ISR25 open-weight
+  - HEN23 leaked AI systems
+  - ZD19 easy diffusion
+- id: dp.post-deployment-change
+  node: generator
+  name: Post-deployment change of the evaluated system
+  parent: dp
+  status: draft
+  definition: Fine-tuning access, continual learning, memory updates and new tools make the deployed system's weights or
+    components differ from the one evaluated. Context and harness dependence without such change is dp.context-dependence.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: ma.goal-misgen
+    name: Goal misgeneralisation and emergent misalignment
+  - id: se.jailbreak
+    name: Jailbreaks and safeguard removal
+  - id: re.robustness
+    name: Robustness failure and distribution shift
+  reduced_by:
+  - agentic-control
+  - adversarial-robustness
+  common_cause:
+    mech:
+    - environmental
+    scope:
+    - stack
+    defeats:
+    - redteam-eval
+    - sft-instruction
+    - preference-optimization
+  crosswalks:
+  - GPAI 1.3.1 adaptively learn
+  - NIST
+  - AI2027 continuous online training
+- id: dp.context-dependence
+  node: generator
+  name: Context, harness and conversation dependence
+  parent: dp
+  status: draft
+  definition: Behaviour is set by the harness, system prompt, instructions and accumulated conversation that the developer
+    did not evaluate (persona attractors, long-context drift, ambiguous natural-language instructions), so the same model
+    behaves differently in use.
+  tier: annotate
+  role:
+  - barrier
+  - cause
+  feeds:
+  - id: ma.sycophancy
+    name: Sycophancy, dishonesty and manipulation of users by the model
+  - id: ha.reliance
+    name: Overreliance, dependence and psychological harm
+  - id: re.agentic
+    name: Unsafe autonomous action
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: re
+    name: Reliability and accidents
+  reduced_by:
+  - agentic-control
+  - sft-instruction
+  assessed_by:
+  - redteam-eval
+  common_cause:
+    mech:
+    - environmental
+    scope:
+    - stack
+    defeats:
+    - redteam-eval
+    - sft-instruction
+  crosswalks:
+  - 'trial misfits (4 docs: persona attractors, harness dependence, conversational assumptions, NL specifications)'
+- id: dp.distribution-shift
+  node: generator
+  name: Deployment distribution shift and drift
+  parent: dp
+  status: draft
+  definition: The world in deployment differs from training and evaluation, or drifts or is shocked after deployment, including
+    shifts the model can detect. Label only when a reference training or evaluation distribution and a mismatch are stated.
+  tier: annotate
+  role:
+  - barrier
+  - cause
+  feeds:
+  - id: re.robustness
+    name: Robustness failure and distribution shift
+  - id: ma.goal-misgen
+    name: Goal misgeneralisation and emergent misalignment
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: re
+    name: Reliability and accidents
+  reduced_by:
+  - adversarial-robustness
+  - agentic-control
+  common_cause:
+    mech:
+    - environmental
+    scope:
+    - stack
+    - field
+    defeats:
+    - redteam-eval
+    - guardrail-classifiers
+    - sft-instruction
+  crosswalks:
+  - CAR22
+  - COT22
+  - NGO detectable distribution shift
+  - RLO
+  - SC distribution shifts raise correlated infractions
+  - NIST concept drift
+  - STPA
+  - WFLL
+  - BOWTIE abnormal conditions
+- id: dp.engineering-error
+  node: generator
+  name: Engineering and integration faults
+  parent: dp
+  status: draft
+  definition: Ordinary bugs, design and implementation errors, misconfiguration and integration faults in models, scaffolds,
+    safeguards and their tooling.
+  tier: annotate
+  role:
+  - cause
+  - barrier
+  feeds:
+  - id: re
+    name: Reliability and accidents
+  weakens:
+  - id: se
+    name: Security of AI systems
+  - id: ma
+    name: Misalignment and loss of control
+  reduced_by:
+  - non-technical
+  crosswalks:
+  - HEN23 bugs
+  - YAMP16 by mistake
+  - ISO system life cycle issues
+  - KS23 engineering failures
+  - DM25 humans writing safety code
+- id: su
+  node: family
+  name: Shared components, processes and monoculture
+  status: draft
+  definition: What makes holes line up - components, processes or susceptibilities shared by defences or by developers.
+    All leaves are common-cause candidates.
+- id: su.shared-base
+  node: generator
+  name: One model family under several layers
+  parent: su
+  status: draft
+  definition: The policy and its monitors, classifiers, judges and reward models are derived from the same base model or
+    family, so they share blind spots.
+  tier: curated
+  role:
+  - barrier
+  weakens:
+  - id: ma.sabotage
+    name: Sabotage and subversion of control
+  - id: ma.scheming
+    name: Scheming, deceptive alignment and alignment faking
+  - id: se.jailbreak
+    name: Jailbreaks and safeguard removal
+  reduced_by:
+  - agentic-control
+  - scalable-oversight
+  common_cause:
+    mech:
+    - substrate
+    scope:
+    - stack
+    defeats:
+    - guardrail-classifiers
+    - agentic-control
+    - scalable-oversight
+    - redteam-eval
+    note: Collusion is a separate risk (mx.collusion, ma.sabotage) that this makes easier; shared lineage does not entail
+      it.
+  crosswalks:
+  - HAM25 collusion in adversarial safety schemes
+  - NGO
+  - AI2027 who watches the watchers
+  - GDM25 judge-policy collusion
+  - CORR monitor-policy collusion
+  - CCF hardware design
+- id: su.shared-data-methods
+  node: generator
+  name: Shared data, recipes and benchmarks across developers
+  parent: su
+  status: draft
+  definition: The same corpora, post-training recipes, safety datasets and benchmarks across labs, and evaluation data leaking
+    into training, so failures correlate across models and evaluations check the same things.
+  tier: curated
+  role:
+  - barrier
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: ha.bias
+    name: Bias, discrimination and unequal performance
+  - id: st.epistemic
+    name: Epistemic degradation
+  - id: se.jailbreak
+    name: Jailbreaks and safeguard removal
+  reduced_by:
+  - none-known
+  common_cause:
+    mech:
+    - substrate
+    scope:
+    - field
+    defeats:
+    - redteam-eval
+    - data-curation
+    - preference-optimization
+  crosswalks:
+  - HAM25 3.2 homogeneity and correlated failures
+  - ANW24 foundationality
+  - CORR Kim et al. and Bommasani
+  - ISR26 model convergence
+  - SHEV23 eval data in pretraining
+  - NIST monocultures
+  - GIP24 10.7
+  - UUK24 algorithmic monoculture
+- id: su.convergent-susceptibility
+  node: generator
+  name: Convergent susceptibility without a shared component
+  parent: su
+  status: draft
+  definition: Layers or models that rely on the same capability, input features or assumptions fail on the same inputs even
+    with no shared component (layers sharing semantic understanding; capable models' errors converging across providers).
+  tier: curated
+  role:
+  - barrier
+  weakens:
+  - id: se.jailbreak
+    name: Jailbreaks and safeguard removal
+  - id: ma
+    name: Misalignment and loss of control
+  - id: re
+    name: Reliability and accidents
+  reduced_by:
+  - none-known
+  common_cause:
+    mech:
+    - convergent
+    scope:
+    - stack
+    - field
+    defeats:
+    - guardrail-classifiers
+    - redteam-eval
+    - agentic-control
+  crosswalks:
+  - CORR Kim et al.
+  - ISR26 model convergence
+  - 'trial: defence-in-depth framework (layers sharing semantic understanding)'
+- id: su.shared-process
+  node: generator
+  name: Shared people, procedures and tooling behind several layers
+  parent: su
+  status: draft
+  definition: The same team, evaluation pipeline, tooling, test schedule or sign-off process produces and checks several
+    layers of one stack.
+  tier: curated
+  role:
+  - barrier
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  - id: se
+    name: Security of AI systems
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - operational
+    scope:
+    - stack
+    defeats:
+    - redteam-eval
+    - guardrail-classifiers
+    - agentic-control
+  crosswalks:
+  - CCF operation-based coupling
+  - DM25 Ee toolchain flaws
+  - BOWTIE management system
+  - KS23 shared sensor
+- id: su.concentrated-infrastructure
+  node: generator
+  name: Concentrated platforms and providers
+  parent: su
+  status: draft
+  definition: Few providers of foundation models, platforms and serving infrastructure, so one failure or compromise reaches
+    most deployments.
+  tier: curated
+  role:
+  - barrier
+  - hazard
+  feeds:
+  - id: se
+    name: Security of AI systems
+  - id: re
+    name: Reliability and accidents
+  weakens:
+  - id: se
+    name: Security of AI systems
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - substrate
+    scope:
+    - field
+  contested: true
+  vs: cm.capability-concentration (economic power vs single point of failure)
+  crosswalks:
+  - ISR25 single points of failure
+  - UUK24 centralized platforms
+  - NIST foundation models as single points of failure
+  - BOWTIE loss of critical services
+- id: su.supply-chain
+  node: generator
+  name: Open data, model and tool supply chain
+  parent: su
+  status: draft
+  definition: Scraped, third-party or user-contributed data, third-party base models, libraries, tools and plugins in the
+    training or deployment pipeline, which expose it to poisoning, backdoors, contamination and compromised dependencies.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: se.poisoning
+    name: Data poisoning, backdoors and supply chain
+  reduced_by:
+  - data-curation
+  - provenance-technical
+  common_cause:
+    mech:
+    - substrate
+    scope:
+    - stack
+    - field
+    note: A poisoned shared dependency reaches every model that uses it.
+  crosswalks:
+  - NIST
+  - ISO system life cycle issues
+  - GIP24
+  - SC trojans
+- id: or
+  node: family
+  name: Developer and deployer organisations
+  status: draft
+  definition: Conditions inside the organisations that build or deploy AI (labs, platforms, governments, firms) that set
+    how good their defences are, or that reward harmful use. Record the actor role (developer / deployer) where it matters.
+- id: or.commercial-pressure
+  node: generator
+  name: Commercial and schedule pressure on safety work
+  parent: or
+  status: draft
+  definition: Revenue, valuation, engagement and capability-first priorities (including deployer business models that reward
+    engagement over the user's interest), the cost of safety (safety tax) and the resulting deadlines, which compress evaluation
+    windows and understaff safety work.
+  tier: annotate
+  role:
+  - cause
+  - barrier
+  feeds:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  - id: re
+    name: Reliability and accidents
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  - id: re
+    name: Reliability and accidents
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - institutional
+    scope:
+    - stack
+    defeats:
+    - redteam-eval
+    - guardrail-classifiers
+    - agentic-control
+    - scalable-oversight
+  crosswalks:
+  - HEN23 organisational risks
+  - HEN22 safety feature costs and productivity pressure
+  - DM25 S-TAX
+  - ANW24 safety-performance trade-offs
+  - ZD19 Uber brake
+  - COT22
+  - AI2027
+- id: or.safety-culture
+  node: generator
+  name: Safety culture and process deficits
+  parent: or
+  status: draft
+  definition: Weak questioning attitude, normalisation of deviance, ignored near-misses, safety-washing, safety treated
+    as compliance.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: re
+    name: Reliability and accidents
+  - id: mu
+    name: Misuse by humans
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - institutional
+    scope:
+    - stack
+    defeats:
+    - redteam-eval
+    - guardrail-classifiers
+    - agentic-control
+  crosswalks:
+  - HEN23 4.2 organisational factors and safetywashing
+  - HEN22 systemic factors
+  - REASON latent conditions
+  - STPA migration to higher risk
+  - BOWTIE management system
+- id: or.weak-internal-governance
+  node: generator
+  name: Weak internal governance and accountability
+  parent: or
+  status: draft
+  definition: Decision power concentrated in few people, conflicts of interest, insider access, and boards or oversight
+    bodies that cannot enforce safety commitments. A plain absence of an independent check is a gap (C3), not this leaf.
+  tier: annotate
+  role:
+  - barrier
+  - cause
+  feeds:
+  - id: st.power
+    name: Concentration of power, coups and lock-in
+  - id: se.theft
+    name: Model theft, extraction and unauthorised access
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - institutional
+    scope:
+    - stack
+  crosswalks:
+  - HEN23 organisational risks
+  - ANW24 corporate power
+- id: cm
+  node: family
+  name: Competition and geopolitics
+  status: draft
+  definition: Dynamics among developers and states.
+- id: cm.corporate-race
+  node: generator
+  name: Corporate race dynamics
+  parent: cm
+  status: draft
+  definition: Competition for market share and first-mover advantage, so careful developers are out-competed and all cut
+    corners.
+  tier: annotate
+  role:
+  - cause
+  - barrier
+  feeds:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  - id: re
+    name: Reliability and accidents
+  weakens:
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - institutional
+    scope:
+    - field
+  crosswalks:
+  - HEN23 3.2 corporate AI race
+  - CAR22 competition
+  - COT22 racing forward
+  - AI2027
+  - ZD19 winner-take-all
+  - RAAP race to the bottom
+  - RSP weakest protections set the pace
+- id: cm.geopolitical-race
+  node: generator
+  name: Geopolitical and military competition
+  parent: cm
+  status: draft
+  definition: State rivalry and national-security framing that reduce restraint, push military integration and make coordination
+    costly.
+  tier: annotate
+  role:
+  - cause
+  - barrier
+  feeds:
+  - id: mu.military
+    name: Military use, weapons and mass violence
+  - id: mx.conflict
+    name: Conflict and escalation between agents
+  - id: st.power
+    name: Concentration of power, coups and lock-in
+  - id: ma.loss-of-control
+    name: Loss of control and AI takeover
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - institutional
+    scope:
+    - field
+  crosswalks:
+  - HEN23 3.1 military AI arms race
+  - AI2027
+  - GD25 geopolitical competition
+- id: cm.capability-concentration
+  node: generator
+  name: Concentration of frontier capability
+  parent: cm
+  status: draft
+  definition: Few actors control frontier models, compute and talent (winner-take-all dynamics), so there are few external
+    checks on those actors.
+  tier: curated
+  role:
+  - hazard
+  feeds:
+  - id: st.power
+    name: Concentration of power, coups and lock-in
+  reduced_by:
+  - non-technical
+  crosswalks:
+  - ISR25 market concentration
+  - HEN23 concentration of power
+  - ZD19 winner-take-all
+- id: cm.actor-count
+  node: generator
+  name: Number of capable actors and unilateralism
+  parent: cm
+  status: draft
+  definition: Many actors able to build or deploy dangerous systems, including through diffusion of compute and models to
+    rivals, so the least cautious sets the outcome.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: mu
+    name: Misuse by humans
+  - id: ma
+    name: Misalignment and loss of control
+  - id: st.governance
+    name: Governance, accountability and safety-practice failure
+  reduced_by:
+  - non-technical
+  crosswalks:
+  - HEN23 unilateral actors
+  - CAR22 number of relevant actors
+  - KS23 number of AGI companies
+- id: cm.arbitrage-capture
+  node: generator
+  name: Regulatory arbitrage and industry capture
+  parent: cm
+  status: draft
+  definition: Development moves to permissive jurisdictions, and developers shape, lobby or capture the rules meant to constrain
+    them.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: st.governance
+    name: Governance, accountability and safety-practice failure
+  - id: mu
+    name: Misuse by humans
+  - id: ma
+    name: Misalignment and loss of control
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - institutional
+    scope:
+    - field
+  crosswalks:
+  - RAAP regulatory arbitrage and interference
+  - ISR26 cross-border challenges
+  - UUK24
+  - ANW24 corporate power to distort
+  - TASRA industry capture
+- id: ad
+  node: family
+  name: Adversaries and offence-defence balance
+  status: draft
+  definition: The supply side of misuse and attacks.
+- id: ad.motivated-actors
+  node: generator
+  name: Motivated malicious actors
+  parent: ad
+  status: draft
+  definition: Criminals, terrorists, states and insiders who want AI uplift or AI assets, including weights and secrets.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: mu
+    name: Misuse by humans
+  - id: se.theft
+    name: Model theft, extraction and unauthorised access
+  - id: se.poisoning
+    name: Data poisoning, backdoors and supply chain
+  reduced_by:
+  - non-technical
+  crosswalks:
+  - HEN23 malicious use
+  - GPAI 1.3.3 motivation of malicious actors
+  - TASRA criminal and state weaponisation
+  - YAMP16 on purpose
+  - GDM25 adversarial user
+- id: ad.offence-defence
+  node: generator
+  name: Offence-defence imbalance
+  parent: ad
+  status: draft
+  definition: Domains where AI helps attack more than defence or makes attacks cheap to scale (biology, cyber, influence).
+  tier: curated
+  role:
+  - hazard
+  feeds:
+  - id: mu.cbrn
+    name: CBRN weapons uplift
+  - id: mu.cyber
+    name: Offensive cyber uplift
+  - id: mu.influence
+    name: Influence operations, manipulation and surveillance at scale
+  reduced_by:
+  - non-technical
+  note: Includes amplification by adjacent non-AI technologies (biotech, robotics, quantum) that make AI-enabled attacks
+    easier.
+  crosswalks:
+  - GPAI 1.3.3 offence-defence balance
+  - ZD19 offence-defence
+- id: ad.adaptive-attack
+  node: generator
+  name: Adaptive attack pressure on safeguards
+  parent: ad
+  status: draft
+  definition: A population of attackers iterating against safeguards, with attacks that transfer across models and layers.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: se.jailbreak
+    name: Jailbreaks and safeguard removal
+  - id: se.injection
+    name: Prompt injection and agent hijacking
+  - id: mu
+    name: Misuse by humans
+  reduced_by:
+  - adversarial-robustness
+  - guardrail-classifiers
+  common_cause:
+    mech:
+    - convergent
+    scope:
+    - stack
+    - field
+    searched_by: attacker
+    defeats:
+    - guardrail-classifiers
+    - sft-instruction
+    - preference-optimization
+    - decoding-control
+  crosswalks:
+  - GPAI 1.3.3 adversarial removal of guardrails
+  - ISRKU attacks designed to break each layer
+  - ANW24 transferable jailbreaks
+- id: mf
+  node: family
+  name: Multi-agent interaction factors
+  status: draft
+  definition: Hammond et al. 2025's seven risk factors, which produce the multi-agent failure modes (risks mx.miscoordination,
+    mx.conflict, mx.collusion).
+- id: mf.information-asymmetry
+  node: generator
+  name: Information asymmetries
+  parent: mf
+  status: draft
+  definition: Private information among agents leads to miscoordination, deception and conflict.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: mx.miscoordination
+    name: Miscoordination
+  - id: mx.conflict
+    name: Conflict and escalation between agents
+  reduced_by:
+  - foundations
+  crosswalks:
+  - HAM25 3.1
+- id: mf.network-effects
+  node: generator
+  name: Network effects, coupling and propagation
+  parent: mf
+  status: draft
+  definition: Small changes in agents or their connections change whole-network behaviour, and failures propagate fast through
+    tightly coupled systems (homogeneity of agents is su.shared-data-methods).
+  tier: curated
+  role:
+  - cause
+  feeds:
+  - id: mx.miscoordination
+    name: Miscoordination
+  - id: re
+    name: Reliability and accidents
+  reduced_by:
+  - none-known
+  crosswalks:
+  - HAM25 3.2
+  - UUK24 network interconnectivity
+- id: mf.selection-pressure
+  node: generator
+  name: Selection pressures
+  parent: mf
+  status: draft
+  definition: Training, competition and replacement by deployers select for undesirable dispositions or capabilities, including
+    against constraints (Hendrycks's evolutionary pressures).
+  tier: curated
+  role:
+  - cause
+  - barrier
+  feeds:
+  - id: ma.power-seeking
+    name: Power-seeking, self-preservation and incorrigibility
+  - id: mx.conflict
+    name: Conflict and escalation between agents
+  - id: mx.collusion
+    name: Collusion between agents
+  - id: st.disempowerment
+    name: Gradual disempowerment
+  reduced_by:
+  - none-known
+  common_cause:
+    mech:
+    - institutional
+    scope:
+    - field
+    searched_by: selection
+  crosswalks:
+  - HAM25 3.3
+  - HEN23 3.3 evolutionary pressures
+  - HEN23NS
+  - WFLL influence-seeking
+- id: mf.destabilising-dynamics
+  node: generator
+  name: Destabilising dynamics
+  parent: mf
+  status: draft
+  definition: Mutually adapting systems produce feedback loops, cycles, chaos and phase transitions.
+  tier: annotate
+  role:
+  - hazard
+  feeds:
+  - id: mx.miscoordination
+    name: Miscoordination
+  - id: mx.conflict
+    name: Conflict and escalation between agents
+  - id: re
+    name: Reliability and accidents
+  reduced_by:
+  - none-known
+  crosswalks:
+  - HAM25 3.4
+- id: mf.commitment-trust
+  node: generator
+  name: Commitment and trust problems
+  parent: mf
+  status: draft
+  definition: Agents cannot make credible commitments or build trust, so mutual gains are lost and threats become possible.
+  tier: curated
+  role:
+  - cause
+  feeds:
+  - id: mx.conflict
+    name: Conflict and escalation between agents
+  reduced_by:
+  - foundations
+  crosswalks:
+  - HAM25 3.5
+- id: mf.mixed-motives
+  node: generator
+  name: Mixed-motive incentive structures
+  parent: mf
+  status: draft
+  definition: Agents' individual and collective payoffs diverge (social dilemmas, common-pool resources, externalities,
+    price of anarchy), so independent optimisation produces bad equilibria.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: mx.conflict
+    name: Conflict and escalation between agents
+  - id: mx.miscoordination
+    name: Miscoordination
+  reduced_by:
+  - foundations
+  note: Not one of Hammond's seven risk factors; Hammond uses incentive structure to define failure modes.
+  crosswalks:
+  - HAM25 2.2 conflict (failure mode defined by mixed motives)
+  - trial misfits (3 docs)
+- id: mf.emergent-agency
+  node: generator
+  name: Emergent collective agency
+  parent: mf
+  status: draft
+  definition: Goals or capabilities emerge from compositions of individually innocuous systems, including hybrid human-AI
+    institutions acting as agents.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: mx.collusion
+    name: Collusion between agents
+  - id: ma.loss-of-control
+    name: Loss of control and AI takeover
+  - id: st.disempowerment
+    name: Gradual disempowerment
+  reduced_by:
+  - none-known
+  crosswalks:
+  - HAM25 3.6
+  - YAMP16 groups of AIs
+- id: mf.multiagent-attack-surface
+  node: generator
+  name: Multi-agent attack surface
+  parent: mf
+  status: draft
+  definition: Many interacting agents create new attack surfaces (swarm, heterogeneous and cascading attacks).
+  tier: annotate
+  role:
+  - hazard
+  feeds:
+  - id: se.injection
+    name: Prompt injection and agent hijacking
+  - id: se
+    name: Security of AI systems
+  reduced_by:
+  - adversarial-robustness
+  - agentic-control
+  crosswalks:
+  - HAM25 3.7
+- id: so
+  node: family
+  name: Societal and structural
+  status: draft
+  definition: How AI changes the systems people live in; process-level mechanisms (Kulveit et al., Critch) that persist
+    whoever the actors are.
+- id: so.reduced-human-reliance
+  node: generator
+  name: Reduced reliance on human participation
+  parent: so
+  status: draft
+  definition: As AI substitutes for human labour and cognition in the economy, culture and the state, those systems need
+    humans less, the implicit leverage humans had erodes, the effects reinforce each other across systems, and exit becomes
+    costly.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: st.disempowerment
+    name: Gradual disempowerment
+  - id: ha.labour
+    name: Labour, inequality and economic displacement
+  - id: st.power
+    name: Concentration of power, coups and lock-in
+  reduced_by:
+  - non-technical
+  crosswalks:
+  - GD25 sections 2-5
+  - RAAP production web
+  - TASRA production web
+  - WFLL whimper
+- id: so.adoption-pressure
+  node: generator
+  name: Competitive pressure to automate and cede control
+  parent: so
+  status: draft
+  definition: Firms, states and institutions that adopt AI and remove humans from the loop out-compete those that do not,
+    so delegation spreads whether or not anyone chose it.
+  tier: annotate
+  role:
+  - cause
+  feeds:
+  - id: st.disempowerment
+    name: Gradual disempowerment
+  - id: re.agentic
+    name: Unsafe autonomous action
+  - id: ha.labour
+    name: Labour, inequality and economic displacement
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - institutional
+    scope:
+    - field
+  crosswalks:
+  - GD25 incentives for adoption
+  - RAAP competitive pressure to produce
+  - HEN23 automated economy
+  - HEN22 cede control to keep up
+  - ISR26 economic incentives
+- id: so.delegation-atrophy
+  node: generator
+  name: Delegation and atrophy of human oversight capacity
+  parent: so
+  status: draft
+  definition: People and institutions hand judgement to AI and lose the skill and attention to check it, so human oversight
+    weakens over time. Includes AI-produced artefacts (code, documents) whose complexity outgrows human comprehension.
+  tier: curated
+  role:
+  - barrier
+  weakens:
+  - id: ha.reliance
+    name: Overreliance, dependence and psychological harm
+  - id: st.disempowerment
+    name: Gradual disempowerment
+  - id: re
+    name: Reliability and accidents
+  - id: ma
+    name: Misalignment and loss of control
+  reduced_by:
+  - honesty-calibration
+  - non-technical
+  common_cause:
+    mech:
+    - substrate
+    scope:
+    - stack
+    - field
+    defeats:
+    - scalable-oversight
+    - agentic-control
+    note: The shared component is the human overseer.
+  crosswalks:
+  - HEN23 enfeeblement
+  - ISR26 human autonomy
+  - NIST automation bias
+- id: so.ai-mediated-information
+  node: generator
+  name: AI-mediated information environment
+  parent: so
+  status: draft
+  definition: An increasing share of what people read, search and believe is produced or filtered by AI systems.
+  tier: annotate
+  role:
+  - hazard
+  feeds:
+  - id: st.epistemic
+    name: Epistemic degradation
+  - id: mu.influence
+    name: Influence operations, manipulation and surveillance at scale
+  - id: st.power
+    name: Concentration of power, coups and lock-in
+  reduced_by:
+  - provenance-technical
+  - honesty-calibration
+  crosswalks:
+  - GD25 misaligned culture
+  - ISR26 human autonomy
+- id: so.diffuse-responsibility
+  node: generator
+  name: Accountability gaps and diffusion of responsibility
+  parent: so
+  status: draft
+  definition: Harms arise from interactions no single actor controls or owns, so no one is responsible for preventing them.
+    Label only when the document states an accountability consequence, not for causal multiplicity alone.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: st
+    name: Structural and societal-scale risks
+  - id: mx
+    name: Multi-agent failures
+  reduced_by:
+  - non-technical
+  crosswalks:
+  - TASRA type 1
+  - ZD19 structure
+  - GDM25 structural risks
+  - HAM25 accountability diffusion
+- id: so.pace-mismatch
+  node: generator
+  name: Pace of change outstripping institutions
+  parent: so
+  status: draft
+  definition: AI-driven change is faster than the institutions, laws and norms that would respond to it (regulatory lag).
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: st
+    name: Structural and societal-scale risks
+  - id: ma
+    name: Misalignment and loss of control
+  - id: mu
+    name: Misuse by humans
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - environmental
+    scope:
+    - field
+  crosswalks:
+  - ISR25 3.2.2 pace
+  - ISR26 institutional design
+  - GD25 governance gaps
+  - UUK24
+- id: so.harm-illegibility
+  node: generator
+  name: Illegible, diffuse or delayed harm
+  parent: so
+  status: draft
+  definition: Harms that are spread thin, delayed or hard to measure, so markets, regulators and developers get weak feedback
+    and under-correct.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: st
+    name: Structural and societal-scale risks
+  - id: ha
+    name: Present-day harms to people (coarse)
+  reduced_by:
+  - non-technical
+  crosswalks:
+  - ISR26 market failures
+  - UUK24 challenges in perceiving harm
+  - COT22 harms evaluators underweight
+  - WFLL measurability
+- id: so.information-fragmentation
+  node: generator
+  name: Fragmented or withheld risk information
+  parent: so
+  status: draft
+  definition: Information about capabilities, deployments and incidents is withheld, siloed, classified or dispersed across
+    actors (including by contract), so no actor sees the whole risk pathway and external oversight lacks evidence.
+  tier: annotate
+  role:
+  - barrier
+  weakens:
+  - id: st.governance
+    name: Governance, accountability and safety-practice failure
+  - id: mu
+    name: Misuse by humans
+  - id: ma
+    name: Misalignment and loss of control
+  reduced_by:
+  - non-technical
+  common_cause:
+    mech:
+    - epistemic
+    scope:
+    - field
+  contested: true
+  vs: gap (no reporting regime); kept as a world condition, unlike the dropped OR.unverifiable_claims which described the
+    dataset
+  crosswalks:
+  - ISR26 information asymmetries
+  - 'trial misfits (3 docs: incident data gaps, government secrecy, research silos)'
