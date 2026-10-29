@@ -32,3 +32,6 @@ Node fields (count of nodes that have the field):
 - `variant_of` and `variant_kind` (67), `based_on` (170), `distilled_from` (9), `same_weights_as` (3): references
   to other nodes.
 - `representation_status` (113), `specialization` (208), `lab` (128), `tags` (127), `mentions_verbatim` (31).
+
+Draft `models-1.1.0.yaml` (not tagged): maker keys and a new `lab_id` beside each `lab` are ids of the organisation
+vocabulary (CHANGELOG); everything else as 1.0.0.
