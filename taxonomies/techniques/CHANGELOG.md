@@ -1,5 +1,21 @@
 # Changelog: techniques
 
+## 1.1.0 (2026-10-29)
+
+- Structure only: 1.0.0's 234 techniques and 9 group nodes, field for field, in the catalogue envelope (schema
+  `techniques-2.schema.json` on `../schemas/catalogue-0.schema.json`; [../README.md](../README.md#the-catalogue-envelope)).
+  Converted mechanically from 1.0.0.
+  - `version`, `meta` (`schema`, `status` `released`, `updated` 2026-10-24 = 1.0.0's release, `description` with
+    what 1.0.0's `notes` said, `sources`) and one `entries` list: the techniques, then the group nodes, each in
+    1.0.0's order.
+  - `slug` is `id`. `node` says what an entry is: `technique` or `group` (`kind` stays the technique's kind).
+    A technique's `status` (final, provisional) is its own, not `meta.status`.
+  - `aliases` is a list of `{text, kind}` (`synonym`, `instance`, `legacy`; a group node has no `instance`), each
+    kind's texts in 1.0.0's order. Group `children` keep their order.
+- The annotation prompts built from 1.1.0 are byte for byte those built from 1.0.0 (the menu, the compact index,
+  every sub-menu block, the lexical matcher's surfaces): the definitions are the text the model was shown.
+- sha256 `1bf1c50b08b816b9dfcaca35ae56eb8c3834e990451fa0d17e050e9e00954cc1`.
+
 ## 1.0.0 (2026-10-24)
 
 - First release; content identical to 0.9.1: same 234 techniques and 9 group nodes, field for field.

@@ -1,8 +1,12 @@
 # Models
 
-File `models-1.0.0.yaml`, tag `models-1.0.0`: 1,877 nodes (310 families, 249 groups, 1,318 models) and 138 makers;
-`version` `'1.0.0'`, schema `schemas/models-1.schema.json`. Its content is identical to `models-0.9.0.yaml` (tag
-`models-0.9.0`, `version` `'0.9'`), which stays for reference. The counts below hold for both.
+File `models-1.1.0.yaml`, tag `models-1.1.0`: 1,877 nodes (310 families, 249 groups, 1,318 models) and 134 makers;
+`version` `'1.1.0'`, schema `schemas/models-2.schema.json` (the catalogue envelope,
+[../README.md](../README.md#the-catalogue-envelope)): one `entries` list with each node's `id`; `maker` and `lab` are
+references `{id, name}` to `../orgs/orgs-0.2.0.yaml` (`meta.references.orgs`). Its nodes are those of
+`models-1.0.0.yaml` (tag `models-1.0.0`, 138 makers in `meta.makers`, schema `schemas/models-1.schema.json`), whose
+content is identical to `models-0.9.0.yaml` (tag `models-0.9.0`, `version` `'0.9'`); both stay for reference. The
+counts below hold for all three; the top level is 1.0.0's.
 
 Versioning follows [../README.md](../README.md#versioning): node ids are frozen within major version 1; gloss wording
 may be clarified in a minor or patch version without changing its meaning. The annotation model is shown, for each
@@ -21,7 +25,7 @@ Node fields (count of nodes that have the field):
 - `level` (249 groups): `generation` 162, `line` 59, `series` 28.
 - `name`, `gloss`, `model_class` (1,877): display name, one-line description, classes (20 values).
 - `parent` (1,808): the enclosing family or group; the 69 nodes without one are root families.
-- `maker` (1,609): key of `meta.makers`, a list on 43 nodes.
+- `maker` (1,609): key of `meta.makers`, a list on 43 nodes (1.1.0: `{id, name}` references).
 - `mentions` (1,730), `weak_mentions` (264): lower-case surface strings for the matcher.
 - `notes` (1,855), `uncertainties` (686): free text.
 - `lifecycle` (1,325): dates of `released`, `announced`, `preview`, `deprecated`, `retired`.
@@ -31,7 +35,5 @@ Node fields (count of nodes that have the field):
 - `modalities` (1,270), `links` (1,028): input and output modalities; announcement, model card, paper URLs.
 - `variant_of` and `variant_kind` (67), `based_on` (170), `distilled_from` (9), `same_weights_as` (3): references
   to other nodes.
-- `representation_status` (113), `specialization` (208), `lab` (128), `tags` (127), `mentions_verbatim` (31).
-
-Draft `models-1.1.0.yaml` (not tagged): maker keys and a new `lab_id` beside each `lab` are ids of the organisation
-vocabulary (CHANGELOG); everything else as 1.0.0.
+- `representation_status` (113), `specialization` (208), `lab` (128; 1.1.0: a reference), `tags` (127),
+  `mentions_verbatim` (31).

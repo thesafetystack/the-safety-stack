@@ -1,16 +1,19 @@
 # Techniques
 
-File `techniques-1.0.0.yaml`, tag `techniques-1.0.0`: 234 techniques (137 intervention, 32 monitoring, 65 assessment)
-and 9 group nodes; `version` `'1.0.0'`, `status` `released`, schema `schemas/techniques-1.schema.json`. Its content
-is identical to `techniques-0.9.1.yaml` (tag `techniques-0.9.1`, `version` `'0.9'`, `status` `draft`), which stays
-for reference. The counts below hold for both.
+File `techniques-1.1.0.yaml`, tag `techniques-1.1.0`: 234 techniques (137 intervention, 32 monitoring, 65 assessment)
+and 9 group nodes; `version` `'1.1.0'`, `meta.status` `released`, schema `schemas/techniques-2.schema.json` (the
+catalogue envelope, [../README.md](../README.md#the-catalogue-envelope)). Its content is that of `techniques-1.0.0.yaml`
+(tag `techniques-1.0.0`, schema `schemas/techniques-1.schema.json`), whose content is that of `techniques-0.9.1.yaml`
+(tag `techniques-0.9.1`, `version` `'0.9'`, `status` `draft`); both stay for reference. The counts below hold for all
+three. In 1.1.0 the two lists `techniques` and `group_nodes` are one list `entries`, `slug` is `id`, `node` marks a
+technique or a group node, and `aliases` is a list of `{text, kind}`; 1.0.0's field names are used below.
 
 Versioning follows [../README.md](../README.md#versioning): slugs are frozen within major version 1; definition
 wording may be clarified in a minor or patch version without changing its meaning. The annotation model is shown each
 technique's slug, kind, name, `provisional` status, `synonym` and `instance` aliases, parent and `definition`, and each
 group node's slug, name, synonyms, children and `definition`, exactly as in the file.
 
-Top level:
+Top level (1.0.0; in 1.1.0 `meta.status`, `meta.description` and `entries`):
 - `version`, `status`, `notes`: header; `notes` explains alias types, group nodes, `ml_methods` and `risk_note`.
 - `techniques`: list of 234 entries.
 - `group_nodes`: list of 9 entries.

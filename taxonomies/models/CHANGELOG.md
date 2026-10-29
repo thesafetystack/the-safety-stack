@@ -1,20 +1,28 @@
 # Changelog: models
 
-## 1.1.0 (draft, 2026-10-28; not tagged)
+## 1.1.0 (2026-10-29)
 
-- Organisation references: maker keys and the new `lab_id` are ids of the organisation vocabulary (`orgs-0.x`, the
-  pipeline's `taxonomy/orgs-<version>.yaml`; its move to this repository is pending), each beside a display name.
-  - Maker `internlm` is now `shanghai-ai-lab` (display name unchanged, "Shanghai AI Laboratory (InternLM)") in
-    `meta.makers`, `meta.maker_facets` and the `maker` of 31 nodes; the node id `internlm` (the model family) is
-    unchanged. The other 137 maker keys were already organisation ids.
-  - Every node with `lab` (128) gains `lab_id`: DeepMind → `deepmind`, Microsoft Research → `microsoft-research`,
-    ByteDance Seed and Seed → `bytedance-seed`, OpenBMB → `openbmb`, FAIR → `meta-ai`, Google Research →
-    `google-research`, OpenMOSS → `openmoss`, Microsoft AI → `microsoft-ai`. `lab` keeps the display string.
-    `bytedance-seed` and `microsoft-ai` are entries from orgs 0.2.0 on.
-- No node, name, gloss or mention changes; `meta.updated` 2026-10-28. Schema `models-1.schema.json` unchanged (nodes
-  allow further fields).
-- A reader keyed on the maker `internlm` must use `shanghai-ai-lab`.
-- sha256 `c10a6dace9c75c6a9f8ffc5bf3aa6c9b425f1b270394379d05fe832146df2fa2`.
+- The catalogue envelope (schema `models-2.schema.json` on `../schemas/catalogue-0.schema.json`;
+  [../README.md](../README.md#the-catalogue-envelope)): `version`, `meta` (`schema`, `status` `released`, `updated`
+  2026-10-28, `description`, `references: {orgs: 0.2.0}`) and one `entries` list, 1.0.0's 1,877 nodes in its order,
+  each with its key as `id`. `meta.schema_version` is gone (`meta.schema` names the structure).
+- Organisation references: `maker` (one, or a list on the 43 joint releases) and `lab` are `{id, name}`, `id` an
+  entry of `../orgs/orgs-0.2.0.yaml`, `name` the display string (a maker's from 1.0.0's `meta.makers`, a lab's its
+  `lab` string). The validator checks every id resolves there.
+  - Maker `internlm` is `shanghai-ai-lab` (name unchanged, "Shanghai AI Laboratory (InternLM)") on 31 nodes; the
+    node id `internlm` (the model family) is unchanged. The other maker keys were already organisation ids.
+  - `lab` ids (128 nodes): DeepMind → `deepmind`, Microsoft Research → `microsoft-research`, ByteDance Seed and
+    Seed → `bytedance-seed`, OpenBMB → `openbmb`, FAIR → `meta-ai`, Google Research → `google-research`, OpenMOSS →
+    `openmoss`, Microsoft AI → `microsoft-ai`.
+- `meta.makers` and `meta.maker_facets` are gone. A maker's name is on its references; its country and type are its
+  organisation entry's (orgs 0.2.0 took over the facets: `country`, the tag `big-tech`, the notes). Four 1.0.0
+  makers had no node and so appear nowhere in 1.1.0: `deepmind` (DeepMind models have maker `google`, lab
+  `deepmind`), `fast-ai`, `korea-university`, `nous-research`; 134 makers remain.
+- No node, name, gloss or mention changes: the annotation menu built from 1.1.0 is byte for byte the one built from
+  1.0.0 (maker names, glosses, denotations, the matcher's patterns).
+- A reader keyed on the maker `internlm` must use `shanghai-ai-lab`; a reader of `meta.makers` reads the references.
+- sha256 `bd731a85743c86d9c0fe2a909ecf35c5713edb353ecc5d4b3056d968194ec911` (an untagged draft of 1.1.0 with
+  `lab_id` beside `lab`, sha256 `c10a6dace9c7…`, preceded it and was never used).
 
 ## 1.0.0 (2026-10-24)
 
