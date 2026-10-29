@@ -73,7 +73,6 @@ meta:
     openai_pf2: OpenAI Preparedness Framework v2 (2025)
     gdm_fsf: Google DeepMind Frontier Safety Framework v3.1
     anthropic_rsp: Anthropic Responsible Scaling Policy v3.4
-    astra_draft: an unpublished draft taxonomy from the design stage (its group B3)
 entries:
 - id: ma
   node: family
@@ -373,7 +372,6 @@ entries:
   - '5.2'
   siblings:
     hendrycks: Military AI arms race
-    astra_draft: B3 other weaponisation
 - id: mu.influence
   node: risk
   name: Influence operations, manipulation and surveillance at scale

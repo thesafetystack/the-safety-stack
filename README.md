@@ -111,7 +111,7 @@ known errors in both directions; see the card's "Annotation quality" section. If
 
 ## Taxonomies
 
-Three vocabularies, in [taxonomies/](taxonomies/):
+Five vocabularies, in [taxonomies/](taxonomies/):
 
 - [techniques](taxonomies/techniques/): 234 AI-safety techniques (137 intervention, 32 monitoring, 65 assessment)
   and 9 group nodes. Current version 1.1.0 (1.0.0's content in the shared file structure).
@@ -119,10 +119,15 @@ Three vocabularies, in [taxonomies/](taxonomies/):
   makers and labs are references to the organisations vocabulary.
 - [orgs](taxonomies/orgs/): 4,840 organisations named in author affiliations, and the models' makers. Version 0.2.0,
   a draft (0.x: ids may still change).
+- [risks](taxonomies/risks/): 39 risks (types of harmful event or state) in 8 families. Version 0.2.0, a draft (0.x),
+  not yet used in the dataset.
+- [risk-generators](taxonomies/risk-generators/): 64 risk generators (conditions, processes and pressures that produce
+  risks or weaken the defences against them) in 10 families, linked to the risks. Version 0.3.0, a draft (0.x), not
+  yet used in the dataset.
 
 Each version is a separate file, `<name>-<major>.<minor>.<patch>.yaml`, tagged with its file name without `.yaml`
 (`techniques-1.1.0`, `models-1.1.0`). A released file is never edited; a change is a new file with a CHANGELOG entry.
-From 1.1.0 (orgs 0.2.0) on, the files share one structure, the catalogue envelope ([taxonomies/](taxonomies/README.md)).
+From 1.1.0 (orgs 0.2.0, risks 0.2.0, risk-generators 0.3.0) on, the files share one structure, the catalogue envelope ([taxonomies/](taxonomies/README.md)).
 From 1.0.0 on:
 
 - Slugs (techniques) and node ids (models) are frozen within a major version: none is removed, merged, split or
@@ -131,7 +136,8 @@ From 1.0.0 on:
 - The definitions (techniques) and glosses (models) in a released file are the text the annotation model was shown
   when annotating with that version.
 
-The 0.x files (techniques 0.9.1, models 0.9.0, orgs 0.2.0) carry no such guarantee. Check a file with
+The 0.x files (techniques 0.9.1, models 0.9.0, orgs 0.2.0, risks 0.2.0, risk-generators 0.3.0) carry no such
+guarantee. Check a file with
 `uv run tools/taxonomy-schema-validator.py --all`; CI runs it on every push and pull request.
 
 ## Releases

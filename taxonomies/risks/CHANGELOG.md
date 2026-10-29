@@ -21,9 +21,11 @@
   annotated (`optimisation_pressure`, `capability_scale`, `agentic_affordances`, `assurance_gap`,
   `distribution_shift`, `competitive_pressure`, `open_release`, `multi_agent_interaction`, `organisational_factors`,
   `data_feedback`). The risk-generator taxonomy ([../risk-generators/](../risk-generators/)) supersedes it.
+- Not carried over: the `siblings` key `astra_draft` (on `mu.military`, "B3 other weaponisation"), which pointed to an
+  unpublished design-stage draft; `mu.military` keeps its `hendrycks` sibling.
 - The draft's tables of crosswalks to regulatory and lab lists are in [README.md](README.md); its reverse MIT
   crosswalk follows from `mit`.
-- sha256 `7722e35587bb0c61eb4a1166e5208c5a8ed368118544ed29119b2b3d3f55ad10`.
+- sha256 `e76371ce0c3513bb7f60faca56b860733ed68dcdbcef6d7e9baceda2411e9737`.
 
 ## History, not published in this repository
 

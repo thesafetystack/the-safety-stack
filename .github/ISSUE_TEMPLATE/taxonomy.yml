@@ -1,5 +1,5 @@
 name: Taxonomy suggestion
-description: A missing technique or model, a definition that is wrong or unclear, a merge or a split.
+description: A missing technique, model, organisation, risk or risk generator, a definition that is wrong or unclear, a merge or a split.
 title: "Taxonomy: "
 labels: [taxonomy]
 body:
@@ -10,6 +10,9 @@ body:
       options:
         - techniques
         - models
+        - orgs
+        - risks
+        - risk-generators
     validations:
       required: true
   - type: dropdown
@@ -28,7 +31,7 @@ body:
     id: entry
     attributes:
       label: Entry
-      description: The slug or node id concerned, or the proposed name of a new entry.
+      description: The slug or id concerned, or the proposed name of a new entry.
   - type: textarea
     id: change
     attributes:
