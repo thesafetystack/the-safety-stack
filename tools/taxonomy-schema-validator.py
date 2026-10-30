@@ -84,6 +84,10 @@ def check_techniques_envelope(doc: dict, _path: Path) -> list[str]:
     for g in doc["entries"]:
         if g["node"] == "group":
             errs += [f"group node {g['id']}: child {c!r} is not a technique" for c in g["children"] if c not in techs]
+    layers = {x["id"] for x in doc["meta"].get("layers", [])}
+    if layers:  # techniques-3 on: every technique's layer is a meta.layers id
+        errs += [f"{e['id']}: layer {e.get('layer')!r} is not a meta.layers id"
+                 for e in doc["entries"] if e["node"] == "technique" and e.get("layer") not in layers]
     return errs
 
 
@@ -160,6 +164,7 @@ def check_models(doc: dict, _path: Path) -> list[str]:
 
 #: Per schema (the envelope's: `meta.schema`; before it, `<name>-<major>` from the file name).
 CHECKS = {"techniques-0": check_techniques, "techniques-1": check_techniques, "techniques-2": check_techniques_envelope,
+          "techniques-3": check_techniques_envelope,
           "models-0": check_models, "models-1": check_models, "models-2": check_models_envelope, "orgs-0": check_orgs}
 
 
