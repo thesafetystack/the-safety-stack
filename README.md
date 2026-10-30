@@ -119,10 +119,10 @@ Five vocabularies, in [taxonomies/](taxonomies/):
   makers and labs are references to the organisations vocabulary.
 - [orgs](taxonomies/orgs/): 4,840 organisations named in author affiliations, and the models' makers. Version 0.2.0,
   a draft (0.x: ids may still change).
-- [risks](taxonomies/risks/): 39 risks (types of harmful event or state) in 8 families. Version 0.2.0, a draft (0.x),
+- [risks](taxonomies/risks/): 44 risks (types of harmful event or state) in 8 families. Version 0.3.0, a draft (0.x),
   not yet used in the dataset.
-- [risk-generators](taxonomies/risk-generators/): 64 risk generators (conditions, processes and pressures that produce
-  risks or weaken the defences against them) in 10 families, linked to the risks. Version 0.3.0, a draft (0.x), not
+- [risk-generators](taxonomies/risk-generators/): 74 risk generators (conditions, processes and pressures that produce
+  risks or weaken the defences against them) in 10 families, linked to the risks. Version 0.4.0, a draft (0.x), not
   yet used in the dataset.
 
 Each version is a separate file, `<name>-<major>.<minor>.<patch>.yaml`, tagged with its file name without `.yaml`
@@ -136,8 +136,8 @@ From 1.0.0 on:
 - The definitions (techniques) and glosses (models) in a released file are the text the annotation model was shown
   when annotating with that version.
 
-The 0.x files (techniques 0.9.1, models 0.9.0, orgs 0.2.0, risks 0.2.0, risk-generators 0.3.0) carry no such
-guarantee. Check a file with
+The 0.x files (techniques 0.9.1, models 0.9.0, orgs 0.2.0, risks 0.2.0 and 0.3.0, risk-generators 0.3.0 and
+0.4.0) carry no such guarantee. Check a file with
 `uv run tools/taxonomy-schema-validator.py --all`; CI runs it on every push and pull request.
 
 ## Releases

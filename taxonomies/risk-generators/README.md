@@ -1,10 +1,11 @@
 # Risk generators
 
-File `risk-generators-0.3.0.yaml`, a draft (`meta.status` `draft`, version 0.x: ids, definitions and structure may
-still change): 10 families and 64 generators, schema `schemas/risk-generators-0.schema.json` (the catalogue envelope,
-[../README.md](../README.md#the-catalogue-envelope)). It refers to the risk taxonomy 0.2.0 (`meta.references.risks`,
-[../risks/](../risks/)). Not used to annotate the dataset; 0.3.0 itself has not been annotated with. Undecided items
-are in [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md).
+File `risk-generators-0.4.0.yaml`, a draft (`meta.status` `draft`, version 0.x: ids, definitions and structure may
+still change): 10 families and 74 generators, schema `schemas/risk-generators-1.schema.json` (the catalogue envelope,
+[../README.md](../README.md#the-catalogue-envelope)). It refers to the risk taxonomy 0.3.0 (`meta.references.risks`,
+[../risks/](../risks/)). Not used to annotate the dataset; neither 0.3.0 nor 0.4.0 has been annotated with. Undecided
+items are in [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md). The previous version, `risk-generators-0.3.0.yaml` (schema
+`risk-generators-0`, on risks 0.2.0), stays for reference; [CHANGELOG.md](CHANGELOG.md) lists every change.
 
 ## Purpose and scope
 
@@ -13,54 +14,69 @@ or how likely the defences are to stop it, and is not itself an instance of a ha
 risks of [../risks/](../risks/). The taxonomy serves the stack's view of why defences fail together: defence in depth
 works only as far as its layers fail independently, and a generator that degrades several layers counted against the
 same risk is a candidate common cause. It links generators to the risks they feed or whose defences they weaken, and
-to the technique families that reduce or measure them.
+to the technique families that reduce, measure or worsen them. Every link is a hypothesis to be curated, with a
+source, by a person: none is a finding.
 
-| id | family | generators | `curated` | common-cause candidates |
-|---|---|---|---|---|
-| `tr` | Training and optimisation | 8 | 0 | 5 |
-| `ca` | Capabilities and cognition | 8 | 0 | 4 |
-| `as` | Limits of assurance and oversight | 5 | 1 | 5 |
-| `dp` | Deployment and affordances | 10 | 0 | 4 |
-| `su` | Shared components, processes and monoculture | 6 | 5 | 6 |
-| `or` | Developer and deployer organisations | 3 | 0 | 3 |
-| `cm` | Competition and geopolitics | 5 | 1 | 3 |
-| `ad` | Adversaries and offence-defence balance | 3 | 1 | 1 |
-| `mf` | Multi-agent interaction factors | 8 | 3 | 1 |
-| `so` | Societal and structural | 8 | 1 | 4 |
+| id | family | generators | `curated` | common-cause candidates | provisional |
+|---|---|---|---|---|---|
+| `tr` | Training and optimisation | 8 | 0 | 5 | 1 |
+| `ca` | Capabilities and cognition | 8 | 0 | 4 | 0 |
+| `as` | Limits of assurance and oversight | 8 | 4 | 8 | 3 |
+| `dp` | Deployment and affordances | 12 | 2 | 4 | 2 |
+| `su` | Shared components, processes and monoculture | 7 | 6 | 7 | 1 |
+| `or` | Developer and deployer organisations | 4 | 0 | 4 | 1 |
+| `cm` | Competition and geopolitics | 6 | 2 | 4 | 1 |
+| `ad` | Adversaries and offence-defence balance | 4 | 1 | 1 | 0 |
+| `mf` | Multi-agent interaction factors | 8 | 2 | 2 | 0 |
+| `so` | Societal and structural | 9 | 2 | 6 | 1 |
 
 ## File
 
-- `version`, `meta`: `schema`, `status`, `updated`, `description`, `sources`, `references` (`risks: 0.2.0`); `fields`
-  (what each entry field means), `technique_families` (the 18 values of `reduced_by`, `assessed_by`, `defeats` and
-  `bypasses`), `crosswalk_keys` (the frameworks the `crosswalks` strings start with), `risk_edges`.
+- `version`, `meta`: `schema`, `status`, `updated`, `description`, `sources`, `references` (`risks: 0.3.0`); `fields`
+  (what each entry field means), `technique_families` (the 22 values of `reduced_by`, `assessed_by`, `worsened_by`,
+  `defeats` and `bypasses`), `crosswalk_keys` (the frameworks the `crosswalks` strings start with), `risk_edges`,
+  `retired` (ids of 0.3.0 that are no entry here, with what replaces them).
 - `entries`: each family (`node: family`) followed by its generators (`node: generator`, `parent` the family; the
   id is the family id, a dot, the generator's name: `ca.situational-awareness`).
-- `meta.risk_edges` (9): edges from a risk, not a generator: `defeats` (technique families whose layers the risk,
+- `meta.risk_edges` (12): edges from a risk, not a generator: `defeats` (technique families whose layers the risk,
   once present, degrades: a scheming model defeats behavioural evaluations), `bypasses` (layers it skips: stolen
   weights skip every deployment-time layer), `escalates_to` (risks it leads to), `searched_by`.
 
 Generator fields (count of generators that have the field):
-- `id`, `node`, `name`, `parent`, `definition` (64); `status` (63 `draft`, 1 `provisional`: `tr.shallow-safety`,
-  added from trial misfits with thin support).
-- `tier` (64): `annotate` (52), a candidate for per-document labels; `curated` (12), for edges and the coverage map
-  only, rarely stated in text.
+- `id`, `node`, `name`, `parent`, `definition` (74); `status` (64 `draft`, 10 `provisional`: `tr.shallow-safety`,
+  added from trial misfits with thin support, and nine added by the 2026-10-30 review with no trial support).
+- `tier` (74): `annotate` (55), a candidate for per-document labels; `curated` (19), for edges and the coverage map
+  only, rarely stated in text (eight of the nine generators the review added are curated).
 - `background` (3: `ca.capability-level`, `dp.scale`, `as.immature-science`): label only when the document's
   argument depends on it, never for motivation boilerplate.
-- `role` (64): the typical role, one or more of `hazard` (17), `cause` (25), `barrier` (36); see C7 below.
-- `feeds` (42) and `weakens` (33): references `{id, name}` to risks 0.2.0 (a family id stands for the whole family);
-  every generator has at least one. `weakens` is for barrier-role generators.
-- `reduced_by` (64) and `assessed_by` (11): technique families that act on the generator, or measure it without
-  reducing it; `non-technical` and `none-known` are values too. 31 generators have only `non-technical` or
-  `none-known`.
-- `common_cause` (36): a candidate common-cause mechanism, a hypothesis, never a measured correlation: `mech`, `scope`,
-  `searched_by`, `defeats` (technique families), `note`.
-- `contested` and `vs` (6): a weak boundary, and in words against what.
-- `crosswalks` (64): the corresponding item in other frameworks (`meta.crosswalk_keys`), or `trial` for a generator
-  that came from the annotation trial's misfit notes. `note` (4).
+- `role` (74): the typical role, one or more of `hazard` (19), `cause` (29), `barrier` (43); see C7 below.
+- `feeds` (48) and `weakens` (40): references `{id, name}` to risks 0.3.0 (a family id stands for the whole family);
+  every generator has at least one, and every risk is linked from at least one generator, directly or through its
+  family. `weakens` is for barrier-role generators.
+- `reduced_by` (74), `assessed_by` (16) and `worsened_by` (4): technique families that act on the generator, measure
+  it without reducing it, or whose use can intensify it (monitors and interpretability used as a training signal for
+  `tr.optimising-against-oversight`; reasoning RL for `tr.outcome-optimisation`; AI feedback for `tr.ai-signal`;
+  safety training's capability externalities for `ca.capability-level`). `non-technical` and `none-linked` (no
+  family is linked in this file, which does not claim that none exists) are values too. 34 generators have only
+  `non-technical` or `none-linked`.
+- `amplifies` (4): other generators this one strengthens (feedback loops and compounding risk factors:
+  `mf.information-asymmetry` → `mf.commitment-trust`, `mf.network-effects` → `mf.selection-pressure`,
+  `so.reduced-human-reliance` ↔ `so.adoption-pressure`, → `so.cross-system-reinforcement`).
+- `common_cause` (45): a candidate common-cause mechanism, a hypothesis, never a measured correlation: `mech`,
+  `scope`, `searched_by`, `defeats` (technique families), `note`. An absent record means no mechanism is named
+  here; it does not claim that layers fail independently.
+- `contested` and `vs` (8): a weak boundary, and in words against what.
+- `crosswalks` (74): the corresponding item in other frameworks (`meta.crosswalk_keys`); `trial` for a generator from
+  the annotation trial's misfit notes, `review` for one the 2026-10-30 review added. `note` (11).
 - No entry has `aliases` yet.
 
 The technique families are those of the techniques taxonomy's 0.8 draft, which is not published here (techniques 1.x
-has no families), plus `non-technical`; they do not resolve against [../techniques/](../techniques/).
+has no families), plus `cooperative-ai` (bargaining, commitment and mechanism-design methods, so that multi-agent
+factors are not shown as having no technique), `security-access-control` (weight security, insider controls, access
+tiers, account enforcement), `control-protocols` (trusted monitoring, trusted editing, resampling: split from
+`agentic-control`) and `control-evaluations` (evaluations against a red-team attack policy: split from
+`redteam-eval`), and `non-technical`; they do not resolve against [../techniques/](../techniques/). Mapping them to
+the published technique taxonomy comes before any edge is curated (OPEN-QUESTIONS 10).
 
 ## Boundaries
 
@@ -78,19 +94,32 @@ The criteria the definitions refer to (C1-C7):
   science, the offence-defence balance), or a property that defeats controls whether or not they are present
   (opacity, evaluation awareness). "Monitoring fails because monitoring is weak" adds nothing. "The evaluation
   under-elicited the model" is a gap; "the model recognised the evaluation" is `ca.situational-awareness`.
-- **C4, measurement: capability or propensity.** A property measured by eliciting the harmful behaviour is a
-  propensity and belongs to the risks (the `ma` risks are propensities and behaviours). A property measured on a task
-  that is not the harm (telling an evaluation transcript from deployment; planning over 50 steps) is a capability and
-  is a generator. Label the proposition, not the experiment: one passage can support both.
-- **C5, actors.** The existence and motives of attackers are a generator (`ad.motivated-actors`); the attack is a
-  risk.
+- **C4, capability or propensity: who supplies the intent.** Behaviour the model produces on its own, sampled under
+  stated conditions, is a propensity and belongs to the risks (the `ma` risks are propensities and behaviours).
+  Behaviour produced on instruction, played by a red-team attack policy or a model organism, and performance on a
+  task that is not the harm (telling an evaluation transcript from deployment; planning over 50 steps) measure a
+  capability, which is a generator. Recognising a test is a capability (`ca.situational-awareness`); behaving
+  differently because of it is the risk `ma.eval-gaming`. Label the proposition, not the experiment, and label both
+  sides when a passage supports both: a capability evaluation on a risk's own task (an instructed self-exfiltration
+  test) is the risk with relation `measures` and `elicitation: adversarial` on the risk side, and the capability
+  generator (`ca.evasion-replication`) here. (0.3.0 drew the line by whether the measured task was the harm; that
+  misfiled instructed tests and control evaluations.)
+- **C5, actors.** The existence and motives of attackers are generators (`ad.non-state-actors`, `ad.state-actors`);
+  the attack is a risk.
 - **C6, common-cause candidates.** A generator gets `common_cause` when one mechanism may degrade two or more layers
   counted against the same risk. `mech` is the coupling (`substrate`, `convergent`, `operational`, `institutional`,
   `epistemic`, `environmental`), `scope` whether it couples layers of one stack or many models and developers,
-  `searched_by` whether an optimiser (the model, an attacker, selection) searches for the joint hole.
+  `searched_by` whether an optimiser (the model, an attacker, selection) searches for the joint hole; `selection`
+  also marks agent-agnostic processes (races, adoption pressure, arbitrage), which persist whoever the participants
+  are and are reduced by changing the selection environment, not by fixing one actor. An absent record does not
+  claim independence: independence is the hypothesis that would need evidence.
 - **C7, typical role.** `hazard` enlarges the potential for harm, `cause` raises the rate of risk events, `barrier`
   degrades defences. The same generator can play another role against another endpoint; the role in the file is the
-  typical one.
+  typical one. (The role name `hazard` clashes with the safety-engineering sense, a system state that leads to a
+  loss; see OPEN-QUESTIONS 9.)
+- **Generator to generator.** `amplifies` records that one generator strengthens another; a loop
+  (`so.reduced-human-reliance` ↔ `so.adoption-pressure`) is two entries. It is not a risk edge (C2): the risk
+  produced is linked by `feeds`.
 
 ## Annotation
 
@@ -101,12 +130,28 @@ engages a family generically and no generator fits; passing mentions stored and 
 stays unknown. Only `annotate`-tier generators are offered to annotators, and `background` ones only when the
 argument depends on them. The draft prompt for 0.3.0 (not yet run) replaces explicit and implicit, which carried
 little information, with a stance (`asserts`, `mentions`, `mitigates`, `demonstrates`, `measures`), co-annotates
-risks so that C4 can be tested, and lets an annotator record a gap ("control deficiency, cause unstated").
+risks so that C4 can be tested, and lets an annotator record a gap ("control deficiency, cause unstated"). A risk
+annotation that finds no risk but a generator records `none` with reason `generator-only` and the generator ids
+([../risks/README.md](../risks/README.md#annotation)), so race, organisational and multi-agent documents are not
+lost while per-document generator annotation is undecided.
+
+Where neighbouring generators are named together, label the one the document varies, measures or blames:
+
+- `tr.outcome-optimisation` (the strength and horizon of optimisation), `tr.gameable-grader` (the grader or
+  environment that is exploited), `tr.proxy-objective` (the objective itself is wrong).
+- Competition, by who is under pressure: `cm.corporate-race` (developers against each other), `cm.geopolitical-race`
+  (states), `or.commercial-pressure` (priorities inside one organisation), `so.adoption-pressure` (adopters across
+  the economy and the state), `mf.selection-pressure` (selection acting on AI systems' dispositions).
+- The deployed system differs from the evaluated one: `dp.post-deployment-change` (weights or components changed),
+  `dp.context-dependence` (harness, prompt or conversation), `dp.distribution-shift` (the world), `dp.scale` (how
+  often rare failures occur), `as.coverage-limits` (what testing could sample).
 
 ## Pilot
 
-The trial annotated draft v0.2 (57 leaves), not 0.3.0; 0.3.0 is v0.2 revised from the trial and two blind reviews by
-language models of different families ([CHANGELOG.md](CHANGELOG.md)).
+The trial annotated draft v0.2 (57 leaves), not 0.3.0 or 0.4.0; 0.3.0 is v0.2 revised from the trial and two blind
+reviews by language models of different families, and 0.4.0 is 0.3.0 revised after a review by a panel of 17
+simulated reader perspectives in two rounds, run on four language models from two families
+([../risks/README.md](../risks/README.md#how-this-version-was-made), [CHANGELOG.md](CHANGELOG.md)).
 
 - **Sample.** 100 documents from the dataset, purposive and picked by keyword to be rich in generators (15 strata of
   3-10 documents), not random. Each annotator saw title, abstract and at most 1,500 words of text, selected toward

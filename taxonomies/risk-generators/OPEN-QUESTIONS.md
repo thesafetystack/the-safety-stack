@@ -1,32 +1,68 @@
 # Open questions: risk generators
 
-Undecided for 0.3.0. Items shared with the risk taxonomy are also in
-[../risks/OPEN-QUESTIONS.md](../risks/OPEN-QUESTIONS.md).
+For 0.4.0. Items shared with the risk taxonomy are also in [../risks/OPEN-QUESTIONS.md](../risks/OPEN-QUESTIONS.md).
+Each question says whether the 0.4.0 review settled it (and how), or whether it needs a person's judgement. The
+numbers 1-10 are those of 0.3.0.
 
-1. **Per-document annotation at all.** The draft recommends curated generator × technique-family edges first and a
-   second trial (about 300 random documents, two model families, about 50 documents adjudicated by a person) before
-   any corpus-wide labels; if labels, at leaf level for the families that techniques and risks cannot imply (`dp`,
-   `or`, `cm`, `ad`, `mf`, `so` and a few `ca` and `as` leaves). The thresholds for going ahead are a proposal.
-2. **Passing mentions.** As for risks: store them and leave them out of views, or drop them at annotation time? The
-   draft prompt for 0.3.0 has a `mentions` stance beside `asserts`; how it relates to the passing flag is not
-   settled.
-3. **Production annotator.** In the trial Opus and GPT-6 agreed at 0.59 (leaf Jaccard); which model, or which
-   combination with an audit, annotates in production?
-4. **AI R&D acceleration.** `ca.ai-rnd` is a generator here and `st.rd-acceleration` a risk in the risk taxonomy;
-   no generator links to `st.rd-acceleration`. One concept on one side (C2), or both with a link?
-5. **Race dynamics, governance failure, opacity and assurance.** Under C1 and C3 these are conditions (`cm.*`,
-   `or.*`, `as.*`), while the risk taxonomy keeps `st.race` and `st.governance` as risks. Move them here, keep both
-   with links, or keep the risks only as fallbacks for documents that name no outcome?
-6. **Capability and propensity (C4).** The trial did not label risks, so it could not show whether documents about a
-   behaviour get capability generators instead (`ca.evasion-replication` against `ma.scheming` and
-   `ma.exfiltration`; `ca.situational-awareness` against `ma.eval-gaming`). The draft prompt co-annotates risks to
-   test it.
-7. **A human gold set.** No generator label has been checked by a person; the second trial's adjudicated subset would
-   be the first.
-8. **AI welfare.** No generator links to `we.welfare`, and no family holds conditions that would produce risks to AI
-   systems as moral patients (training practices, deprecation). Add them, or leave welfare outside this taxonomy?
-9. **Naming.** The roles say `hazard`; if the risk axis were renamed "hazards", the two would clash. Risk, harm or
-   hazard for the outcome axis, and is "generator" the right word here?
-10. **Technique families.** `reduced_by`, `assessed_by`, `defeats` and `bypasses` name the 0.8 draft's technique
-    families, which are not published and which techniques 1.x does not have. Map them to techniques 1.x ids or group
-    nodes, publish a family list, or keep them as their own small vocabulary?
+## From 0.3.0
+
+1. **Per-document annotation at all.** *Open, and now more pressing*: risks 0.3.0 retired the race risk to
+   `cm.*`, so race, organisational and multi-agent documents that name no outcome get no risk label (`none`,
+   `generator-only`, with the generator ids). Reviewers split: annotate some families (`so`, `cm`, `or`, `mf`, or
+   `tr`, `ca`, `as`, at most three labels per document), pilot first on about 300 random documents, or curated edges
+   only (2 of 100 trial documents stated a joint failure). The `generator-only` reason keeps the documents findable
+   meanwhile. Related: whether `mf.network-effects`, `mf.commitment-trust` and `dp.multi-principal-interaction`
+   (headline risk factors in the multi-agent literature, curated here for low trial agreement) move to the annotate
+   tier.
+2. **Passing mentions.** *Settled*: store and hide, as for risks. How the draft prompt's `mentions` stance relates to
+   the engagement test is still to write down.
+3. **Production annotator.** *Open*, as for risks: decide against human labels.
+4. **AI R&D acceleration.** *Settled as both, linked*: `ca.ai-rnd` (the capability) feeds the risk
+   `st.oversight-outpaced` (the harmful state). Whether to keep the risk is risk question 4.
+5. **Race dynamics, governance failure, opacity and assurance.** *Settled*: race is `cm.*` only; the
+   organisational part of governance is `or.*` (with the new `or.commitment-drift`); opacity is `as.opacity`. The
+   risk `st.governance` keeps named failures of regulation, oversight, liability or accountability.
+6. **Capability and propensity (C4).** *Restated* (who supplies the intent; both sides labelled when a passage
+   supports both). *Open*: untested in annotation; context can elicit a disposition without instructing the act, and
+   a self-model can be part of a simulated character, so the line may be fuzzier than the rule.
+7. **A human gold set.** *Settled that it is needed*; the generator edges need their own audit, separate from labels:
+   label agreement does not validate a causal link.
+8. **AI welfare.** *Settled as edges, no new family*: commercial pressure and deployment scale feed `we.welfare`,
+   immature science weakens its defences. *Open*: whether training against a model's preferences, copying and
+   runtime scale, or deprecation deserve generators of their own.
+9. **Naming.** *Open, and the reviewers' most frequent request*: rename "generators" to "risk factors", the term of
+   the multi-agent risk literature, the international safety reports, lab frameworks and safety cases (others
+   proposed "risk sources", "risk drivers", "causal and contextual factors"); and rename the role `hazard`, which
+   clashes with the safety-engineering sense (a system state that leads to a loss), for example to `amplifier` or
+   `exposure`, and `barrier` to `vulnerability` or `control-degradation`. A mechanical rename (directory, schema,
+   ids unchanged), best done before the gold-set instructions are written, since they embed the terms.
+10. **Technique families.** *Open, and now blocking edge curation*: the 22 families (the 0.8 draft's 17,
+    `cooperative-ai`, `security-access-control`, `control-protocols`, `control-evaluations`, `non-technical`) are
+    not the published technique taxonomy's. Map them to techniques 1.x group nodes before curating any edge, and
+    split `non-technical` (standards and certification, mandated assessment and filing, internal governance,
+    international agreements, organisational process), or the negative map will show governance, security and
+    cooperative work as missing by construction.
+
+## New in 0.4.0
+
+11. **The curated edge record.** Reviewers agreed that every curated technique-to-risk and generator-to-technique
+    edge needs a source, an epistemic tier, conditions, an effect direction (reduces, assesses, worsens, unknown),
+    whether the argument holds against a model or attacker optimising against it (worst case over the model's
+    propensity, not over inputs), the deployment surface (consumer chat, API, agentic, fine-tuning API, internal,
+    open weights, stolen weights), and a falsifier for each common-cause hypothesis. One reviewer perspective (system
+    safety) wants every displayed protection or gap claim tied to a scenario (system boundary, loss, hazard,
+    constraint, responsible controller, control actions, feedback, process-model assumptions). The record format
+    should be fixed, with one worked example, before any edge is curated.
+12. **Generator candidates not added**: attack selection by a scheming model, prepotence (transformative effects
+    humanity cannot collectively stop), introspection (self-knowledge that can help oversight as well as harm it),
+    impairment of discourse about existential safety, LLM character as a shared substrate of several safety
+    behaviours, capacity asymmetry between countries, the vulnerability of the affected population or
+    infrastructure, the model's closed action-perception loop, and monitoring latency.
+13. **Provisional generators.** The nine generators the review added rest on the reviews, not on trial data.
+14. **Control structure.** One reviewer perspective (system safety) holds that a list of factors cannot replace a
+    control structure (who enforces which constraint with what feedback), and that independence of layers is not
+    sufficient for safety: correctly working components can interact unsafely. 0.4.0 added
+    `as.feedback-inadequacy` and the independence wording; the structure is unchanged.
+15. **Process persistence.** Agent-agnostic processes are marked with `searched_by: selection`; one reviewer
+    perspective asked for curated pathways to state what restores the harmful trajectory after an actor resists, not
+    only that it is self-reinforcing.
