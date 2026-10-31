@@ -1,6 +1,7 @@
 # Organisations
 
-File `orgs-0.2.0.yaml` (a draft: version 0.x, ids may still change): 4,840 organisations, schema
+Files `orgs-0.2.2.yaml` (the current one) and `orgs-0.2.0.yaml` (the version models 1.1.0 refers to), drafts: version
+0.x, ids may still change. 0.2.2 has 4,841 organisations, schema
 `schemas/orgs-0.schema.json` (the catalogue envelope, [../README.md](../README.md#the-catalogue-envelope)). They are
 the organisations named in the author affiliations of the dataset's documents and the makers of the models taxonomy,
 which refers to them by id (`maker`, `lab`). The pipeline resolves each affiliation string to these ids with a
@@ -9,7 +10,8 @@ deterministic matcher (the dataset's `affiliation_orgs` annotation and each affi
 Top level:
 - `version`, `meta`: `schema`, `status` `draft`, `updated`, `description`, `sources` (ROR v2.15, the pipeline's
   registry, the models makers, the corpus's affiliation strings), `types` and `tags` (glosses), and the matcher's
-  word lists: `countries`, `regions` (US states), `generic_words`, `unit_words`, `non_org`.
+  word lists: `countries`, `regions` (US states), `generic_words`, `unit_words`, `non_org`, and (0.2.2) `places`
+  (city names that, after an organisation's name, are its address).
 - `entries`: 4,840 organisations, ordered by id.
 
 Entry fields:

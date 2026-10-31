@@ -26,6 +26,7 @@
                     "additionalProperties": {"type": "object", "additionalProperties": false,
                                              "properties": {"names": {"type": "array", "items": {"type": "string"}},
                                                             "codes": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z]{2}$"}}}}},
+        "places": {"type": "array", "items": {"type": "string", "minLength": 1}},
         "generic_words": {"type": "array", "items": {"type": "string"}},
         "unit_words": {"type": "array", "items": {"type": "string"}},
         "non_org": {"type": "array", "items": {"type": "string"}}
