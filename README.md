@@ -12,9 +12,9 @@ on the Shallow Review of Technical AI Safety and is meant to supply data for its
   evaluators and policy analysts who need an overview of the stack and an index of sources.
 - **Not for:** tracking individuals beyond paper authorship; judging or ranking labs' safety efforts; calls to action
   other than research recommendations.
-- **Team:** Tomáš Gavenčiak (lead; Alignment of Complex Systems group, Charles University, Prague; Arb Research),
+- **Team:** Tomáš Gavenčiak (lead; Alignment of Complex Systems group, Charles University, Prague),
   Jacob Livingston Slosser (Pioneer Centre for AI, University of Copenhagen; CheatSheet; Juriscription), Dan Elton
-  (Metascience Observatory), Gavin Leech (advisor; Arb Research).
+  (Metascience Observatory), Gavin Leech (advisor).
 
 ### The dataset in brief
 
