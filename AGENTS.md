@@ -10,11 +10,11 @@ a validator. Humans start at `README.md`; reports go through the issue forms (`C
   and published annotations name the version they were made with. A change is a new file.
 - Versioning is in `taxonomies/README.md#versioning`: ids frozen within a major version from 1.0.0 on; wording
   clarified in a minor or patch version; a structure change alone is a minor version; 0.x carries no guarantees.
-- A new version is `taxonomies/<name>/<name>-<major>.<minor>.<patch>.yaml`, whose name starts with its `version`
-  field, with `meta.schema` naming its schema; a `CHANGELOG.md` entry (what changed, the counts, the file's
+- A new version is `taxonomies/<name>/<name>-<version>.yaml`, `<version>` being its `version` field
+  (`<major>.<minor>.<patch>`; the 0.9 files predate this and say `0.9`), with `meta.schema` naming its schema; a `CHANGELOG.md` entry (what changed, the counts, the file's
   sha256); the counts in `taxonomies/<name>/README.md` and the root `README.md`; for techniques and models also
   `CITATION.cff`'s version. It gets an annotated tag named as the file without `.yaml`, with a one-line message.
-- A schema change is a new `schemas/<name>-<n>.schema.json`; the shared envelope is
+- A schema change is a new `taxonomies/<name>/schemas/<name>-<n>.schema.json`; the shared envelope is
   `taxonomies/schemas/catalogue-0.schema.json`.
 - Licences: everything outside `tools/` is CC0 1.0, `tools/` MIT.
 
