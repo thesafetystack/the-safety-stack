@@ -20,7 +20,7 @@ The dataset is the first deliverable of the larger product we are building, a ca
 
 The dataset is comprised of public documents on technical AI safety (preprints and papers, LessWrong and Alignment Forum posts, lab blog posts, system and model cards). Each record is annotated by a language model (gpt-6-luna) according to a techniques taxonomy built by the project team. Data points cover role (uses, evaluates, proposes, critiques, reports a lab using it), which AI models are used and in what role, its document class, and, for papers with a full text (PDF, arXiv HTML or publisher XML), its authors' affiliations and the organisations they name. The taxonomies can be found [here](taxonomies/); per-field provenance ships with each release on Hugging Face.
 
-As of this release, it is not the complete catalogue as we imagine it. It does not, for instance, include per-technique summaries from our taxonomy of techniques, nor evidence of use or deployment status by frontier labs yet. Similarly, we estimate the coverage to be around 85% accurate: there are likely relevant documents missing, and some irrelevant ones included. Annotations are model driven and may contain mistakes. Though the data have not been individually verified, they have gone through an [Annotation quality](https://huggingface.co/datasets/thesafetystack/the-safety-stack#annotation-quality) pipeline, triage, sampling and override process. Each row's `method` says how it was prepared. Inclusion is not endorsement, and nothing here is a verdict on a lab or a technique.
+As of this release, it is not the complete catalogue as we imagine it. It does not, for instance, include per-technique summaries from our taxonomy of techniques, nor evidence of use or deployment status by frontier labs yet. Similarly, we estimate the coverage to be around 85% accurate: there are likely relevant documents missing, and some irrelevant ones included. Annotations are model driven and may contain mistakes. Though the data have not been individually verified, they have gone through an [Annotation quality](https://huggingface.co/datasets/thesafetystack/the-safety-stack#annotation-quality) pipeline, triage, sampling and override process. Each override row's `method` says how it was prepared. Inclusion is not endorsement, and nothing here is a verdict on a lab or a technique.
 
 ## What is where
 
@@ -102,7 +102,7 @@ Wherever it runs, the checker compares the release's schemas with the archived f
 
 | What | Licence |
 |---|---|
-| Taxonomies, schemas and documentation in this repository (everything outside `tools/`) | [CC0 1.0](LICENSE) |
+| Taxonomies, schemas and documentation in this repository (everything outside `tools/`) | [CC0 1.0](LICENSE), to the extent we hold copyright or database rights in it |
 | What we made in the dataset: the annotations, the identity and provenance structure, the release metadata, the taxonomies and documentation | CC0 1.0, to the extent we hold copyright or database rights in it |
 | Third-party material wherever it occurs in the dataset (titles and bibliographic records as published, abstracts, quoted excerpts, verbatim surfaces) | not licensed by us; it remains its owners', under their terms |
 | Code in `tools/`, and the release checker each release ships (`tools/release-validator.py`) | [MIT](tools/LICENSE) |
